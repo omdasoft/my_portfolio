@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Backend\Portfolio;
 
+use App\Models\Image;
 use App\Models\Portfolio;
 use App\Traits\HasMediaUpload;
 use Livewire\Component;
 
-class Create extends Component
+class Edit extends Component
 {
     use HasMediaUpload;
 
@@ -26,13 +27,26 @@ class Create extends Component
 
     public int $maxFileSize = 1024 * 8;
 
-    public function mount()
+    public Portfolio $portfolio;
+
+    public function mount(int $id)
     {
+        $this->getPortfolio($id);
+    }
+
+    private function getPortfolio(int $id)
+    {
+        $portfolio = Portfolio::with('images')->findOrFail($id);
+        $this->title = $portfolio->title;
+        $this->description = $portfolio->description;
+        $this->url = $portfolio->url;
+        $this->github_url = $portfolio->github_url;
+        $this->portfolio = $portfolio;
     }
 
     public function render()
     {
-        return view('livewire.backend.portfolio.create')->layout('layouts.admin');
+        return view('livewire.backend.portfolio.edit')->layout('layouts.admin');
     }
 
     public function updatedImage()
@@ -66,42 +80,36 @@ class Create extends Component
         $this->imagePathes = array_values($this->imagePathes);
     }
 
-    public function store()
+    public function update()
     {
         $this->validate();
 
-        // Create portfolio
-        $portfolio = new Portfolio();
-        $portfolio->title = $this->title;
-        $portfolio->url = $this->url;
-        $portfolio->github_url = $this->github_url;
-        $portfolio->description = $this->description;
-        $portfolio->save();
+        // Edit portfolio
+        $this->portfolio->title = $this->title;
+        $this->portfolio->url = $this->url;
+        $this->portfolio->github_url = $this->github_url;
+        $this->portfolio->description = $this->description;
+        $this->portfolio->save();
 
         //Create portfolio images
         if ($this->imagePathes) {
             foreach ($this->imagePathes as $path) {
-                $portfolio->images()->create([
+                $this->portfolio->images()->create([
                     'image_path' => $path,
                 ]);
             }
         }
 
         $this->imagePathes = [];
-        $this->clearForm();
-        $this->message = 'Portfolio Created Successfully!';
-        $this->dispatch('created');
+        $this->message = 'Portfolio Updated Successfully!';
+        $this->dispatch('updated');
     }
 
-    private function clearForm()
+    public function deleteImage(int $id)
     {
-        $this->reset([
-            'title',
-            'url',
-            'github_url',
-            'description',
-            'image',
-        ]);
+        Image::findOrFail($id)->delete();
+        $this->message = 'Portfolio Image Deleted Successfully!';
+        $this->dispatch('updated');
     }
 
     // Update the rules method to include images validation

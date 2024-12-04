@@ -16,7 +16,7 @@ trait HasMediaUpload
         return Storage::url($path);
     }
 
-    public function deleteImage($path)
+    public function removeUploadedImage($path)
     {
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);

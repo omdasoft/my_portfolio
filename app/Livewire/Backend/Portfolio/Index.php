@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Backend\Portfolio;
 
-use App\Models\Portfolio as PortfolioModel;
+use App\Models\Portfolio;
 use App\Traits\HasMediaUpload;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -37,28 +37,19 @@ class Index extends Component
 
     public function render()
     {
-        $portfolios = PortfolioModel::with('images')->latest()->paginate(10);
+        $portfolios = Portfolio::with('images')->latest()->paginate(10);
 
         return view('livewire.backend.portfolio.index', compact('portfolios'))->layout('layouts.admin');
     }
 
-    // public function create()
-    // {
-    //     $this->isCreate = true;
-    //     $this->dispatch('open-modal', 'createEditPortfolio');
-    // }
-
     public function edit(int $id)
     {
-        $this->isCreate = false;
-        $this->getPortfolio($id);
-        $this->actionId = $id;
-        $this->dispatch('open-modal', 'createEditPortfolio');
+        return redirect()->route('admin.portfolio.edit', ['id' => $id]);
     }
 
     private function getPortfolio(int $id)
     {
-        $portfolio = PortfolioModel::findOrFail($id);
+        $portfolio = Portfolio::findOrFail($id);
 
         $this->title = $portfolio->title;
         $this->description = $portfolio->description;
@@ -66,43 +57,12 @@ class Index extends Component
         $this->github_url = $portfolio->github_url;
     }
 
-    public function store()
-    {
-        $this->validate();
-
-        // Create portfolio
-        $portfolio = new PortfolioModel();
-        $portfolio->title = $this->title;
-        $portfolio->url = $this->url;
-        $portfolio->github_url = $this->github_url;
-        $portfolio->description = $this->description;
-        $portfolio->save();
-
-        // Upload and associate images
-        // if (! empty($this->images)) {
-        //     foreach ($this->images as $image) {
-        //         // $imagePath = $image->store('portfolio', 'public');
-        //         $imagePath = $this->upload($image, 'portfolio');
-
-        //         // Create image record associated with portfolio
-        //         $portfolio->images()->create([
-        //             'image_path' => $imagePath,
-        //         ]);
-        //     }
-        // }
-
-        $this->message = 'Portfolio Created Successfully!';
-        $this->dispatch('action-success');
-        $this->clearForm();
-        $this->closeModal('createEditPortfolio');
-    }
-
     public function update()
     {
         $this->validate();
 
         if ($this->actionId) {
-            $portfolio = PortfolioModel::findOrFail($this->actionId);
+            $portfolio = Portfolio::findOrFail($this->actionId);
             $portfolio->title = $this->title;
             $portfolio->url = $this->url;
             $portfolio->github_url = $this->github_url;
@@ -130,52 +90,6 @@ class Index extends Component
         }
     }
 
-    private function clearForm()
-    {
-        $this->reset([
-            'title',
-            'url',
-            'github_url',
-            'description',
-            'image',
-        ]);
-    }
-
-    // Update the rules method to include images validation
-    protected function rules()
-    {
-        return [
-            'title' => 'required|min:6',
-            'url' => 'required|url',
-            'github_url' => 'required|url',
-            'description' => 'required|string',
-            'image.*' => [
-                'required',
-                'image',
-                'max:5120', // 5MB max file size
-                'mimes:jpeg,jpg,webp,png,gif',
-            ],
-        ];
-    }
-
-    // Update the messages method for custom validation messages
-    protected function messages()
-    {
-        return [
-            'title.required' => 'The title is required.',
-            'title.min' => 'The title must be at least 6 characters.',
-            'url.required' => 'The project URL is required.',
-            'url.url' => 'Please provide a valid URL.',
-            'github_url.required' => 'The GitHub URL is required.',
-            'github_url.url' => 'Please provide a valid GitHub URL.',
-            'description.required' => 'The description is required.',
-            'image.required' => 'The Image is required.',
-            'image.image' => 'The file must be an image.',
-            'image.max' => 'Image size should not exceed 5MB.',
-            'image.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
-        ];
-    }
-
     public function showConfirmationModal($id)
     {
         $this->actionId = $id;
@@ -185,7 +99,18 @@ class Index extends Component
     public function deleteConfirmed()
     {
         if ($this->actionId) {
-            PortfolioModel::findOrFail($this->actionId)->delete();
+            $portfolio = Portfolio::with('images')->findOrFail($this->actionId);
+
+            if ($portfolio->images) {
+                foreach ($portfolio->images as $image) {
+                    $this->deleteImage($image->image_path);
+                }
+            }
+
+            $portfolio->images()->delete();
+
+            $portfolio->delete();
+
             $this->actionId = -1;
         }
 
