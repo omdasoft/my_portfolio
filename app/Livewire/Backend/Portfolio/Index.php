@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Backend;
+namespace App\Livewire\Backend\Portfolio;
 
 use App\Models\Portfolio as PortfolioModel;
 use App\Traits\HasMediaUpload;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Portfolio extends Component
+class Index extends Component
 {
     use HasMediaUpload, WithPagination;
 
@@ -21,7 +21,9 @@ class Portfolio extends Component
 
     public string $description;
 
-    public array $images = [];
+    public $image;
+
+    public array $imagePathes = [];
 
     public bool $isCreate = false;
 
@@ -37,14 +39,14 @@ class Portfolio extends Component
     {
         $portfolios = PortfolioModel::with('images')->latest()->paginate(10);
 
-        return view('livewire.backend.portfolio', compact('portfolios'))->layout('layouts.admin');
+        return view('livewire.backend.portfolio.index', compact('portfolios'))->layout('layouts.admin');
     }
 
-    public function create()
-    {
-        $this->isCreate = true;
-        $this->dispatch('open-modal', 'createEditPortfolio');
-    }
+    // public function create()
+    // {
+    //     $this->isCreate = true;
+    //     $this->dispatch('open-modal', 'createEditPortfolio');
+    // }
 
     public function edit(int $id)
     {
@@ -64,21 +66,6 @@ class Portfolio extends Component
         $this->github_url = $portfolio->github_url;
     }
 
-    public function updatedImages()
-    {
-        $this->validate([
-            'images.*' => [
-                'image',
-                'max:5120', // 5MB max file size
-                'mimes:jpeg,jpg,webp,png,gif',
-            ],
-        ], [
-            'images.*.image' => 'The file must be an image.',
-            'images.*.max' => 'Image size should not exceed 5MB.',
-            'images.*.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
-        ]);
-    }
-
     public function store()
     {
         $this->validate();
@@ -92,17 +79,17 @@ class Portfolio extends Component
         $portfolio->save();
 
         // Upload and associate images
-        if (! empty($this->images)) {
-            foreach ($this->images as $image) {
-                // $imagePath = $image->store('portfolio', 'public');
-                $imagePath = $this->upload($image, 'portfolio');
+        // if (! empty($this->images)) {
+        //     foreach ($this->images as $image) {
+        //         // $imagePath = $image->store('portfolio', 'public');
+        //         $imagePath = $this->upload($image, 'portfolio');
 
-                // Create image record associated with portfolio
-                $portfolio->images()->create([
-                    'image_path' => $imagePath,
-                ]);
-            }
-        }
+        //         // Create image record associated with portfolio
+        //         $portfolio->images()->create([
+        //             'image_path' => $imagePath,
+        //         ]);
+        //     }
+        // }
 
         $this->message = 'Portfolio Created Successfully!';
         $this->dispatch('action-success');
@@ -123,17 +110,17 @@ class Portfolio extends Component
             $portfolio->save();
 
             // Upload and associate images
-            if (! empty($this->images)) {
-                foreach ($this->images as $image) {
-                    // $imagePath = $image->store('portfolio', 'public');
-                    $imagePath = $this->upload($image, 'portfolio');
+            // if (! empty($this->images)) {
+            //     foreach ($this->images as $image) {
+            //         // $imagePath = $image->store('portfolio', 'public');
+            //         $imagePath = $this->upload($image, 'portfolio');
 
-                    // Create image record associated with portfolio
-                    $portfolio->images()->create([
-                        'image_path' => $imagePath,
-                    ]);
-                }
-            }
+            //         // Create image record associated with portfolio
+            //         $portfolio->images()->create([
+            //             'image_path' => $imagePath,
+            //         ]);
+            //     }
+            // }
 
             $this->message = 'Portfolio Updated Successfully!';
             $this->dispatch('action-success');
@@ -150,7 +137,7 @@ class Portfolio extends Component
             'url',
             'github_url',
             'description',
-            'images',
+            'image',
         ]);
     }
 
@@ -162,7 +149,7 @@ class Portfolio extends Component
             'url' => 'required|url',
             'github_url' => 'required|url',
             'description' => 'required|string',
-            'images.*' => [
+            'image.*' => [
                 'required',
                 'image',
                 'max:5120', // 5MB max file size
@@ -182,30 +169,11 @@ class Portfolio extends Component
             'github_url.required' => 'The GitHub URL is required.',
             'github_url.url' => 'Please provide a valid GitHub URL.',
             'description.required' => 'The description is required.',
-            'images.*.required' => 'The Image is required.',
-            'images.*.image' => 'The file must be an image.',
-            'images.*.max' => 'Image size should not exceed 5MB.',
-            'images.*.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
+            'image.required' => 'The Image is required.',
+            'image.image' => 'The file must be an image.',
+            'image.max' => 'Image size should not exceed 5MB.',
+            'image.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
         ];
-    }
-
-    public function cancelForm()
-    {
-        $this->clearFrom();
-        $this->resetValidation();
-        $this->closeModal('createEditPortfolio');
-    }
-
-    private function clearFrom()
-    {
-        $this->reset([
-            'title',
-            'description',
-            'url',
-            'github_url',
-        ]);
-
-        $this->images = [];
     }
 
     public function showConfirmationModal($id)

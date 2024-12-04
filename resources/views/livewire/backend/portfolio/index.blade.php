@@ -20,9 +20,11 @@
                             </div>
                         </div>
                     </x-action-message>
-                    <x-primary-button class="mb-5" wire:click="create">
+
+                    <x-nav-link :href="route('admin.portfolio.create')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150" wire:navigate>
                         Add Portfolio
-                    </x-primary-button>
+                    </x-nav-link>
+                    
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -39,7 +41,7 @@
                                 @forelse ($portfolios as $portfolio)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td class="px-6 py-4">
-                                            <img src="{{ asset($portfolio->image) }}" alt="Portfolio Image" width="200" height="200">
+                                            <img src="{{ $portfolio->image }}" alt="Portfolio Image" width="200" height="200">
                                         </td>
                                         <td class="px-6 py-4">{{ $portfolio->title }}</td>
                                         <td class="px-6 py-4">{{ $portfolio->url }}</td>
@@ -47,7 +49,7 @@
                                         <td class="px-6 py-4">{{ $portfolio->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
                                             <x-secondary-button wire:click="edit({{ $portfolio->id }})">Edit</x-secondary-button>
-                                            <x-danger-button wire:click="showConfirmationModal({{ $portfolio->id }})">
+                                            <x-danger-button wire:click.prevent="showConfirmationModal({{ $portfolio->id }})">
                                                 Delete
                                             </x-danger-button>
                                         </td>
@@ -81,7 +83,7 @@
     </x-modal>
 
      <!-- Create Edit Modal -->
-     <x-modal name="createEditPortfolio" maxWidth="2xl">
+     <x-modal name="createEditPortfolio" maxWidth="3xl">
         <div>
             <h2 class="text-center text-gray-500 py-2">{{ $isCreate ? 'Create Portfolio' : 'Edit Portfolio'}}</h2>
             <form wire:submit.prevent="{{ $isCreate ? 'store' : 'update' }}" class="py-3 space-y-6 px-3" enctype="multipart/form-data">
@@ -114,13 +116,20 @@
                 </div>
 
                 <div>
-                    <x-input-label for="images" value="Images" />
-                    <x-text-input wire:model.live="images" id="images" name="images" type="file" class="mt-1 block w-full" autofocus multiple/>
-                    @error('images.*')
-                        <x-input-error class="mt-2" :messages="$message"/>
-                    @enderror        
+                    <x-input-label for="image" value="Image" />
+                    <x-text-input wire:model.live="image" id="image" name="image" type="file" class="mt-1 block w-full" autofocus/>
+                    <x-input-error class="mt-2" :messages="$errors->get('image')" />
                 </div>
-
+                @if($imagePathes)
+                    <div class="flex gap-2">
+                        @foreach ($imagePathes as $key => $imagePath)
+                            <div class="w-1/2">
+                                <img src="{{ asset($imagePath) }}" alt="Portfolio Image" width="200" height="200">
+                                <x-danger-button class="mt-1" wire:click.prevent="removeImage({{$key}})">Remove</x-danger-button>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
                 <div class="flex items-center gap-2 mb-3">
                     <x-primary-button>{{ $isCreate ? 'Save' : 'Update' }}</x-primary-button>
                     <x-danger-button wire:click.prevent="cancelForm">Cancel</x-secondary-button>
