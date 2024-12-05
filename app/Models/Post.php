@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -11,11 +13,37 @@ class Post extends Model
 
     protected $fillable = ['title', 'slug', 'content', 'category_id'];
 
-    public function images() {
-        return $this->morphMany('App\Models\Image', 'imageable');
+    public function image()
+    {
+        return $this->morphOne('App\Models\Image', 'imageable');
     }
 
-    public function tags() {
+    public function tags()
+    {
         return $this->morphMany('App\Models\Tag', 'tagable');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Post $post) {
+            $post->slug = Str::slug($post->title);
+        });
+    }
+
+    public function getImageAttribute()
+    {
+        $image = $this->image()->first();
+
+        return $image ? $image->image_path : asset('storage/default.png');
+    }
+
+    public function getCreatedAtAttribute()
+    {
+        return Carbon::parse($this->attributes['created_at'])->diffForHumans();
     }
 }

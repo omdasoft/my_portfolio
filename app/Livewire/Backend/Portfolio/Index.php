@@ -44,7 +44,7 @@ class Index extends Component
 
     public function edit(int $id)
     {
-        return redirect()->route('admin.portfolio.edit', ['id' => $id]);
+        return redirect()->route('admin.portfolios.edit', ['id' => $id]);
     }
 
     private function getPortfolio(int $id)
@@ -55,39 +55,6 @@ class Index extends Component
         $this->description = $portfolio->description;
         $this->url = $portfolio->url;
         $this->github_url = $portfolio->github_url;
-    }
-
-    public function update()
-    {
-        $this->validate();
-
-        if ($this->actionId) {
-            $portfolio = Portfolio::findOrFail($this->actionId);
-            $portfolio->title = $this->title;
-            $portfolio->url = $this->url;
-            $portfolio->github_url = $this->github_url;
-            $portfolio->description = $this->description;
-            $portfolio->save();
-
-            // Upload and associate images
-            // if (! empty($this->images)) {
-            //     foreach ($this->images as $image) {
-            //         // $imagePath = $image->store('portfolio', 'public');
-            //         $imagePath = $this->upload($image, 'portfolio');
-
-            //         // Create image record associated with portfolio
-            //         $portfolio->images()->create([
-            //             'image_path' => $imagePath,
-            //         ]);
-            //     }
-            // }
-
-            $this->message = 'Portfolio Updated Successfully!';
-            $this->dispatch('action-success');
-            $this->clearForm();
-            $this->closeModal('createEditPortfolio');
-            $this->actionId = -1;
-        }
     }
 
     public function showConfirmationModal($id)
@@ -103,7 +70,7 @@ class Index extends Component
 
             if ($portfolio->images) {
                 foreach ($portfolio->images as $image) {
-                    $this->deleteImage($image->image_path);
+                    $this->removeUploadedImage($image->image_path);
                 }
             }
 

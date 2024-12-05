@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Portfolio List') }}
+            {{ __('Post List') }}
         </h2>
     </x-slot>
 
@@ -22,7 +22,7 @@
                     </x-action-message>
 
                     <x-nav-link :href="route('admin.portfolios.create')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150" wire:navigate>
-                        Add Portfolio
+                        Add Post
                     </x-nav-link>
                     
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -30,26 +30,24 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Image</th>
-                                    <th scope="col" class="px-6 py-3">Project Title</th>
-                                    <th scope="col" class="px-6 py-3">URL</th>
-                                    <th scope="col" class="px-6 py-3">GitHub URL</th>
-                                    <th scope="col" class="px-6 py-3">Completed At</th>
+                                    <th scope="col" class="px-6 py-3">Title</th>
+                                    <th scope="col" class="px-6 py-3">Category</th>
+                                    <th scope="col" class="px-6 py-3">Created At</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($portfolios as $portfolio)
+                                @forelse ($posts as $post)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td class="px-6 py-4">
-                                            <img src="{{ $portfolio->image }}" alt="Portfolio Image" width="200" height="200">
+                                            <img src="{{ $post->image }}" alt="Portfolio Image" width="150" height="150">
                                         </td>
-                                        <td class="px-6 py-4">{{ $portfolio->title }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->url }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->github_url }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->created_at }}</td>
+                                        <td class="px-6 py-4">{{ $post->title }}</td>
+                                        <td class="px-6 py-4">{{ $post->category->category_name }}</td>
+                                        <td class="px-6 py-4">{{ $post->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
-                                            <x-secondary-button wire:click="edit({{ $portfolio->id }})">Edit</x-secondary-button>
-                                            <x-danger-button wire:click.prevent="showConfirmationModal({{ $portfolio->id }})">
+                                            <x-secondary-button wire:click="edit({{ $post->id }})">Edit</x-secondary-button>
+                                            <x-danger-button wire:click.prevent="showConfirmationModal({{ $post->id }})">
                                                 Delete
                                             </x-danger-button>
                                         </td>
@@ -62,7 +60,7 @@
                             </tbody>
                         </table>
                         <div class="py-4">
-                            {{ $portfolios->links() }}
+                            {{ $posts->links() }}
                         </div>
                     </div>
                 </div>
@@ -74,7 +72,7 @@
     <x-modal name="confirmationModal" maxWidth="md">
         <div>
             <h2 class="text-center text-gray-500 py-2">Delete Confirmation</h2>
-            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this portfolio item?</p>
+            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this post?</p>
             <div class="mt-4 flex gap-4 justify-center mb-3">
                 <x-danger-button wire:click="deleteConfirmed">Yes, Delete</x-danger-button>
                 <x-secondary-button wire:click="closeModal('confirmationModal')">Cancel</x-secondary-button>

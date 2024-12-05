@@ -24,6 +24,10 @@ class DatabaseSeeder extends Seeder
         Profile::factory()->has(Image::factory())->create();
         Category::factory()->count(5)->create();
         Portfolio::factory()->count(15)->has(Image::factory()->count(15))->has(Tag::factory()->count(15))->create();
-        Post::factory()->count(5)->has(Tag::factory(5)->count(5))->create();
+        Post::factory()->count(5)
+            ->has(Tag::factory()->count(5))
+            ->has(Category::factory()->count(1))
+            ->has(Image::factory()->count(1))
+            ->create();
     }
 }
