@@ -21,7 +21,7 @@
                         </div>
                     </x-action-message>
 
-                    <x-nav-link :href="route('admin.portfolios.create')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150" wire:navigate>
+                    <x-nav-link :href="route('admin.posts.create')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150" wire:navigate>
                         Add Post
                     </x-nav-link>
                     
@@ -40,7 +40,7 @@
                                 @forelse ($posts as $post)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <td class="px-6 py-4">
-                                            <img src="{{ $post->image }}" alt="Portfolio Image" width="150" height="150">
+                                            <img src="{{ $post->image_path }}" alt="Portfolio Image" width="150" height="150">
                                         </td>
                                         <td class="px-6 py-4">{{ $post->title }}</td>
                                         <td class="px-6 py-4">{{ $post->category->category_name }}</td>

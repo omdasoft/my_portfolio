@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Portfolio extends Model
 {
@@ -37,6 +39,12 @@ class Portfolio extends Model
     {
         $image = $this->images()->first();
 
-        return $image ? $image->image_path : asset('storage/default.png');
+        if ($image) {
+            $imagePath = $image->image_path;
+
+            return Str::startsWith($imagePath, 'https') ? $imagePath : Storage::url($imagePath);
+        }
+
+        return asset('storage/default.png');
     }
 }

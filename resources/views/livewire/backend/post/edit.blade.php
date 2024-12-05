@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Portfolio Edit') }}
+            {{ __('Post Edit') }}
         </h2>
     </x-slot>
 
@@ -18,35 +18,24 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('title')" />
                             </div>
 
-
-                            <div class="flex gap-2">
-                                <div class="w-1/2">
-                                    <x-input-label for="url" value="URL" />
-                                    <x-text-input wire:model="url" id="url" name="url" type="text" class="mt-1 block w-full" required autocomplete="url" />
-                                    <x-input-error class="mt-2" :messages="$errors->get('url')" />
-                                </div>
-
-                                <div class="w-1/2">
-                                    <x-input-label for="github_url" value="Github URL" />
-                                    <x-text-input wire:model="github_url" id="github_url" name="github_url" type="text" class="mt-1 block w-full" required autocomplete="github_url" />
-                                    <x-input-error class="mt-2" :messages="$errors->get('github_url')" />
-                                </div>
+                            <div>
+                                <x-input-label for="content" value="Content" />
+                                <x-text-area wire:model="content" id="content" name="content" type="text" class="mt-1 block w-full" required autocomplete="content" rows="5"/>
+                                <x-input-error class="mt-2" :messages="$errors->get('content')" />
                             </div>
 
                             <div>
-                                <x-input-label for="description" value="Description" />
-                                <x-text-area wire:model="description" id="description" name="description" type="text" class="mt-1 block w-full" required autocomplete="description" rows="5"/>
-                                <x-input-error class="mt-2" :messages="$errors->get('description')" />
+                                <x-input-label for="category" value="Category" />
+                                <x-select-input wire:model="category" id="category" name="category" :options="$options" />
+                                <x-input-error class="mt-2" :messages="$errors->get('category')" />
                             </div>
 
-                            @if ($portfolio->images) 
+                            @if ($post->image) 
                                 <div class="flex gap-2 mb-2">
-                                    @foreach ($portfolio->images as $image)
-                                        <div class="w-1/2">
-                                            <img src="{{ '/storage/'.$image->image_path }}" alt="Portfolio Image" width="200" height="200">
-                                            <x-danger-button class="mt-1" wire:click.prevent="deleteImage({{$image->id}})">Delete</x-danger-button>
-                                        </div>
-                                    @endforeach
+                                    <div class="w-1/2">
+                                        <img src="{{ $post->image_path }}" alt="Post Image" width="200" height="200">
+                                        <x-danger-button class="mt-1" wire:click.prevent="deleteImage({{ $post->image->id }})">Delete</x-danger-button>
+                                    </div>
                                 </div>
                             @endif
 
@@ -55,14 +44,12 @@
                                 <x-text-input wire:model.live="image" id="image" name="image" type="file" class="mt-1 block w-full" autofocus/>
                                 <x-input-error class="mt-2" :messages="$errors->get('image')" />
                             </div>
-                            @if($imagePathes)
+                            @if($image)
                                 <div class="flex gap-2">
-                                    @foreach ($imagePathes as $key => $imagePath)
-                                        <div class="w-1/2">
-                                            <img src="{{ '/storage/'.$imagePath }}" alt="Portfolio Image" width="200" height="200">
-                                            <x-danger-button class="mt-1" wire:click.prevent="removeImage({{$key}})">Remove</x-danger-button>
-                                        </div>
-                                    @endforeach
+                                    <div class="w-1/2">
+                                        <img src="{{ $image->temporaryUrl() }}" alt="Portfolio Image" width="200" height="200">
+                                        <x-danger-button class="mt-1" wire:click.prevent="removeImage">Remove</x-danger-button>
+                                    </div>
                                 </div>
                             @endif
                             <div class="flex items-center gap-2 mb-3">

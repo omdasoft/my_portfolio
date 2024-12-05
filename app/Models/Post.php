@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Post extends Model
@@ -35,11 +36,15 @@ class Post extends Model
         });
     }
 
-    public function getImageAttribute()
+    public function getImagePathAttribute()
     {
         $image = $this->image()->first();
 
-        return $image ? $image->image_path : asset('storage/default.png');
+        if ($image) {
+            return Str::startsWith($image->image_path, 'https') ? $image->image_path : Storage::url($image->image_path);
+        }
+
+        return asset('storage/default.png');
     }
 
     public function getCreatedAtAttribute()

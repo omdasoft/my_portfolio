@@ -52,6 +52,11 @@ class Index extends Component
         $this->closeModal('confirmationModal');
     }
 
+    public function edit(int $id)
+    {
+        return redirect()->route('admin.posts.edit', ['id' => $id]);
+    }
+
     public function closeModal($modalName)
     {
         $this->dispatch('close-modal', $modalName);

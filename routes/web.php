@@ -5,6 +5,8 @@ use App\Livewire\Backend\Dashboard;
 use App\Livewire\Backend\Portfolio\Create;
 use App\Livewire\Backend\Portfolio\Edit;
 use App\Livewire\Backend\Portfolio\Index;
+use App\Livewire\Backend\Post\Create as PostCreate;
+use App\Livewire\Backend\Post\Edit as PostEdit;
 use App\Livewire\Backend\Post\Index as PostIndex;
 use App\Livewire\Backend\Profile;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +31,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     //Post Routes
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', PostIndex::class)->name('index');
+        Route::get('create', PostCreate::class)->name('create');
+        Route::get('edit/{id}', PostEdit::class)->name('edit');
     });
 });
 

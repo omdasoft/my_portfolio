@@ -50,6 +50,7 @@ class Create extends Component
         ]);
 
         $path = $this->upload($this->image, 'portfolio');
+
         $this->addImagePath($path);
     }
 

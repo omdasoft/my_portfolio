@@ -11,9 +11,7 @@ trait HasMediaUpload
 
     public function upload($image, $folder)
     {
-        $path = $image->store("images/{$folder}", 'public');
-
-        return Storage::url($path);
+        return $image->store("images/{$folder}", 'public');
     }
 
     public function removeUploadedImage($path)
