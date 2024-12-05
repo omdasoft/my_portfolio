@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
 use App\Models\Image;
 use App\Models\Portfolio;
 use App\Models\Post;
@@ -20,13 +19,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            CategorySeeder::class,
+        ]);
+
         User::factory()->create();
         Profile::factory()->has(Image::factory())->create();
-        Category::factory()->count(5)->create();
         Portfolio::factory()->count(15)->has(Image::factory()->count(15))->has(Tag::factory()->count(15))->create();
         Post::factory()->count(5)
             ->has(Tag::factory()->count(5))
-            ->has(Category::factory()->count(1))
             ->has(Image::factory()->count(1))
             ->create();
     }
