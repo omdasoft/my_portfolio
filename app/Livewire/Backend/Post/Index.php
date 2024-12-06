@@ -50,6 +50,11 @@ class Index extends Component
         return redirect()->route('admin.posts.edit', ['id' => $id]);
     }
 
+    public function view(int $id)
+    {
+        return redirect()->route('admin.posts.view', ['id' => $id]);
+    }
+
     public function closeModal($modalName)
     {
         $this->dispatch('close-modal', $modalName);

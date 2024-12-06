@@ -57,6 +57,7 @@
                                         <td class="px-6 py-4">{{ $post->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
                                             <x-secondary-button wire:click="edit({{ $post->id }})">Edit</x-secondary-button>
+                                            <x-secondary-button wire:click="view({{ $post->id }})">View</x-secondary-button>
                                             <x-danger-button wire:click.prevent="showConfirmationModal({{ $post->id }})">
                                                 Delete
                                             </x-danger-button>
