@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
@@ -23,6 +24,10 @@ class Create extends Component
     public string $message = '';
 
     public array $options = [];
+
+    public array $tags = [];
+
+    public string $tag = '';
 
     public int $category;
 
@@ -77,21 +82,50 @@ class Create extends Component
     {
         $this->validate();
 
-        $post = new Post();
-        $post->title = $this->title;
-        $post->content = $this->content;
-        $post->category_id = $this->category;
-        $post->save();
+        DB::transaction(function () {
+            $post = new Post();
+            $post->title = $this->title;
+            $post->content = $this->content;
+            $post->category_id = $this->category;
+            $post->save();
 
-        if ($this->imagePath) {
-            $post->image()->create([
-                'image_path' => $this->imagePath,
-            ]);
+            //create image
+            if ($this->imagePath) {
+                $post->image()->create([
+                    'image_path' => $this->imagePath,
+                ]);
+            }
+
+            //Create tags
+            if ($this->tags) {
+                foreach ($this->tags as $tag) {
+                    $post->tags()->create([
+                        'tag_name' => $tag,
+                    ]);
+                }
+            }
+
+            $this->clearForm();
+            $this->message = 'Post Created Successfully!';
+            $this->dispatch('created');
+        });
+    }
+
+    public function addTag()
+    {
+        $this->validate(['tag' => 'required|string|max:50']);
+
+        if (! in_array($this->tag, $this->tags)) {
+            $this->tags[] = $this->tag;
         }
 
-        $this->clearForm();
-        $this->message = 'Post Created Successfully!';
-        $this->dispatch('created');
+        $this->tag = '';
+    }
+
+    public function removeTag($index)
+    {
+        unset($this->tags[$index]);
+        $this->tags = array_values($this->tags);
     }
 
     public function clearForm()
@@ -102,6 +136,8 @@ class Create extends Component
             'category',
             'image',
             'imagePath',
+            'tags',
+            'tag',
         ]);
     }
 

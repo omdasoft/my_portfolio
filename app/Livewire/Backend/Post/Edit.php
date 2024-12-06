@@ -5,8 +5,11 @@ namespace App\Livewire\Backend\Post;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Edit extends Component
@@ -25,6 +28,10 @@ class Edit extends Component
 
     public array $options = [];
 
+    public array $tags = [];
+
+    public string $tag = '';
+
     public int $category;
 
     public Post $post;
@@ -37,11 +44,28 @@ class Edit extends Component
 
     public function getPost(int $id)
     {
-        $this->post = Post::with('image', 'category')->findOrFail($id);
+        $this->post = Post::with('image', 'category', 'tags')->findOrFail($id);
         $this->title = $this->post->title;
         $this->content = $this->post->content;
         $this->category = $this->post->category_id;
         $this->imagePath = $this->post->image_path;
+    }
+
+    public function addTag()
+    {
+        $this->validate(['tag' => 'required|string|max:50']);
+
+        if (! in_array($this->tag, $this->tags)) {
+            $this->tags[] = $this->tag;
+        }
+
+        $this->tag = '';
+    }
+
+    public function removeTag($index)
+    {
+        unset($this->tags[$index]);
+        $this->tags = array_values($this->tags);
     }
 
     public function getCategories()
@@ -90,36 +114,67 @@ class Edit extends Component
     {
         $this->validate();
 
-        // Edit Post
-        $this->post->title = $this->title;
-        $this->post->content = $this->content;
-        $this->post->category_id = $this->category;
-        $this->post->save();
+        DB::transaction(function () {
+            // Edit Post
+            $this->post->title = $this->title;
+            $this->post->content = $this->content;
+            $this->post->category_id = $this->category;
+            $this->post->save();
 
-        //Add image if exists
-        if ($this->imagePath) {
-            //Remove old image from storage
-            $this->removeUploadedImage($this->post->image->image_path);
+            //Upload and save image
+            if ($this->image) {
 
-            //Delete old image from db
-            $this->post->image()->delete();
+                //Remove old image from storage
+                if ($this->post->image) {
+                    $this->removeUploadedImage($this->post->image->image_path);
 
-            //Save image un the database
-            $this->post->image()->create([
-                'image_path' => $this->imagePath,
-            ]);
+                    //Delete old image from db
+                    $this->post->image()->delete();
+                }
 
-            $this->image = '';
-        }
+                //Save image in the database
+                $this->post->image()->create([
+                    'image_path' => $this->imagePath,
+                ]);
 
-        $this->message = 'Post Updated Successfully!';
-        $this->dispatch('updated');
+                $this->image = '';
+            }
+
+            //Create tags
+            if ($this->tags) {
+                foreach ($this->tags as $tag) {
+                    $this->post->tags()->create([
+                        'tag_name' => $tag,
+                    ]);
+                }
+
+                $this->tags = [];
+                $this->tag = '';
+            }
+
+            $this->message = 'Post Updated Successfully!';
+            $this->dispatch('updated');
+            $this->dispatch('refresh-component');
+        });
+    }
+
+    #[On('refresh-component')]
+    public function refreshComponent()
+    {
+        $this->dispatch('$refresh');
     }
 
     public function deleteImage(int $id)
     {
         Image::findOrFail($id)->delete();
         $this->message = 'Post Image Deleted Successfully!';
+        $this->dispatch('updated');
+    }
+
+    public function deleteTag(int $id)
+    {
+        Tag::findOrFail($id)->delete();
+        $this->message = 'Post Tag Deleted Successfully!';
         $this->dispatch('updated');
     }
 

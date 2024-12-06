@@ -32,6 +32,7 @@
                                     <th scope="col" class="px-6 py-3">Image</th>
                                     <th scope="col" class="px-6 py-3">Title</th>
                                     <th scope="col" class="px-6 py-3">Category</th>
+                                    <th scope="col" class="px-6 py-3">Tags</th>
                                     <th scope="col" class="px-6 py-3">Created At</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
@@ -44,6 +45,15 @@
                                         </td>
                                         <td class="px-6 py-4">{{ $post->title }}</td>
                                         <td class="px-6 py-4">{{ $post->category->category_name }}</td>
+                                        <td class="px-6 py-4">
+                                            @foreach ($post->tags as $index => $tag)
+                                                <span
+                                                    class="bg-gray-200 text-gray-800 rounded-full py-1 px-1"
+                                                >
+                                                    <span>{{ $tag->tag_name }}</span>
+                                                </span>
+                                            @endforeach
+                                        </td>
                                         <td class="px-6 py-4">{{ $post->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
                                             <x-secondary-button wire:click="edit({{ $post->id }})">Edit</x-secondary-button>
