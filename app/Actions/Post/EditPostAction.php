@@ -10,7 +10,7 @@ class EditPostAction
 {
     use HasMediaUpload;
 
-    public function handle(Post $post, array $data): void
+    public static function handle(Post $post, array $data): void
     {
         DB::transaction(function () use ($post, $data) {
             // Edit Post

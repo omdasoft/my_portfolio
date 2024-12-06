@@ -116,8 +116,7 @@ class Edit extends Component
 
         $this->formData['hasImage'] = $this->image ? true : false;
 
-        $editPostAction = new EditPostAction();
-        $editPostAction->handle($this->post, $this->formData);
+        EditPostAction::handle($this->post, $this->formData);
 
         $this->image = '';
         $this->formData['tags'] = [];

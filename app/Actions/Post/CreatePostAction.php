@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreatePostAction
 {
-    public function handle(array $data): void
+    public static function handle(array $data): void
     {
         DB::transaction(function () use ($data) {
             $post = new Post();

@@ -85,10 +85,12 @@ class Create extends Component
     {
         $this->validate();
 
-        $createPostAction = new CreatePostAction();
-        $createPostAction->handle($this->formData);
+        CreatePostAction::handle($this->formData);
+
         $this->message = 'Post Created Successfully!';
+
         $this->clearForm();
+
         $this->dispatch('created');
     }
 
