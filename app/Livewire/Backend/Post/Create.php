@@ -2,38 +2,41 @@
 
 namespace App\Livewire\Backend\Post;
 
+use App\Actions\Post\CreatePostAction;
 use App\Models\Category;
-use App\Models\Post;
 use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
 {
     use HasMediaUpload;
 
-    public string $title;
-
-    public string $content;
-
     public $image;
-
-    public string $imagePath;
 
     public string $message = '';
 
     public array $options = [];
 
-    public array $tags = [];
-
     public string $tag = '';
 
-    public int $category;
+    public array $formData;
 
     public function mount()
     {
         $this->getCategories();
+        $this->formDataDefaultValues();
+    }
+
+    public function formDataDefaultValues()
+    {
+        $this->formData = [
+            'title' => '',
+            'content' => '',
+            'imagePath' => '',
+            'tags' => [],
+            'category' => '',
+        ];
     }
 
     public function getCategories()
@@ -66,14 +69,14 @@ class Create extends Component
             'image.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
         ]);
 
-        $this->imagePath = $this->upload($this->image, 'post');
+        $this->formData['imagePath'] = $this->upload($this->image, 'post');
     }
 
     public function removeImage()
     {
-        if ($this->imagePath) {
-            $this->removeUploadedImage($this->imagePath);
-            $this->imagePath = '';
+        if ($this->formData['imagePath']) {
+            $this->removeUploadedImage($this->formData['imagePath']);
+            $this->formData['imagePath'] = '';
             $this->image = '';
         }
     }
@@ -82,41 +85,19 @@ class Create extends Component
     {
         $this->validate();
 
-        DB::transaction(function () {
-            $post = new Post();
-            $post->title = $this->title;
-            $post->content = $this->content;
-            $post->category_id = $this->category;
-            $post->save();
-
-            //create image
-            if ($this->imagePath) {
-                $post->image()->create([
-                    'image_path' => $this->imagePath,
-                ]);
-            }
-
-            //Create tags
-            if ($this->tags) {
-                foreach ($this->tags as $tag) {
-                    $post->tags()->create([
-                        'tag_name' => $tag,
-                    ]);
-                }
-            }
-
-            $this->clearForm();
-            $this->message = 'Post Created Successfully!';
-            $this->dispatch('created');
-        });
+        $createPostAction = new CreatePostAction();
+        $createPostAction->handle($this->formData);
+        $this->message = 'Post Created Successfully!';
+        $this->clearForm();
+        $this->dispatch('created');
     }
 
     public function addTag()
     {
         $this->validate(['tag' => 'required|string|max:50']);
 
-        if (! in_array($this->tag, $this->tags)) {
-            $this->tags[] = $this->tag;
+        if (! in_array($this->tag, $this->formData['tags'])) {
+            $this->formData['tags'][] = $this->tag;
         }
 
         $this->tag = '';
@@ -124,19 +105,16 @@ class Create extends Component
 
     public function removeTag($index)
     {
-        unset($this->tags[$index]);
-        $this->tags = array_values($this->tags);
+        unset($this->formData['tags'][$index]);
+        $this->formData['tags'] = array_values($this->formData['tags']);
     }
 
     public function clearForm()
     {
+        $this->formDataDefaultValues();
+
         $this->reset([
-            'title',
-            'content',
-            'category',
             'image',
-            'imagePath',
-            'tags',
             'tag',
         ]);
     }
@@ -144,15 +122,33 @@ class Create extends Component
     protected function rules()
     {
         return [
-            'title' => 'required|min:6|max:255',
-            'content' => 'required|string',
-            'category' => 'required|numeric|exists:categories,id',
-            'image.*' => [
+            'formData.title' => 'required|min:6|max:255',
+            'formData.content' => 'required|string',
+            'formData.category' => 'required|numeric|exists:categories,id',
+            'image' => [
                 'required',
                 'image',
                 'max:5120', // 5MB max file size
                 'mimes:jpeg,jpg,webp,png,gif',
             ],
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'formData.title.required' => 'Title is required',
+            'formData.title.min' => 'Title must not be less than :min chars',
+            'formData.title.max' => 'Title must not be greator than :max chars',
+            'formData.content.required' => 'Content is required',
+            'formData.content.string' => 'Content must be string',
+            'formData.category.required' => 'Category is required',
+            'formData.category.numeric' => 'Category must be number',
+            'formData.category.exists' => 'Category value not found',
+            'image.required' => 'Image is required',
+            'image.image' => 'Image must be an image',
+            'image.max' => 'Image size must not be greator than :max',
+            'image.mimes' => 'The allowed image types are :mimes',
         ];
     }
 }

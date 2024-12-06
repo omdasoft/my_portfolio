@@ -14,20 +14,20 @@
                             @csrf
                             <div>
                                 <x-input-label for="title" value="Title" />
-                                <x-text-input wire:model="title" id="title" name="title" type="text" class="mt-1 block w-full" required autofocus autocomplete="title" />
-                                <x-input-error class="mt-2" :messages="$errors->get('title')" />
+                                <x-text-input wire:model="formData.title" id="title" name="title" type="text" class="mt-1 block w-full" required autofocus autocomplete="title" />
+                                <x-input-error class="mt-2" :messages="$errors->get('formData.title')" />
                             </div>
 
                             <div>
                                 <x-input-label for="content" value="Content" />
-                                <x-text-area wire:model="content" id="content" name="content" type="text" class="mt-1 block w-full" required autocomplete="content" rows="5"/>
-                                <x-input-error class="mt-2" :messages="$errors->get('content')" />
+                                <x-text-area wire:model="formData.content" id="content" name="content" type="text" class="mt-1 block w-full" required autocomplete="content" rows="5"/>
+                                <x-input-error class="mt-2" :messages="$errors->get('formData.content')" />
                             </div>
 
                             <div>
                                 <x-input-label for="category" value="Category" />
-                                <x-select-input wire:model="category" id="category" name="category" :options="$options" />
-                                <x-input-error class="mt-2" :messages="$errors->get('category')" />
+                                <x-select-input wire:model="formData.category" id="category" name="category" :options="$options" />
+                                <x-input-error class="mt-2" :messages="$errors->get('formData.category')" />
                             </div>
 
                             <div>
@@ -43,7 +43,7 @@
                                     </button>
                                 </div>
                                 <div class="flex flex-wrap space-x-2 mt-2">
-                                    @foreach ($tags as $index => $tag)
+                                    @foreach ($formData['tags'] as $index => $tag)
                                         <span
                                             class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
                                         >
@@ -59,7 +59,7 @@
                                 </div>
                                 <x-input-error class="mt-2" :messages="$errors->get('tag')" />
                             </div>
-                            
+
                             <div>
                                 <x-input-label for="image" value="Image" />
                                 <x-text-input wire:model.live="image" id="image" name="image" type="file" class="mt-1 block w-full" autofocus/>
