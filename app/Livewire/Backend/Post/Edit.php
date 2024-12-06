@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Backend\Post;
 
+use App\Actions\Post\EditPostAction;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -16,25 +16,17 @@ class Edit extends Component
 {
     use HasMediaUpload;
 
-    public string $title;
-
-    public string $content;
-
     public $image;
-
-    public string $imagePath = '';
 
     public string $message = '';
 
     public array $options = [];
 
-    public array $tags = [];
-
     public string $tag = '';
 
-    public int $category;
-
     public Post $post;
+
+    public $formData = [];
 
     public function mount(int $id)
     {
@@ -45,18 +37,26 @@ class Edit extends Component
     public function getPost(int $id)
     {
         $this->post = Post::with('image', 'category', 'tags')->findOrFail($id);
-        $this->title = $this->post->title;
-        $this->content = $this->post->content;
-        $this->category = $this->post->category_id;
-        $this->imagePath = $this->post->image_path;
+        $this->setFormData($this->post);
+    }
+
+    public function setFormData(Post $post)
+    {
+        $this->formData = [
+            'title' => $post->title,
+            'content' => $post->content,
+            'category' => $post->category_id,
+            'imagePath' => $post->image_path,
+            'tags' => [],
+        ];
     }
 
     public function addTag()
     {
         $this->validate(['tag' => 'required|string|max:50']);
 
-        if (! in_array($this->tag, $this->tags)) {
-            $this->tags[] = $this->tag;
+        if (! in_array($this->tag, $this->formData['tags'])) {
+            $this->formData['tags'][] = $this->tag;
         }
 
         $this->tag = '';
@@ -64,8 +64,8 @@ class Edit extends Component
 
     public function removeTag($index)
     {
-        unset($this->tags[$index]);
-        $this->tags = array_values($this->tags);
+        unset($this->formData['tags'][$index]);
+        $this->formData['tags'] = array_values($this->formData['tags']);
     }
 
     public function getCategories()
@@ -98,14 +98,14 @@ class Edit extends Component
             'image.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
         ]);
 
-        $this->imagePath = $this->upload($this->image, 'post');
+        $this->formData['imagePath'] = $this->upload($this->image, 'post');
     }
 
     public function removeImage()
     {
-        if ($this->imagePath) {
-            $this->removeUploadedImage($this->imagePath);
-            $this->imagePath = '';
+        if ($this->formData['imagePath']) {
+            $this->removeUploadedImage($this->formData['imagePath']);
+            $this->formData['imagePath'] = '';
             $this->image = '';
         }
     }
@@ -114,48 +114,17 @@ class Edit extends Component
     {
         $this->validate();
 
-        DB::transaction(function () {
-            // Edit Post
-            $this->post->title = $this->title;
-            $this->post->content = $this->content;
-            $this->post->category_id = $this->category;
-            $this->post->save();
+        $this->formData['hasImage'] = $this->image ? true : false;
 
-            //Upload and save image
-            if ($this->image) {
+        $editPostAction = new EditPostAction();
+        $editPostAction->handle($this->post, $this->formData);
 
-                //Remove old image from storage
-                if ($this->post->image) {
-                    $this->removeUploadedImage($this->post->image->image_path);
-
-                    //Delete old image from db
-                    $this->post->image()->delete();
-                }
-
-                //Save image in the database
-                $this->post->image()->create([
-                    'image_path' => $this->imagePath,
-                ]);
-
-                $this->image = '';
-            }
-
-            //Create tags
-            if ($this->tags) {
-                foreach ($this->tags as $tag) {
-                    $this->post->tags()->create([
-                        'tag_name' => $tag,
-                    ]);
-                }
-
-                $this->tags = [];
-                $this->tag = '';
-            }
-
-            $this->message = 'Post Updated Successfully!';
-            $this->dispatch('updated');
-            $this->dispatch('refresh-component');
-        });
+        $this->image = '';
+        $this->formData['tags'] = [];
+        $this->tag = '';
+        $this->message = 'Post Updated Successfully!';
+        $this->dispatch('updated');
+        $this->dispatch('refresh-component');
     }
 
     #[On('refresh-component')]
@@ -178,29 +147,35 @@ class Edit extends Component
         $this->dispatch('updated');
     }
 
-    public function clearForm()
-    {
-        $this->reset([
-            'title',
-            'content',
-            'category',
-            'image',
-            'imagePath',
-        ]);
-    }
-
     protected function rules()
     {
         return [
-            'title' => 'required|min:6|max:255',
-            'content' => 'required|string',
-            'category' => 'required|numeric|exists:categories,id',
-            'image.*' => [
-                'required',
+            'formData.title' => 'required|min:6|max:255',
+            'formData.content' => 'required|string',
+            'formData.category' => 'required|numeric|exists:categories,id',
+            'image' => [
+                'nullable',
                 'image',
                 'max:5120', // 5MB max file size
                 'mimes:jpeg,jpg,webp,png,gif',
             ],
+        ];
+    }
+
+    protected function messages()
+    {
+        return [
+            'formData.title.required' => 'Title is required',
+            'formData.title.min' => 'Title must not be less than :min chars',
+            'formData.title.max' => 'Title must not be greator than :max chars',
+            'formData.content.required' => 'Content is required',
+            'formData.content.string' => 'Content must be string',
+            'formData.category.required' => 'Category is required',
+            'formData.category.numeric' => 'Category must be number',
+            'formData.category.exists' => 'Category value not found',
+            'image.image' => 'Image must be an image',
+            'image.max' => 'Image size must not be greator than :max',
+            'image.mimes' => 'The allowed image types are :values',
         ];
     }
 }
