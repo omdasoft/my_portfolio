@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Backend\Post;
 
+use App\Actions\Post\DeletePostAction;
 use App\Models\Post;
 use App\Traits\HasMediaUpload;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Index extends Component
@@ -35,21 +35,9 @@ class Index extends Component
     public function deleteConfirmed()
     {
         if ($this->actionId) {
-            DB::transaction(function () {
-                $post = Post::with('image')->findOrFail($this->actionId);
-
-                if ($post->image) {
-                    $this->removeUploadedImage($post->image);
-                }
-
-                $post->image()->delete();
-
-                $post->tags()->delete();
-
-                $post->delete();
-
-                $this->actionId = -1;
-            });
+            $deletePostAction = new DeletePostAction();
+            $deletePostAction->handle($this->actionId);
+            $this->actionId = -1;
         }
 
         $this->message = 'Post Deleted Successfully!';
