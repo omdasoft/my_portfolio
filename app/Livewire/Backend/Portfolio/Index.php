@@ -47,6 +47,11 @@ class Index extends Component
         return redirect()->route('admin.portfolios.edit', ['id' => $id]);
     }
 
+    public function view(int $id)
+    {
+        return redirect()->route('admin.portfolios.view', ['id' => $id]);
+    }
+
     private function getPortfolio(int $id)
     {
         $portfolio = Portfolio::findOrFail($id);

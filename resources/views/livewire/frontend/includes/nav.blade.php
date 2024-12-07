@@ -21,7 +21,14 @@
                 class="font-montserrat leading-normal text-lg text-slate-gray hover:underline hover:decoration-2 hover:underline-offset-8 hover:decoration-indigo-600 hover:text-gray-500">Hire
                 Me</a>
         </li>
-    </ul>
+            @auth
+                <li>
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="font-montserrat leading-normal text-lg text-slate-gray hover:underline hover:decoration-2 hover:underline-offset-8 hover:decoration-indigo-600 hover:text-gray-500">
+                        Dashboard</a>
+                </li>
+            @endauth
+        </ul>
     <div class='hidden max-md:block z-20'>
         <img src="assets/images/hamburger.svg" alt='Hamburger' width="25" height="25" id="toggleMenuBtn"
             class="hover:cursor-pointer" />

@@ -32,7 +32,7 @@ class Portfolio extends Model
 
     public function getCreatedAtAttribute()
     {
-        return Carbon::parse($this->attributes['created_at'])->format('Y-m-d');
+        return Carbon::parse($this->attributes['created_at'])->format('M d, Y');
     }
 
     public function getImageAttribute()

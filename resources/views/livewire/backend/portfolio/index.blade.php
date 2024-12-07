@@ -30,7 +30,7 @@
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Image</th>
-                                    <th scope="col" class="px-6 py-3">Project Title</th>
+                                    <th scope="col" class="px-6 py-3">Title</th>
                                     <th scope="col" class="px-6 py-3">URL</th>
                                     <th scope="col" class="px-6 py-3">GitHub URL</th>
                                     <th scope="col" class="px-6 py-3">Completed At</th>
@@ -49,6 +49,7 @@
                                         <td class="px-6 py-4">{{ $portfolio->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
                                             <x-secondary-button wire:click="edit({{ $portfolio->id }})">Edit</x-secondary-button>
+                                            <x-secondary-button wire:click="view({{ $portfolio->id }})">View</x-secondary-button>
                                             <x-danger-button wire:click.prevent="showConfirmationModal({{ $portfolio->id }})">
                                                 Delete
                                             </x-danger-button>
