@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PostStatus;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,6 +22,7 @@ class PostFactory extends Factory
             'title' => $this->faker->text(15),
             'content' => $this->faker->text(),
             'category_id' => Category::inRandomOrder()->first(),
+            'status' => $this->faker->randomElement(PostStatus::cases()),
         ];
     }
 }

@@ -17,6 +17,7 @@ class EditPostAction
             $post->title = $data['title'];
             $post->content = $data['content'];
             $post->category_id = $data['category'];
+            $post->status = $data['status'];
             $post->save();
 
             //Upload and save image

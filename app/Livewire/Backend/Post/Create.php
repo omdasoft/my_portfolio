@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Post;
 
 use App\Actions\Post\CreatePostAction;
+use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Traits\HasMediaUpload;
 use Illuminate\Database\Eloquent\Collection;
@@ -18,6 +19,8 @@ class Create extends Component
 
     public array $options = [];
 
+    public array $statuses = [];
+
     public string $tag = '';
 
     public array $formData;
@@ -26,6 +29,7 @@ class Create extends Component
     {
         $this->getCategories();
         $this->formDataDefaultValues();
+        $this->setPostStatus();
     }
 
     public function formDataDefaultValues()
@@ -36,7 +40,17 @@ class Create extends Component
             'imagePath' => '',
             'tags' => [],
             'category' => '',
+            'status' => PostStatus::PUBLISHED->value,
         ];
+    }
+
+    public function setPostStatus()
+    {
+        $statuses = PostStatus::cases();
+
+        foreach ($statuses as $status) {
+            $this->statuses[$status->value] = $status->value;
+        }
     }
 
     public function getCategories()
@@ -127,6 +141,7 @@ class Create extends Component
             'formData.title' => 'required|min:6|max:255',
             'formData.content' => 'required|string',
             'formData.category' => 'required|numeric|exists:categories,id',
+            'formData.status' => 'required|string',
             'image' => [
                 'required',
                 'image',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\PostStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->text('content');
+            $table->string('status')->default(PostStatus::PUBLISHED->value);
             $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });

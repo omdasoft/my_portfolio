@@ -31,6 +31,12 @@
                             </div>
 
                             <div>
+                                <x-input-label for="status" value="Status" />
+                                <x-select-input wire:model="formData.status" id="status" name="status" :options="$statuses" />
+                                <x-input-error class="mt-2" :messages="$errors->get('formData.status')" />
+                            </div>
+
+                            <div>
                                 <x-input-label for="tag" value="Tag" />
                                 <div class="flex space-x-2">
                                     <x-text-input wire:model="tag" id="tag" name="tag" type="text" class="mt-1 block w-full" autofocus autocomplete="tag" />

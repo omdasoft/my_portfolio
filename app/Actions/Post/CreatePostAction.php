@@ -14,6 +14,7 @@ class CreatePostAction
             $post->title = $data['title'];
             $post->content = $data['content'];
             $post->category_id = $data['category'];
+            $post->status = $data['status'];
             $post->save();
 
             //create image

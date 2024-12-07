@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Post;
 
 use App\Actions\Post\EditPostAction;
+use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Post;
@@ -22,6 +23,8 @@ class Edit extends Component
 
     public array $options = [];
 
+    public array $statuses = [];
+
     public string $tag = '';
 
     public Post $post;
@@ -32,6 +35,7 @@ class Edit extends Component
     {
         $this->getCategories();
         $this->getPost($id);
+        $this->setPostStatus();
     }
 
     public function getPost(int $id)
@@ -47,8 +51,18 @@ class Edit extends Component
             'content' => $post->content,
             'category' => $post->category_id,
             'imagePath' => $post->image_path,
+            'status' => $post->status,
             'tags' => [],
         ];
+    }
+
+    public function setPostStatus()
+    {
+        $statuses = PostStatus::cases();
+
+        foreach ($statuses as $status) {
+            $this->statuses[$status->value] = $status->value;
+        }
     }
 
     public function addTag()
@@ -152,6 +166,7 @@ class Edit extends Component
             'formData.title' => 'required|min:6|max:255',
             'formData.content' => 'required|string',
             'formData.category' => 'required|numeric|exists:categories,id',
+            'formData.status' => 'required|string',
             'image' => [
                 'nullable',
                 'image',

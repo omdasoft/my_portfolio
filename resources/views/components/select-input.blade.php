@@ -6,7 +6,7 @@
 >
 
         <option value="">
-            Select Category
+            Choose Option
         </option>
     @foreach ($options as $value => $label)
         <option

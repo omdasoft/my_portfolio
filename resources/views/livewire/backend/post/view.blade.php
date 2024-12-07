@@ -14,8 +14,15 @@
 
                     <!-- Post Meta Information -->
                     <div class="mt-4 flex justify-between items-center text-sm text-gray-600">
-                        <span class="text-gray-600 font-bold">{{ $post->category->category_name }}</span>
-                        <span class="font-bold">{{ $post->created_at }}</span>
+                        <span class="text-gray-600 font-bold">
+                            {{ $post->category->category_name }}
+                        </span>
+                        <span class="text-gray-600 font-bold">
+                            {{ $post->status }}
+                        </span>
+                        <span class="font-bold">
+                            {{ $post->created_at }}
+                        </span>
                     </div>
 
                     <!-- Post Title -->
