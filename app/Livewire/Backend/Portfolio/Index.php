@@ -13,23 +13,7 @@ class Index extends Component
 
     public int $actionId;
 
-    public string $title;
-
-    public string $url;
-
-    public string $github_url;
-
-    public string $description;
-
-    public $image;
-
-    public array $imagePathes = [];
-
-    public bool $isCreate = false;
-
     public string $message = '';
-
-    public int $maxFileSize = 1024 * 8;
 
     public function mount()
     {
@@ -50,16 +34,6 @@ class Index extends Component
     public function view(int $id)
     {
         return redirect()->route('admin.portfolios.view', ['id' => $id]);
-    }
-
-    private function getPortfolio(int $id)
-    {
-        $portfolio = Portfolio::findOrFail($id);
-
-        $this->title = $portfolio->title;
-        $this->description = $portfolio->description;
-        $this->url = $portfolio->url;
-        $this->github_url = $portfolio->github_url;
     }
 
     public function showConfirmationModal($id)
