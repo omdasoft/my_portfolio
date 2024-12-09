@@ -25,7 +25,7 @@ class EditPostAction
 
                 //Remove old image from storage
                 if ($post->image) {
-                    $this->removeUploadedImage($post->image->image_path);
+                    $this->removeUploadedFile($post->image->image_path);
 
                     //Delete old image from db
                     $post->image()->delete();

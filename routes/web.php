@@ -10,7 +10,7 @@ use App\Livewire\Backend\Post\Create as PostCreate;
 use App\Livewire\Backend\Post\Edit as PostEdit;
 use App\Livewire\Backend\Post\Index as PostIndex;
 use App\Livewire\Backend\Post\View as PostView;
-use App\Livewire\Backend\Profile;
+use App\Livewire\Backend\Profile\Info;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'index'])->name('index');
@@ -21,7 +21,9 @@ Route::get('/', [FrontendController::class, 'index'])->name('index');
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-    Route::get('profile', Profile::class)->name('profile');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', Info::class)->name('info');
+    });
 
     //Portfolio Routes
     Route::prefix('portfolios')->name('portfolios.')->group(function () {

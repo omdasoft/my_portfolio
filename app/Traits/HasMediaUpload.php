@@ -9,12 +9,12 @@ trait HasMediaUpload
 {
     use WithFileUploads;
 
-    public function upload($image, $folder)
+    public function upload($file, $folder)
     {
-        return $image->store("images/{$folder}", 'public');
+        return $file->store("uploads/{$folder}", 'public');
     }
 
-    public function removeUploadedImage($path)
+    public function removeUploadedFile($path)
     {
         if (Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);

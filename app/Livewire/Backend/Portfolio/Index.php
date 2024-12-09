@@ -75,7 +75,7 @@ class Index extends Component
 
             if ($portfolio->images) {
                 foreach ($portfolio->images as $image) {
-                    $this->removeUploadedImage($image->image_path);
+                    $this->removeUploadedFile($image->image_path);
                 }
             }
 

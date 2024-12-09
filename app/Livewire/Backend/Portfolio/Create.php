@@ -62,7 +62,7 @@ class Create extends Component
     public function removeImage(int $index)
     {
         $path = $this->imagePathes[$index];
-        $this->removeUploadedImage($path);
+        $this->removeUploadedFile($path);
         unset($this->imagePathes[$index]);
         $this->imagePathes = array_values($this->imagePathes);
     }

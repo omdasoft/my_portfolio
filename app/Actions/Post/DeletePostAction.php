@@ -16,7 +16,7 @@ class DeletePostAction
             $post = Post::with('image')->findOrFail($id);
 
             if ($post->image) {
-                $this->removeUploadedImage($post->image);
+                $this->removeUploadedFile($post->image);
             }
 
             $post->image()->delete();

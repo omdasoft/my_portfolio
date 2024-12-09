@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,14 +17,13 @@ class ProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::first(),
             'designation' => $this->faker->text(5),
             'intro' => $this->faker->text(),
             'phone' => $this->faker->phoneNumber(),
             'github' => $this->faker->url(),
             'twitter' => $this->faker->url(),
             'linkedin' => $this->faker->url(),
-            'resume_path' => $this->faker->imageUrl()
+            'resume_path' => $this->faker->imageUrl(),
         ];
     }
 }

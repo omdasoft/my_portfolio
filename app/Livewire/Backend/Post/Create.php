@@ -89,7 +89,7 @@ class Create extends Component
     public function removeImage()
     {
         if ($this->formData['imagePath']) {
-            $this->removeUploadedImage($this->formData['imagePath']);
+            $this->removeUploadedFile($this->formData['imagePath']);
             $this->formData['imagePath'] = '';
             $this->image = '';
         }
