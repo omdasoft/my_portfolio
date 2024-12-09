@@ -55,13 +55,13 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_navigation_menu_can_be_rendered(): void
+    public function test_admin_dashboard_can_be_rendered(): void
     {
         $user = User::factory()->create();
 
         $this->actingAs($user);
 
-        $response = $this->get('/dashboard');
+        $response = $this->get('/admin/dashboard');
 
         $response
             ->assertSeeVolt('layout.navigation')
@@ -80,7 +80,7 @@ class AuthenticationTest extends TestCase
 
         $component
             ->assertHasNoErrors()
-            ->assertRedirect('/');
+            ->assertRedirect('/login');
 
         $this->assertGuest();
     }
