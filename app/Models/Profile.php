@@ -11,6 +11,8 @@ class Profile extends Model
 {
     use HasFactory;
 
+    protected $table = 'profiles';
+
     protected $fillable = ['designation', 'intro', 'phone', 'github', 'twitter', 'linkedin', 'resume_path'];
 
     public function image()
