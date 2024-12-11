@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class CreatePortfolioTest extends TestCase
+class PortfolioCreateTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class CreateTest extends TestCase
+class PostCreateTest extends TestCase
 {
     use RefreshDatabase;
 

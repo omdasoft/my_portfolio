@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
-class IndexTest extends TestCase
+class PostIndexTest extends TestCase
 {
     use RefreshDatabase;
 
