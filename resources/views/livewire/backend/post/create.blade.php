@@ -71,10 +71,10 @@
                                 <x-text-input wire:model.live="image" id="image" name="image" type="file" class="mt-1 block w-full" autofocus/>
                                 <x-input-error class="mt-2" :messages="$errors->get('image')" />
                             </div>
-                            @if($image)
+                            @if($formData['imagePath'])
                                 <div class="flex gap-2">
                                     <div class="w-1/2">
-                                        <img src="{{ $image->temporaryUrl() }}" alt="Portfolio Image" width="200" height="200">
+                                        <img src="{{ asset('storage/'.$formData['imagePath']) }}" alt="Portfolio Image" width="200" height="200">
                                         <x-danger-button class="mt-1" wire:click.prevent="removeImage">Remove</x-danger-button>
                                     </div>
                                 </div>

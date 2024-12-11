@@ -83,6 +83,11 @@ class Create extends Component
             'image.mimes' => 'The image must be one of these types: jpeg, jpg, webp, png, gif.',
         ]);
 
+        $this->uploadImage();
+    }
+
+    public function uploadImage()
+    {
         $this->formData['imagePath'] = $this->upload($this->image, 'post');
     }
 
