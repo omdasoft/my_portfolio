@@ -68,6 +68,11 @@ class Info extends Component
             'resume.mimes' => 'Only PDF files are allowed.',
         ]);
 
+        $this->uploadFile();
+    }
+
+    public function uploadFile()
+    {
         $this->resumePath = $this->upload($this->resume, 'profile');
     }
 
