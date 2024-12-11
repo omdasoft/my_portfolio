@@ -40,15 +40,32 @@ class PostCreateTest extends TestCase
 
     public function test_can_create_post()
     {
+        Storage::fake('public');
+
+        $file = UploadedFile::fake()->image('photo1.jpg');
+
         $category = Category::factory()->create();
 
         Livewire::test(Create::class)
-            ->set('formData.title', 'Test Post')
-            ->set('formData.content', 'This is a test post content.')
+            ->set('formData.tags', [])
+            ->set('tag', 'Laravel')
+            ->call('addTag')
+            ->set('formData.title', 'test title')
+            ->set('formData.content', 'post content')
             ->set('formData.category', $category->id)
             ->set('formData.status', PostStatus::PUBLISHED->value)
+            ->set('image', $file)
             ->call('store')
-            ->assertStatus(200);
+            ->assertDispatched('created');
+
+        $this->assertDatabaseHas('posts', [
+            'title' => 'test title',
+            'content' => 'post content',
+            'category_id' => $category->id,
+            'status' => PostStatus::PUBLISHED->value,
+        ]);
+
+        $this->assertDatabaseHas('tags', ['tag_name' => 'Laravel']);
     }
 
     public function test_can_add_and_remove_tag()
