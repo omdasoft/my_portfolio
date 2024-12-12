@@ -47,4 +47,9 @@ class Portfolio extends Model
 
         return asset('storage/default.png');
     }
+
+    public function getShortDescriptionAttribute()
+    {
+        return Str::substr($this->attributes['description'], 0, 100);
+    }
 }

@@ -62,9 +62,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="py-4">
-                            {{ $portfolios->links() }}
-                        </div>
+                        <x-pagination :collection="$portfolios"/>
                     </div>
                 </div>
             </div>
