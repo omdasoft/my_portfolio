@@ -25,9 +25,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create();
         Profile::factory()->has(Image::factory())->create();
-        Portfolio::factory()->count(15)->has(Image::factory()->count(15))->has(Tag::factory()->count(15))->create();
+        Portfolio::factory()->count(15)->has(Image::factory()->count(15))->create();
         Post::factory()->count(5)
-            ->has(Tag::factory()->count(5))
+            ->has(Tag::factory()->count(fake()->numberBetween(1, 5)))
             ->has(Image::factory()->count(1))
             ->create();
     }

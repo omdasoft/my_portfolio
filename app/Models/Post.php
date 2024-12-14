@@ -51,4 +51,9 @@ class Post extends Model
     {
         return Carbon::parse($this->attributes['created_at'])->diffForHumans();
     }
+
+    public function getShortContentAttribute()
+    {
+        return Str::substr($this->attributes['content'], 0, 200);
+    }
 }
