@@ -27,7 +27,10 @@
     <!--Portfolios-->
 
     @if($portfolios)
-        <x-portfolio-list :portfolios="$portfolios" name="Latest Work"/>
+        <div class="mb-16">
+            <x-portfolio-list :portfolios="$portfolios" name="Latest Work"/>
+            <x-gray-button name="view all"/>
+        </div>
     @endif
     
     <!--End Portfolios-->
@@ -36,7 +39,7 @@
 
     @if ($posts)
         <section class="md:flex" id="blog">
-            <div class="w-full md:w-2/3 md:mr-20">
+            <div class="w-full md:w-2/3 md:mr-20 mb-20">
                 <h1
                     class="mb-5 md:mb-10 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
                     Content
@@ -59,6 +62,9 @@
                         </p>
                     </a>
                 @endforeach
+                <div class="w-full flex justify-content-center">
+                    <x-gray-button name="view all"/>
+                </div>
             </div>
             
             @if ($tags)

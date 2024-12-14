@@ -1,6 +1,6 @@
 @props(['name' => 'Portfolio List','portfolios'])
 
-<section class="py-10" id="work">
+<section class="py-5" id="work">
     <h1
         class="mb-10 md:mb-16 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
         {{ $name }}
