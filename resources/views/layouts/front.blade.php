@@ -25,11 +25,12 @@
     <!--//end header-->
 
     <main class="h-full mb-20 relative max-w-[52rem] mx-auto px-6 sm:px-6 md:px-8 xl:px-12 lg:max-w-7xl md:w-auto">
-        @yield('content')
+        {{ $slot }}
     </main>
     <!--//end main-->
 
-    @yield('footer')
+    <!--Footer-->
+    <livewire:frontend.includes.footer />
     <!--//end footer-->
     <script>
         const closeMenuBtn = document.getElementById('closeMenuBtn');

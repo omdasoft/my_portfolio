@@ -19,9 +19,9 @@ class Index extends Component
         $profile = $this->getProfile();
         $portfolios = $this->getPortfolios();
         $tags = $this->getTagsWithCount();
-        $posts = $this->getPosts();
+        $latestPosts = $this->getLatestPosts();
 
-        return view('livewire.frontend.index', compact('profile', 'portfolios', 'tags', 'posts'))->layout('layouts.front');
+        return view('livewire.frontend.index', compact('profile', 'portfolios', 'tags', 'latestPosts'))->layout('layouts.front');
     }
 
     private function getProfile()
@@ -42,7 +42,7 @@ class Index extends Component
             ->get();
     }
 
-    private function getPosts()
+    private function getLatestPosts()
     {
         return Post::latest()->take(6)->get();
     }

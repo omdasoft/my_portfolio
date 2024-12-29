@@ -1,5 +1,5 @@
 <nav class="flex justify-between items-center">
-    <a href="#" class="text-2xl text-black-400 font-montserrat">
+    <a href="{{ route('index') }}" class="text-2xl text-black-400 font-montserrat">
         <img src="assets/images/logo.png" width="180" alt="logo" title="logo">
     </a>
     <ul class="flex gap-16 max-md:hidden">
