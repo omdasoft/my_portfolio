@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', FrontendIndex::class)->name('index');
 
 Route::prefix('posts')->name('posts.')->group(function() {
-    Route::get('/', FrontendPostIndex::class)->name('index');
+    Route::get('/{tag?}', FrontendPostIndex::class)->name('index');
 });
 
 /*

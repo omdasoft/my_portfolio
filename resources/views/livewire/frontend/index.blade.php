@@ -22,7 +22,7 @@
                 </h1>
 
                 @foreach ($latestPosts as $post)
-                    <a href="https://themsaid.com/infrastructure-management-for-several-high-traffic-php-applications"
+                    <a href="#"
                         class="mb-16 block">
                         <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
 
@@ -53,7 +53,7 @@
                     </h1>
                     <div>
                         @foreach ($tags as $tag)
-                            <a href="https://themsaid.com/topic/php-laravel" class="flex items-center mb-5 block">
+                            <a href="{{ url('/posts/'.$tag->tag_name) }}" class="flex items-center mb-5 block">
                                 <h3 class="text-sm md:text-md font-medium">{{ $tag->tag_name }}</h3>
                                 <span class="rounded-full border border-gray-200 text-xs px-2 py-1 ml-auto">
                                     {{ $tag->tags_count }}

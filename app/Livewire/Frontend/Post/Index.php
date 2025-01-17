@@ -4,6 +4,7 @@ namespace App\Livewire\Frontend\Post;
 
 use App\Models\Tag;
 use App\Models\Post;
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,11 @@ class Index extends Component
     use WithPagination;
 
     public $selectedTag = '';
+
+    public function mount(Request $request)
+    {
+        $this->selectedTag = $request->tag ?? '';
+    }
 
     public function render()
     {
