@@ -27,7 +27,7 @@ class Index extends Component
         $posts = $this->getPosts();
         $tags = $this->getTagsWithCount();
 
-        return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.front');
+        return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.blog');
     }
 
     /**
