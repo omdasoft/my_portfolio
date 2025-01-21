@@ -3,7 +3,7 @@
 namespace App\Livewire\Backend\Portfolio;
 
 use App\Models\Portfolio;
-use Illuminate\Support\Facades\View as FacadesView;
+use Illuminate\Contracts\View\View as ViewView;
 use Livewire\Component;
 
 class View extends Component
@@ -20,7 +20,7 @@ class View extends Component
         $this->portfolio = Portfolio::with('images')->findOrFail($id);
     }
 
-    public function render(): FacadesView
+    public function render(): ViewView
     {
         return view('livewire.backend.portfolio.view')->layout('layouts.admin');
     }

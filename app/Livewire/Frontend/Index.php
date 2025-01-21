@@ -2,14 +2,14 @@
 
 namespace App\Livewire\Frontend;
 
-use App\Models\Portfolio;
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\Profile;
-use App\Models\Tag;
+use Livewire\Component;
+use App\Models\Portfolio;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\View;
-use Livewire\Component;
 
 class Index extends Component
 {
