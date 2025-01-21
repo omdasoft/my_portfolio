@@ -7,7 +7,7 @@
             </h1>
 
             @foreach ($posts as $post)
-                <a href="https://themsaid.com/infrastructure-management-for-several-high-traffic-php-applications"
+                <a href="{{ route('posts.show', $post->slug) }}"
                     class="mb-16 block">
                     <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
 
