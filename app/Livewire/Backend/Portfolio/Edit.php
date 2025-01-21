@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Portfolio;
 use App\Models\Image;
 use App\Models\Portfolio;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Edit extends Component
@@ -19,8 +20,11 @@ class Edit extends Component
 
     public string $description;
 
-    public $image;
+    public object $image;
 
+    /**
+     * @var string[]
+     */
     public array $imagePathes = [];
 
     public string $message = '';
@@ -29,12 +33,12 @@ class Edit extends Component
 
     public Portfolio $portfolio;
 
-    public function mount(int $id)
+    public function mount(int $id): void
     {
         $this->getPortfolio($id);
     }
 
-    private function getPortfolio(int $id)
+    private function getPortfolio(int $id): void
     {
         $portfolio = Portfolio::with('images')->findOrFail($id);
         $this->title = $portfolio->title;
@@ -44,12 +48,12 @@ class Edit extends Component
         $this->portfolio = $portfolio;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.backend.portfolio.edit')->layout('layouts.admin');
     }
 
-    public function updatedImage()
+    public function updatedImage(): void
     {
         $this->validate([
             'image' => [
@@ -67,12 +71,12 @@ class Edit extends Component
         $this->addImagePath($path);
     }
 
-    public function addImagePath(string $path)
+    public function addImagePath(string $path): void
     {
         array_push($this->imagePathes, $path);
     }
 
-    public function removeImage(int $index)
+    public function removeImage(int $index): void
     {
         $path = $this->imagePathes[$index];
         $this->removeUploadedFile($path);
@@ -80,7 +84,7 @@ class Edit extends Component
         $this->imagePathes = array_values($this->imagePathes);
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 
@@ -105,15 +109,17 @@ class Edit extends Component
         $this->dispatch('updated');
     }
 
-    public function deleteImage(int $id)
+    public function deleteImage(int $id): void
     {
         Image::findOrFail($id)->delete();
         $this->message = 'Portfolio Image Deleted Successfully!';
         $this->dispatch('updated');
     }
 
-    // Update the rules method to include images validation
-    protected function rules()
+    /**
+     * @return array<string, string>
+     */
+    protected function rules(): array
     {
         return [
             'title' => 'required|min:6',
@@ -129,8 +135,10 @@ class Edit extends Component
         ];
     }
 
-    // Update the messages method for custom validation messages
-    protected function messages()
+    /**
+     * @return array<string, string>
+     */
+    protected function messages(): array
     {
         return [
             'title.required' => 'The title is required.',

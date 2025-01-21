@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\DB;
 
 class CreatePostAction
 {
+    /**
+     * @param array{
+     *     title: string,
+     *     content: string,
+     *     category: int,
+     *     status: string,
+     *     imagePath: string|null,
+     *     tags: array<int, string>|null
+     * } $data
+     */
     public static function handle(array $data): void
     {
         DB::transaction(function () use ($data) {

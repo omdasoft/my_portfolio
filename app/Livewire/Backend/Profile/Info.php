@@ -5,6 +5,7 @@ namespace App\Livewire\Backend\Profile;
 use App\Models\Image;
 use App\Models\Profile;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -14,9 +15,9 @@ class Info extends Component
 
     public Profile $profile;
 
-    public $image;
+    public ?object $image = null;
 
-    public $resume;
+    public ?object $resume = null;
 
     public string $resumePath;
 
@@ -24,20 +25,23 @@ class Info extends Component
 
     public string $message;
 
+    /**
+     * @var array<string, mixed>
+     */
     public array $profileInfo = [];
 
-    public function mount()
+    public function mount(): void
     {
         $this->getProfileInfo();
     }
 
-    public function getProfileInfo()
+    public function getProfileInfo(): void
     {
         $this->profile = Profile::with('image')->first();
         $this->setProfileInfo($this->profile);
     }
 
-    public function updatedImage()
+    public function updatedImage(): void
     {
         $this->validate([
             'image' => [
@@ -54,7 +58,7 @@ class Info extends Component
         $this->imagePath = $this->upload($this->image, 'profile');
     }
 
-    public function updatedResume()
+    public function updatedResume(): void
     {
         $this->validate([
             'resume' => [
@@ -71,12 +75,12 @@ class Info extends Component
         $this->uploadFile();
     }
 
-    public function uploadFile()
+    public function uploadFile(): void
     {
         $this->resumePath = $this->upload($this->resume, 'profile');
     }
 
-    public function setProfileInfo(Profile $profile)
+    public function setProfileInfo(Profile $profile): void
     {
         $this->profileInfo = [
             'phone' => $profile->phone,
@@ -88,12 +92,12 @@ class Info extends Component
         ];
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.backend.profile.info')->layout('layouts.admin');
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 
@@ -135,9 +139,9 @@ class Info extends Component
             ]);
         }
 
-        $this->image = '';
+        $this->image = null;
         $this->imagePath = '';
-        $this->resume = '';
+        $this->resume = null;
         $this->resumePath = '';
         $this->message = 'Profile Updated Successfully!';
         $this->dispatch('updated');
@@ -145,12 +149,12 @@ class Info extends Component
     }
 
     #[On('refresh-component')]
-    public function refreshComponent()
+    public function refreshComponent(): void
     {
         $this->dispatch('$refresh');
     }
 
-    public function deleteImage(int $id)
+    public function deleteImage(int $id): void
     {
         $image = Image::findOrFail($id);
         $this->removeUploadedFile($image->image_path);
@@ -159,25 +163,28 @@ class Info extends Component
         $this->dispatch('updated');
     }
 
-    public function removeImage()
+    public function removeImage(): void
     {
         if ($this->imagePath) {
             $this->removeUploadedFile($this->imagePath);
             $this->imagePath = '';
-            $this->image = '';
+            $this->image = null;
         }
     }
 
-    public function removeResume()
+    public function removeResume(): void
     {
         if ($this->resumePath) {
             $this->removeUploadedFile($this->resumePath);
             $this->resumePath = '';
-            $this->resume = '';
+            $this->resume = null;
         }
     }
 
-    protected function rules()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function rules(): array
     {
         return [
             'profileInfo.phone' => 'required|string|min:6|max:15',

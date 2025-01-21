@@ -4,7 +4,10 @@ namespace App\Livewire\Backend\Portfolio;
 
 use App\Models\Portfolio;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
+use Livewire\Features\SupportRedirects\Redirector;
 use Livewire\WithPagination;
 
 class Index extends Component
@@ -15,38 +18,39 @@ class Index extends Component
 
     public string $message = '';
 
-    public function mount()
+    public function mount(): void
     {
     }
 
-    public function render()
+    public function render(): View
     {
         $portfolios = Portfolio::with('images')->latest()->paginate(10);
 
         return view('livewire.backend.portfolio.index', compact('portfolios'))->layout('layouts.admin');
     }
 
-    public function edit(int $id)
+    public function edit(int $id): Redirector|RedirectResponse
     {
-        return redirect()->route('admin.portfolios.edit', ['id' => $id]);
+        return redirect()->to(route('admin.portfolios.edit', ['id' => $id]));
     }
 
-    public function view(int $id)
+    public function view(int $id): Redirector|RedirectResponse
     {
-        return redirect()->route('admin.portfolios.view', ['id' => $id]);
+        return redirect()->to(route('admin.portfolios.view', ['id' => $id]));
     }
 
-    public function showConfirmationModal($id)
+    public function showConfirmationModal(int $id): void
     {
         $this->actionId = $id;
         $this->dispatch('open-modal', 'confirmationModal');
     }
 
-    public function deleteConfirmed()
+    public function deleteConfirmed(): void
     {
         if ($this->actionId) {
             $portfolio = Portfolio::with('images')->findOrFail($this->actionId);
 
+            /** @phpstan-ignore-next-line */
             if ($portfolio->images) {
                 foreach ($portfolio->images as $image) {
                     $this->removeUploadedFile($image->image_path);
@@ -65,7 +69,7 @@ class Index extends Component
         $this->closeModal('confirmationModal');
     }
 
-    public function closeModal($modalName)
+    public function closeModal(string $modalName): void
     {
         $this->dispatch('close-modal', $modalName);
     }

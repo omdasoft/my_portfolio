@@ -9,6 +9,7 @@ use App\Models\Image;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -17,34 +18,43 @@ class Edit extends Component
 {
     use HasMediaUpload;
 
-    public $image;
+    public ?object $image = null;
 
     public string $message = '';
 
+    /**
+     * @var string[]
+     */
     public array $options = [];
 
+    /**
+     * @var string[]
+     */
     public array $statuses = [];
 
     public string $tag = '';
 
     public Post $post;
 
-    public $formData = [];
+    /**
+     * @var array<string, mixed>
+     */
+    public array $formData = [];
 
-    public function mount(int $id)
+    public function mount(int $id): void
     {
         $this->getCategories();
         $this->getPost($id);
         $this->setPostStatus();
     }
 
-    public function getPost(int $id)
+    public function getPost(int $id): void
     {
         $this->post = Post::with('image', 'category', 'tags')->findOrFail($id);
         $this->setFormData($this->post);
     }
 
-    public function setFormData(Post $post)
+    public function setFormData(Post $post): void
     {
         $this->formData = [
             'title' => $post->title,
@@ -56,7 +66,7 @@ class Edit extends Component
         ];
     }
 
-    public function setPostStatus()
+    public function setPostStatus(): void
     {
         $statuses = PostStatus::cases();
 
@@ -65,7 +75,7 @@ class Edit extends Component
         }
     }
 
-    public function addTag()
+    public function addTag(): void
     {
         $this->validate(['tag' => 'required|string|max:50']);
 
@@ -76,29 +86,32 @@ class Edit extends Component
         $this->tag = '';
     }
 
-    public function removeTag($index)
+    public function removeTag(int $index): void
     {
         unset($this->formData['tags'][$index]);
         $this->formData['tags'] = array_values($this->formData['tags']);
     }
 
-    public function getCategories()
+    public function getCategories(): void
     {
         $categories = Category::orderBy('category_name', 'asc')->get(['id', 'category_name']);
         $this->setOptions($categories);
     }
 
-    public function setOptions(Collection $categories)
+    /**
+     * @param  Collection<int, Category>  $categories
+     */
+    public function setOptions(Collection $categories): void
     {
         $this->options = $categories->pluck('category_name', 'id')->toArray();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.backend.post.edit')->layout('layouts.admin');
     }
 
-    public function updatedImage()
+    public function updatedImage(): void
     {
         $this->validate([
             'image' => [
@@ -115,24 +128,26 @@ class Edit extends Component
         $this->formData['imagePath'] = $this->upload($this->image, 'post');
     }
 
-    public function removeImage()
+    public function removeImage(): void
     {
         if ($this->formData['imagePath']) {
             $this->removeUploadedFile($this->formData['imagePath']);
             $this->formData['imagePath'] = '';
-            $this->image = '';
+            $this->image = null;
         }
     }
 
-    public function update()
+    public function update(): void
     {
         $this->validate();
 
         $this->formData['hasImage'] = $this->image ? true : false;
 
-        EditPostAction::handle($this->post, $this->formData);
+        $editAction = new EditPostAction();
 
-        $this->image = '';
+        $editAction->handle($this->post, $this->formData);
+
+        $this->image = null;
         $this->formData['tags'] = [];
         $this->tag = '';
         $this->message = 'Post Updated Successfully!';
@@ -141,26 +156,29 @@ class Edit extends Component
     }
 
     #[On('refresh-component')]
-    public function refreshComponent()
+    public function refreshComponent(): void
     {
         $this->dispatch('$refresh');
     }
 
-    public function deleteImage(int $id)
+    public function deleteImage(int $id): void
     {
         Image::findOrFail($id)->delete();
         $this->message = 'Post Image Deleted Successfully!';
         $this->dispatch('updated');
     }
 
-    public function deleteTag(int $id)
+    public function deleteTag(int $id): void
     {
         Tag::findOrFail($id)->delete();
         $this->message = 'Post Tag Deleted Successfully!';
         $this->dispatch('updated');
     }
 
-    protected function rules()
+    /**
+     * @return array<string, string>
+     */
+    protected function rules(): array
     {
         return [
             'formData.title' => 'required|min:6|max:255',
@@ -176,7 +194,10 @@ class Edit extends Component
         ];
     }
 
-    protected function messages()
+    /**
+     * @return array<string, string>
+     */
+    protected function messages(): array
     {
         return [
             'formData.title.required' => 'Title is required',

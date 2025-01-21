@@ -5,7 +5,10 @@ namespace App\Livewire\Backend\Post;
 use App\Actions\Post\DeletePostAction;
 use App\Models\Post;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
+use Livewire\Features\SupportRedirects\Redirector;
 
 class Index extends Component
 {
@@ -15,24 +18,24 @@ class Index extends Component
 
     public int $actionId = -1;
 
-    public function mount()
+    public function mount(): void
     {
     }
 
-    public function render()
+    public function render(): View
     {
         $posts = Post::with('image', 'category')->latest()->paginate(10);
 
         return view('livewire.backend.post.index', compact('posts'))->layout('layouts.admin');
     }
 
-    public function showConfirmationModal($id)
+    public function showConfirmationModal(int $id): void
     {
         $this->actionId = $id;
         $this->dispatch('open-modal', 'confirmationModal');
     }
 
-    public function deleteConfirmed()
+    public function deleteConfirmed(): void
     {
         if ($this->actionId) {
             $deletePostAction = new DeletePostAction();
@@ -45,17 +48,17 @@ class Index extends Component
         $this->closeModal('confirmationModal');
     }
 
-    public function edit(int $id)
+    public function edit(int $id): Redirector|RedirectResponse
     {
         return redirect()->route('admin.posts.edit', ['id' => $id]);
     }
 
-    public function view(int $id)
+    public function view(int $id): Redirector|RedirectResponse
     {
         return redirect()->route('admin.posts.view', ['id' => $id]);
     }
 
-    public function closeModal($modalName)
+    public function closeModal(string $modalName): void
     {
         $this->dispatch('close-modal', $modalName);
     }

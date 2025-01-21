@@ -6,6 +6,7 @@ use App\Actions\Post\CreatePostAction;
 use App\Enums\PostStatus;
 use App\Models\Category;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
@@ -13,26 +14,35 @@ class Create extends Component
 {
     use HasMediaUpload;
 
-    public $image;
+    public ?object $image = null;
 
     public string $message = '';
 
+    /**
+     * @var string[]
+     */
     public array $options = [];
 
+    /**
+     * @var string[]
+     */
     public array $statuses = [];
 
     public string $tag = '';
 
+    /**
+     * @var array<string, mixed>
+     */
     public array $formData;
 
-    public function mount()
+    public function mount(): void
     {
         $this->getCategories();
         $this->formDataDefaultValues();
         $this->setPostStatus();
     }
 
-    public function formDataDefaultValues()
+    public function formDataDefaultValues(): void
     {
         $this->formData = [
             'title' => '',
@@ -44,7 +54,7 @@ class Create extends Component
         ];
     }
 
-    public function setPostStatus()
+    public function setPostStatus(): void
     {
         $statuses = PostStatus::cases();
 
@@ -53,23 +63,26 @@ class Create extends Component
         }
     }
 
-    public function getCategories()
+    public function getCategories(): void
     {
         $categories = Category::orderBy('category_name', 'asc')->get(['id', 'category_name']);
         $this->setOptions($categories);
     }
 
-    public function setOptions(Collection $categories)
+    /**
+     * @param  Collection<int, Category>  $categories
+     */
+    public function setOptions(Collection $categories): void
     {
         $this->options = $categories->pluck('category_name', 'id')->toArray();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.backend.post.create')->layout('layouts.admin');
     }
 
-    public function updatedImage()
+    public function updatedImage(): void
     {
         $this->validate([
             'image' => [
@@ -86,21 +99,21 @@ class Create extends Component
         $this->uploadImage();
     }
 
-    public function uploadImage()
+    public function uploadImage(): void
     {
         $this->formData['imagePath'] = $this->upload($this->image, 'post');
     }
 
-    public function removeImage()
+    public function removeImage(): void
     {
         if ($this->formData['imagePath']) {
             $this->removeUploadedFile($this->formData['imagePath']);
             $this->formData['imagePath'] = '';
-            $this->image = '';
+            $this->image = null;
         }
     }
 
-    public function store()
+    public function store(): void
     {
         $this->validate();
 
@@ -113,7 +126,7 @@ class Create extends Component
         $this->dispatch('created');
     }
 
-    public function addTag()
+    public function addTag(): void
     {
         $this->validate(['tag' => 'required|string|max:50']);
 
@@ -124,13 +137,13 @@ class Create extends Component
         $this->tag = '';
     }
 
-    public function removeTag($index)
+    public function removeTag(int $index): void
     {
         unset($this->formData['tags'][$index]);
         $this->formData['tags'] = array_values($this->formData['tags']);
     }
 
-    public function clearForm()
+    public function clearForm(): void
     {
         $this->formDataDefaultValues();
 
@@ -140,7 +153,10 @@ class Create extends Component
         ]);
     }
 
-    protected function rules()
+    /**
+     * @return array<string, string>
+     */
+    protected function rules(): array
     {
         return [
             'formData.title' => 'required|min:6|max:255',
@@ -156,7 +172,10 @@ class Create extends Component
         ];
     }
 
-    protected function messages()
+    /**
+     * @return array<string, string>
+     */
+    protected function messages(): array
     {
         return [
             'formData.title.required' => 'Title is required',

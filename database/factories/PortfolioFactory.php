@@ -21,7 +21,7 @@ class PortfolioFactory extends Factory
             'description' => $this->faker->text(),
             'url' => $this->faker->url,
             'github_url' => $this->faker->url,
-            'completion_date' => $this->faker->date()
+            'completion_date' => $this->faker->date(),
         ];
     }
 }

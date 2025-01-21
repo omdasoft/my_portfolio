@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Tag extends Model
 {
@@ -11,7 +12,11 @@ class Tag extends Model
 
     protected $fillable = ['tag_name'];
 
-    public function tagable() {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo<Model, Tag>
+     */
+    public function tagable(): MorphTo
+    {
         return $this->morphTo();
     }
 }

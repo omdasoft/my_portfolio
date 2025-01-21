@@ -4,6 +4,7 @@ namespace App\Livewire\Backend\Portfolio;
 
 use App\Models\Portfolio;
 use App\Traits\HasMediaUpload;
+use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class Create extends Component
@@ -18,24 +19,27 @@ class Create extends Component
 
     public string $description;
 
-    public $image;
+    public ?object $image = null;
 
+    /**
+     * @var string[]
+     */
     public array $imagePathes = [];
 
     public string $message = '';
 
     public int $maxFileSize = 1024 * 8;
 
-    public function mount()
+    public function mount(): void
     {
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.backend.portfolio.create')->layout('layouts.admin');
     }
 
-    public function updatedImage()
+    public function updatedImage(): void
     {
         $this->validate([
             'image' => [
@@ -52,19 +56,19 @@ class Create extends Component
         $this->uploadImage();
     }
 
-    public function uploadImage()
+    public function uploadImage(): void
     {
         $path = $this->upload($this->image, 'portfolio');
 
         $this->addImagePath($path);
     }
 
-    public function addImagePath(string $path)
+    public function addImagePath(string $path): void
     {
         array_push($this->imagePathes, $path);
     }
 
-    public function removeImage(int $index)
+    public function removeImage(int $index): void
     {
         $path = $this->imagePathes[$index];
         $this->removeUploadedFile($path);
@@ -72,7 +76,7 @@ class Create extends Component
         $this->imagePathes = array_values($this->imagePathes);
     }
 
-    public function store()
+    public function store(): void
     {
         $this->validate();
 
@@ -99,7 +103,7 @@ class Create extends Component
         $this->dispatch('created');
     }
 
-    private function clearForm()
+    private function clearForm(): void
     {
         $this->reset([
             'title',
@@ -110,8 +114,10 @@ class Create extends Component
         ]);
     }
 
-    // Update the rules method to include images validation
-    protected function rules()
+    /**
+     * @return array<string, mixed>
+     */
+    protected function rules(): array
     {
         return [
             'title' => 'required|min:6',
@@ -127,8 +133,10 @@ class Create extends Component
         ];
     }
 
-    // Update the messages method for custom validation messages
-    protected function messages()
+    /**
+     * @return array<string, string>
+     */
+    protected function messages(): array
     {
         return [
             'title.required' => 'The title is required.',

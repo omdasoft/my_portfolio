@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,22 +21,28 @@ class Portfolio extends Model
         'completion_date',
     ];
 
-    public function images()
+    /**
+     * @return MorphMany<Image>
+     */
+    public function images(): MorphMany
     {
-        return $this->morphMany('App\Models\Image', 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
-    public function tags()
+    /**
+     * @return MorphMany<Tag>
+     */
+    public function tags(): MorphMany
     {
-        return $this->morphMany('App\Models\Tag', 'tagable');
+        return $this->morphMany(Tag::class, 'tagable');
     }
 
-    public function getCreatedAtAttribute()
+    public function getCreatedAtAttribute(): string
     {
         return Carbon::parse($this->attributes['created_at'])->format('M d, Y');
     }
 
-    public function getImageAttribute()
+    public function getImageAttribute(): string
     {
         $image = $this->images()->first();
 
@@ -48,7 +55,7 @@ class Portfolio extends Model
         return asset('storage/default.png');
     }
 
-    public function getShortDescriptionAttribute()
+    public function getShortDescriptionAttribute(): string
     {
         return Str::substr($this->attributes['description'], 0, 100);
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -11,16 +12,17 @@ class Profile extends Model
 {
     use HasFactory;
 
-    protected $table = 'profiles';
-
     protected $fillable = ['designation', 'intro', 'phone', 'github', 'twitter', 'linkedin', 'resume_path'];
 
-    public function image()
+    /**
+     * @return MorphOne<Image>
+     */
+    public function image(): MorphOne
     {
-        return $this->morphOne('App\Models\Image', 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function getImagePathAttribute()
+    public function getImagePathAttribute(): string
     {
         $image = $this->image()->first();
 
@@ -31,7 +33,7 @@ class Profile extends Model
         return asset('storage/default.png');
     }
 
-    public function getResumePathAttribute()
+    public function getResumePathAttribute(): string
     {
         return Str::startsWith($this->attributes['resume_path'], 'https') ? $this->attributes['resume_path'] : Storage::url($this->attributes['resume_path']);
     }

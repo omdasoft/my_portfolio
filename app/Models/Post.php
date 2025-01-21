@@ -5,6 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -14,17 +17,26 @@ class Post extends Model
 
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'status'];
 
-    public function image()
+    /**
+     * @return MorphOne<Image>
+     */
+    public function image(): MorphOne
     {
-        return $this->morphOne('App\Models\Image', 'imageable');
+        return $this->morphOne(Image::class, 'imageable');
     }
 
-    public function tags()
+    /**
+     * @return MorphMany<Tag>
+     */
+    public function tags(): MorphMany
     {
-        return $this->morphMany('App\Models\Tag', 'tagable');
+        return $this->morphMany(Tag::class, 'tagable');
     }
 
-    public function category()
+    /**
+     * @return BelongsTo<Category, Post>
+     */
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
@@ -36,7 +48,7 @@ class Post extends Model
         });
     }
 
-    public function getImagePathAttribute()
+    public function getImagePathAttribute(): string
     {
         $image = $this->image()->first();
 
@@ -47,12 +59,12 @@ class Post extends Model
         return asset('storage/default.png');
     }
 
-    public function getCreatedAtAttribute()
+    public function getCreatedAtAttribute(): string
     {
         return Carbon::parse($this->attributes['created_at'])->diffForHumans();
     }
 
-    public function getShortContentAttribute()
+    public function getShortContentAttribute(): string
     {
         return Str::substr($this->attributes['content'], 0, 200);
     }
