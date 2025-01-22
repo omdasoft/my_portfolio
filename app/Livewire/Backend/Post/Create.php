@@ -4,10 +4,8 @@ namespace App\Livewire\Backend\Post;
 
 use App\Actions\Post\CreatePostAction;
 use App\Enums\PostStatus;
-use App\Models\Category;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Create extends Component
@@ -37,7 +35,6 @@ class Create extends Component
 
     public function mount(): void
     {
-        $this->getCategories();
         $this->formDataDefaultValues();
         $this->setPostStatus();
     }
@@ -49,7 +46,6 @@ class Create extends Component
             'content' => '',
             'imagePath' => '',
             'tags' => [],
-            'category' => '',
             'status' => PostStatus::PUBLISHED->value,
         ];
     }
@@ -61,20 +57,6 @@ class Create extends Component
         foreach ($statuses as $status) {
             $this->statuses[$status->value] = $status->value;
         }
-    }
-
-    public function getCategories(): void
-    {
-        $categories = Category::orderBy('category_name', 'asc')->get(['id', 'category_name']);
-        $this->setOptions($categories);
-    }
-
-    /**
-     * @param  Collection<int, Category>  $categories
-     */
-    public function setOptions(Collection $categories): void
-    {
-        $this->options = $categories->pluck('category_name', 'id')->toArray();
     }
 
     public function render(): View
@@ -161,7 +143,6 @@ class Create extends Component
         return [
             'formData.title' => 'required|min:6|max:255',
             'formData.content' => 'required|string',
-            'formData.category' => 'required|numeric|exists:categories,id',
             'formData.status' => 'required|string',
             'image' => [
                 'required',
@@ -183,9 +164,6 @@ class Create extends Component
             'formData.title.max' => 'Title must not be greator than :max chars',
             'formData.content.required' => 'Content is required',
             'formData.content.string' => 'Content must be string',
-            'formData.category.required' => 'Category is required',
-            'formData.category.numeric' => 'Category must be number',
-            'formData.category.exists' => 'Category value not found',
             'image.required' => 'Image is required',
             'image.image' => 'Image must be an image',
             'image.max' => 'Image size must not be greator than :max',

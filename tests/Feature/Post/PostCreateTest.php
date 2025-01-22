@@ -4,7 +4,6 @@ namespace Tests\Feature\Post;
 
 use App\Enums\PostStatus;
 use App\Livewire\Backend\Post\Create;
-use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -21,19 +20,15 @@ class PostCreateTest extends TestCase
         Livewire::test(Create::class)
             ->assertSee('Title')
             ->assertSee('Content')
-            ->assertSee('Category')
             ->assertSee('Status')
             ->assertSee('Image');
     }
 
     public function test_can_validate_form()
     {
-        $category = Category::factory()->create();
-
         Livewire::test(Create::class)
             ->set('formData.title', '')
             ->set('formData.content', '')
-            ->set('formData.category', $category->id)
             ->call('store')
             ->assertHasErrors(['formData.title', 'formData.content']);
     }
@@ -44,15 +39,12 @@ class PostCreateTest extends TestCase
 
         $file = UploadedFile::fake()->image('photo1.jpg');
 
-        $category = Category::factory()->create();
-
         Livewire::test(Create::class)
             ->set('formData.tags', [])
             ->set('tag', 'Laravel')
             ->call('addTag')
             ->set('formData.title', 'test title')
             ->set('formData.content', 'post content')
-            ->set('formData.category', $category->id)
             ->set('formData.status', PostStatus::PUBLISHED->value)
             ->set('image', $file)
             ->call('store')
@@ -61,7 +53,6 @@ class PostCreateTest extends TestCase
         $this->assertDatabaseHas('posts', [
             'title' => 'test title',
             'content' => 'post content',
-            'category_id' => $category->id,
             'status' => PostStatus::PUBLISHED->value,
         ]);
 

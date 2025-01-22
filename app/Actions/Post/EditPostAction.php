@@ -14,7 +14,6 @@ class EditPostAction
      * @param array{
      *     title: string,
      *     content: string,
-     *     category: int,
      *     status: string,
      *     hasImage: bool,
      *     imagePath: string|null,
@@ -27,7 +26,6 @@ class EditPostAction
             // Edit Post
             $post->title = $data['title'];
             $post->content = $data['content'];
-            $post->category_id = $data['category'];
             $post->status = $data['status'];
             $post->save();
 

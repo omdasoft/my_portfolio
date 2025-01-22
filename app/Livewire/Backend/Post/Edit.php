@@ -4,13 +4,11 @@ namespace App\Livewire\Backend\Post;
 
 use App\Actions\Post\EditPostAction;
 use App\Enums\PostStatus;
-use App\Models\Category;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -21,11 +19,6 @@ class Edit extends Component
     public ?object $image = null;
 
     public string $message = '';
-
-    /**
-     * @var string[]
-     */
-    public array $options = [];
 
     /**
      * @var string[]
@@ -43,14 +36,13 @@ class Edit extends Component
 
     public function mount(int $id): void
     {
-        $this->getCategories();
         $this->getPost($id);
         $this->setPostStatus();
     }
 
     public function getPost(int $id): void
     {
-        $this->post = Post::with('image', 'category', 'tags')->findOrFail($id);
+        $this->post = Post::with('image', 'tags')->findOrFail($id);
         $this->setFormData($this->post);
     }
 
@@ -59,7 +51,6 @@ class Edit extends Component
         $this->formData = [
             'title' => $post->title,
             'content' => $post->content,
-            'category' => $post->category_id,
             'imagePath' => $post->image_path,
             'status' => $post->status,
             'tags' => [],
@@ -90,20 +81,6 @@ class Edit extends Component
     {
         unset($this->formData['tags'][$index]);
         $this->formData['tags'] = array_values($this->formData['tags']);
-    }
-
-    public function getCategories(): void
-    {
-        $categories = Category::orderBy('category_name', 'asc')->get(['id', 'category_name']);
-        $this->setOptions($categories);
-    }
-
-    /**
-     * @param  Collection<int, Category>  $categories
-     */
-    public function setOptions(Collection $categories): void
-    {
-        $this->options = $categories->pluck('category_name', 'id')->toArray();
     }
 
     public function render(): View
@@ -183,7 +160,6 @@ class Edit extends Component
         return [
             'formData.title' => 'required|min:6|max:255',
             'formData.content' => 'required|string',
-            'formData.category' => 'required|numeric|exists:categories,id',
             'formData.status' => 'required|string',
             'image' => [
                 'nullable',
@@ -205,9 +181,6 @@ class Edit extends Component
             'formData.title.max' => 'Title must not be greator than :max chars',
             'formData.content.required' => 'Content is required',
             'formData.content.string' => 'Content must be string',
-            'formData.category.required' => 'Category is required',
-            'formData.category.numeric' => 'Category must be number',
-            'formData.category.exists' => 'Category value not found',
             'image.image' => 'Image must be an image',
             'image.max' => 'Image size must not be greator than :max',
             'image.mimes' => 'The allowed image types are :values',

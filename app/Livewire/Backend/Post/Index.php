@@ -24,7 +24,7 @@ class Index extends Component
 
     public function render(): View
     {
-        $posts = Post::with('image', 'category')->latest()->paginate(10);
+        $posts = Post::with('image')->latest()->paginate(10);
 
         return view('livewire.backend.post.index', compact('posts'))->layout('layouts.admin');
     }

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Post;
 
 use App\Livewire\Backend\Post\Index;
-use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,9 +15,7 @@ class PostIndexTest extends TestCase
 
     public function test_can_render_post_index_component_successfully()
     {
-        Post::factory()->count(5)->create([
-            'category_id' => Category::factory()->create(),
-        ]);
+        Post::factory()->count(5)->create();
 
         Livewire::test(Index::class)
             ->assertStatus(200);
@@ -26,9 +23,7 @@ class PostIndexTest extends TestCase
 
     public function test_can_display_posts()
     {
-        Category::factory()
-            ->has(Post::factory()->count(5))
-            ->create();
+        Post::factory()->count(5)->create();
 
         $firstPost = Post::first();
 
@@ -56,9 +51,7 @@ class PostIndexTest extends TestCase
 
     public function test_can_delete_post()
     {
-        Category::factory()
-            ->has(Post::factory()->count(5))
-            ->create();
+        Post::factory()->count(5)->create();
 
         $post = Post::first();
 
@@ -72,9 +65,7 @@ class PostIndexTest extends TestCase
 
     public function test_can_redirect_to_edit_post_component()
     {
-        Category::factory()
-            ->has(Post::factory()->count(5))
-            ->create();
+        Post::factory()->count(5)->create();
 
         $post = Post::first();
 
@@ -85,9 +76,7 @@ class PostIndexTest extends TestCase
 
     public function test_can_redirect_to_view_post_component()
     {
-        Category::factory()
-            ->has(Post::factory()->count(5))
-            ->create();
+        Post::factory()->count(5)->create();
 
         $post = Post::first();
 

@@ -23,13 +23,7 @@
                                 <x-text-area wire:model="formData.content" id="content" name="content" type="text" class="mt-1 block w-full" required autocomplete="content" rows="5"/>
                                 <x-input-error class="mt-2" :messages="$errors->get('formData.content')" />
                             </div>
-
-                            <div>
-                                <x-input-label for="category" value="Category" />
-                                <x-select-input wire:model="formData.category" id="category" name="category" :options="$options" />
-                                <x-input-error class="mt-2" :messages="$errors->get('formData.category')" />
-                            </div>
-
+                            
                             <div>
                                 <x-input-label for="status" value="Status" />
                                 <x-select-input wire:model="formData.status" id="status" name="status" :options="$statuses" />

@@ -11,7 +11,6 @@ class CreatePostAction
      * @param array{
      *     title: string,
      *     content: string,
-     *     category: int,
      *     status: string,
      *     imagePath: string|null,
      *     tags: array<int, string>|null
@@ -23,7 +22,6 @@ class CreatePostAction
             $post = new Post();
             $post->title = $data['title'];
             $post->content = $data['content'];
-            $post->category_id = $data['category'];
             $post->status = $data['status'];
             $post->save();
 

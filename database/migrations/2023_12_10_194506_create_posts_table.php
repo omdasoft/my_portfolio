@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('slug');
             $table->text('content');
             $table->string('status')->default(PostStatus::PUBLISHED->value);
-            $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
     }

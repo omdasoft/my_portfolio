@@ -31,7 +31,6 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-3">Image</th>
                                     <th scope="col" class="px-6 py-3">Title</th>
-                                    <th scope="col" class="px-6 py-3">Category</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
                                     <th scope="col" class="px-6 py-3">Created At</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
@@ -44,7 +43,6 @@
                                             <img src="{{ $post->image_path }}" alt="Portfolio Image" width="150" height="150">
                                         </td>
                                         <td class="px-6 py-4">{{ $post->title }}</td>
-                                        <td class="px-6 py-4">{{ $post->category->category_name }}</td>
                                         <td class="px-6 py-4">{{ $post->status }}</td>
                                         <td class="px-6 py-4">{{ $post->created_at }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">

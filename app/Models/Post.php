@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Facades\Storage;
@@ -33,14 +32,6 @@ class Post extends Model
     public function tags(): MorphMany
     {
         return $this->morphMany(Tag::class, 'tagable');
-    }
-
-    /**
-     * @return BelongsTo<Category, Post>
-     */
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
     }
 
     protected static function booted(): void
