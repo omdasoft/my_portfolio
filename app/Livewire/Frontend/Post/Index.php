@@ -3,10 +3,8 @@
 namespace App\Livewire\Frontend\Post;
 
 use App\Models\Post;
-use App\Models\Tag;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -25,7 +23,7 @@ class Index extends Component
     public function render(): View
     {
         $posts = $this->getPosts();
-        $tags = $this->getTagsWithCount();
+        $tags = get_tags_with_count('post');
 
         return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.blog');
     }
@@ -47,16 +45,6 @@ class Index extends Component
         }
 
         return $query->paginate(10);
-    }
-
-    /**
-     * @return Collection<int, Tag>
-     */
-    private function getTagsWithCount(): Collection
-    {
-        return Tag::selectRaw('tag_name, COUNT(*) as tags_count')
-            ->groupBy('tag_name')
-            ->get();
     }
 
     public function resetFilter(): void
