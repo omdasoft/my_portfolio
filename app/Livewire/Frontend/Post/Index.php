@@ -38,7 +38,7 @@ class Index extends Component
     {
         $this->selectedTag = $tag_name ?? $this->selectedTag;
 
-        $query = Post::with('tags')->latest();
+        $query = Post::published()->with('tags')->latest();
 
         if ($this->selectedTag) {
             $query->whereHas('tags', function ($q) {

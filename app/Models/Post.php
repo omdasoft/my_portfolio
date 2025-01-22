@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatus;
 use Carbon\Carbon;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,6 +61,15 @@ class Post extends Model
         return asset('storage/default.png');
     }
 
+    public function getReadingTimeAttribute(): string
+    {
+        $wordCount = str_word_count(strip_tags($this->content));
+        $wordsPerMinute = 200;
+        $readingTime = ceil($wordCount / $wordsPerMinute);
+
+        return $readingTime.' min read';
+    }
+
     public function getCreatedAtAttribute(): string
     {
         return Carbon::parse($this->attributes['created_at'])->diffForHumans();
@@ -67,5 +78,10 @@ class Post extends Model
     public function getShortContentAttribute(): string
     {
         return Str::substr($this->attributes['content'], 0, 200);
+    }
+
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('status', PostStatus::PUBLISHED->value);
     }
 }

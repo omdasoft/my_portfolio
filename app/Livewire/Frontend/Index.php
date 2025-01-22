@@ -51,6 +51,6 @@ class Index extends Component
      */
     private function getLatestPosts(): Collection
     {
-        return Post::latest()->take(6)->get();
+        return Post::published()->latest()->take(6)->get();
     }
 }
