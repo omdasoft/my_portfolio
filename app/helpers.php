@@ -16,15 +16,15 @@ if (! function_exists('get_tags_with_count')) {
         $model = ($modelName === 'post') ? Post::class : Portfolio::class;
 
         return Tag::selectRaw('tags.tag_name, COUNT(id) as tags_count')
-        ->where('tagable_type', $model)
-        ->whereHasMorph(
-            'tagable',
-            [$model],
-            function ($query) {
-                $query->where('status', PostStatus::PUBLISHED->value);
-            }
-        )
-        ->groupBy('tags.tag_name')
-        ->get();
+            ->where('tagable_type', $model)
+            ->whereHasMorph(
+                'tagable',
+                [$model],
+                function ($query) {
+                    $query->where('status', PostStatus::PUBLISHED->value);
+                }
+            )
+            ->groupBy('tags.tag_name')
+            ->get();
     }
 }
