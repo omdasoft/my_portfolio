@@ -19,20 +19,20 @@ class CreatePostAction
     public static function handle(array $data): void
     {
         DB::transaction(function () use ($data) {
-            $post = new Post();
+            $post = new Post;
             $post->title = $data['title'];
             $post->content = $data['content'];
             $post->status = $data['status'];
             $post->save();
 
-            //create image
+            // create image
             if ($data['imagePath']) {
                 $post->image()->create([
                     'image_path' => $data['imagePath'],
                 ]);
             }
 
-            //Create tags
+            // Create tags
             if ($data['tags']) {
                 foreach ($data['tags'] as $tag) {
                     $post->tags()->create([

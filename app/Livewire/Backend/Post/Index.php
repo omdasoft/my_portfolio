@@ -18,9 +18,7 @@ class Index extends Component
 
     public int $actionId = -1;
 
-    public function mount(): void
-    {
-    }
+    public function mount(): void {}
 
     public function render(): View
     {
@@ -38,7 +36,7 @@ class Index extends Component
     public function deleteConfirmed(): void
     {
         if ($this->actionId) {
-            $deletePostAction = new DeletePostAction();
+            $deletePostAction = new DeletePostAction;
             $deletePostAction->handle($this->actionId);
             $this->actionId = -1;
         }

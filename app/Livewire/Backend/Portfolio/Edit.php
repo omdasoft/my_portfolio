@@ -95,7 +95,7 @@ class Edit extends Component
         $this->portfolio->description = $this->description;
         $this->portfolio->save();
 
-        //Create portfolio images
+        // Create portfolio images
         if ($this->imagePathes) {
             foreach ($this->imagePathes as $path) {
                 $this->portfolio->images()->create([

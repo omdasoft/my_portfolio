@@ -120,7 +120,7 @@ class Edit extends Component
 
         $this->formData['hasImage'] = $this->image ? true : false;
 
-        $editAction = new EditPostAction();
+        $editAction = new EditPostAction;
 
         $editAction->handle($this->post, $this->formData);
 

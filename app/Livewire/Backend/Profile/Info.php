@@ -101,7 +101,7 @@ class Info extends Component
     {
         $this->validate();
 
-        //Update profile info
+        // Update profile info
         $this->profile->phone = $this->profileInfo['phone'];
         $this->profile->github = $this->profileInfo['github'];
         $this->profile->twitter = $this->profileInfo['twitter'];
@@ -110,30 +110,30 @@ class Info extends Component
         $this->profile->intro = $this->profileInfo['intro'];
         $this->profile->save();
 
-        //If image uploaded
+        // If image uploaded
         if ($this->image) {
-            //delete old image if exists
+            // delete old image if exists
             if ($this->profile->image) {
                 $this->removeUploadedFile($this->profile->image->image_path);
 
-                //Delete old image from db
+                // Delete old image from db
                 $this->profile->image()->delete();
             }
 
-            //Save image in the database
+            // Save image in the database
             $this->profile->image()->create([
                 'image_path' => $this->imagePath,
             ]);
         }
 
-        //If resume uploaded
+        // If resume uploaded
         if ($this->resume) {
-            //delete old resume if exists
+            // delete old resume if exists
             if ($this->profile->resume_path) {
                 $this->removeUploadedFile($this->profile->resume_path);
             }
 
-            //Update the resume
+            // Update the resume
             $this->profile->update([
                 'resume_path' => $this->resumePath,
             ]);

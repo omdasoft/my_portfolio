@@ -32,7 +32,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::get('/', Info::class)->name('info');
     });
 
-    //Portfolio Routes
+    // Portfolio Routes
     Route::prefix('portfolios')->name('portfolios.')->group(function () {
         Route::get('/', Index::class)->name('index');
         Route::get('create', Create::class)->name('create');
@@ -40,7 +40,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
         Route::get('view/{id}', View::class)->name('view');
     });
 
-    //Post Routes
+    // Post Routes
     Route::prefix('posts')->name('posts.')->group(function () {
         Route::get('/', PostIndex::class)->name('index');
         Route::get('create', PostCreate::class)->name('create');

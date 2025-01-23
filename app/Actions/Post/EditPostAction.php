@@ -29,24 +29,24 @@ class EditPostAction
             $post->status = $data['status'];
             $post->save();
 
-            //Upload and save image
+            // Upload and save image
             if ($data['hasImage']) {
 
-                //Remove old image from storage
+                // Remove old image from storage
                 if ($post->image) {
                     $this->removeUploadedFile($post->image->image_path);
 
-                    //Delete old image from db
+                    // Delete old image from db
                     $post->image()->delete();
                 }
 
-                //Save image in the database
+                // Save image in the database
                 $post->image()->create([
                     'image_path' => $data['imagePath'],
                 ]);
             }
 
-            //Create tags
+            // Create tags
             if ($data['tags']) {
                 foreach ($data['tags'] as $tag) {
                     $post->tags()->create([

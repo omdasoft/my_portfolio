@@ -30,9 +30,7 @@ class Create extends Component
 
     public int $maxFileSize = 1024 * 8;
 
-    public function mount(): void
-    {
-    }
+    public function mount(): void {}
 
     public function render(): View
     {
@@ -81,14 +79,14 @@ class Create extends Component
         $this->validate();
 
         // Create portfolio
-        $portfolio = new Portfolio();
+        $portfolio = new Portfolio;
         $portfolio->title = $this->title;
         $portfolio->url = $this->url;
         $portfolio->github_url = $this->github_url;
         $portfolio->description = $this->description;
         $portfolio->save();
 
-        //Create portfolio images
+        // Create portfolio images
         if ($this->imagePathes) {
             foreach ($this->imagePathes as $path) {
                 $portfolio->images()->create([
