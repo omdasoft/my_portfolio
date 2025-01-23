@@ -11,20 +11,20 @@ if (! function_exists('get_tags_with_count')) {
     /**
      * @return Collection<int, Tag>
      */
-    function get_tags_with_count(string $model): Collection
+    function get_tags_with_count(string $modelName): Collection
     {
-        $modelType = ($model === 'post') ? Post::class : Portfolio::class;
+        $model = ($modelName === 'post') ? Post::class : Portfolio::class;
 
-        return Tag::selectRaw('tags.tag_name, COUNT(*) as tags_count')
-            ->where('tagable_type', $modelType)
-            ->whereHasMorph(
-                'tagable',
-                [$modelType],
-                function ($query) {
-                    $query->where('status', PostStatus::PUBLISHED->value);
-                }
-            )
-            ->groupBy('tags.tag_name')
-            ->get();
+        return Tag::selectRaw('tags.tag_name, COUNT(id) as tags_count')
+        ->where('tagable_type', $model)
+        ->whereHasMorph(
+            'tagable',
+            [$model],
+            function ($query) {
+                $query->where('status', PostStatus::PUBLISHED->value);
+            }
+        )
+        ->groupBy('tags.tag_name')
+        ->get();
     }
 }
