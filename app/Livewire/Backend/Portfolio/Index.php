@@ -18,7 +18,9 @@ class Index extends Component
 
     public string $message = '';
 
-    public function mount(): void {}
+    public function mount(): void
+    {
+    }
 
     public function render(): View
     {

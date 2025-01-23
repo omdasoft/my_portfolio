@@ -16,7 +16,7 @@ class Index extends Component
     {
         $profile = $this->getProfile();
         $portfolios = $this->getPortfolios();
-        $tags = get_tags_with_count('post');
+        $tags = get_post_tags_with_count();
         $latestPosts = $this->getLatestPosts();
 
         return view('livewire.frontend.index', compact('profile', 'portfolios', 'tags', 'latestPosts'))->layout('layouts.front');

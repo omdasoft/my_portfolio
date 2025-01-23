@@ -23,7 +23,7 @@ class Index extends Component
     public function render(): View
     {
         $posts = $this->getPosts();
-        $tags = get_tags_with_count('post');
+        $tags = get_post_tags_with_count();
 
         return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.blog');
     }
