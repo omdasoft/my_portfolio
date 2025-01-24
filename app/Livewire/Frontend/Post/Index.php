@@ -36,11 +36,13 @@ class Index extends Component
     {
         $this->selectedTag = $tag_slug ?? $this->selectedTag;
 
-        $query = Post::published()->with('tags')->latest();
+        $query = Post::published()->with('tags.tagLists')->latest();
 
         if ($this->selectedTag) {
             $query->whereHas('tags', function ($q) {
-                $q->where('tag_slug', $this->selectedTag);
+                $q->whereHas('tagLists', function ($q) {
+                    $q->where('slug', $this->selectedTag);
+                });
             });
         }
 

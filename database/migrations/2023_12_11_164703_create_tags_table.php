@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->morphs('tagable');
-            $table->string('tag_name');
-            $table->string('tag_slug');
+            $table->foreignId('tag_list_id')->constrained('tag_lists');
             $table->timestamps();
         });
     }

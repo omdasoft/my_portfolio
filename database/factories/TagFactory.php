@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\TagList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,10 @@ class TagFactory extends Factory
      */
     public function definition(): array
     {
+        $tagListIds = TagList::pluck('id')->toArray();
+        
         return [
-            'tag_name' => $this->faker->text(5),
+            'tag_list_id' => $this->faker->randomElement($tagListIds),
         ];
     }
 }

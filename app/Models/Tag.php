@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\TagList;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tag_name', 'tag_slug'];
+    protected $fillable = ['tag_name'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo<Model, Tag>
@@ -21,10 +23,8 @@ class Tag extends Model
         return $this->morphTo();
     }
 
-    protected static function booted(): void
+    public function tagLists(): BelongsTo
     {
-        static::creating(function (Tag $tag) {
-            $tag->tag_slug = Str::slug($tag->tag_name);
-        });
+        return $this->belongsTo(TagList::class, 'tag_list_id', 'id');
     }
 }
