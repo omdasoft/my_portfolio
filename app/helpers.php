@@ -14,11 +14,11 @@ if (! function_exists('get_tags_with_count')) {
         $publishedPostIds = Post::published()->pluck('id')->toArray();
 
         return Tag::query()
-            ->selectRaw('tags.tag_name, COUNT(*) as tags_count')
+            ->selectRaw('tags.tag_name,tags.tag_slug,COUNT(*) as tags_count')
             ->where('tagable_type', Post::class)
             ->whereIn('tagable_id', $publishedPostIds)
             ->distinct()
-            ->groupBy('tags.tag_name')
+            ->groupBy('tags.tag_name', 'tags.tag_slug')
             ->get();
     }
 }

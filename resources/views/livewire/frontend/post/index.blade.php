@@ -45,8 +45,8 @@
                     @foreach ($tags as $tag)
                         <a 
                             href="#" 
-                            wire:click.prevent="getPosts('{{ $tag->tag_name }}')"
-                            class="flex items-center mb-5 block {{ $selectedTag === $tag->tag_name ? 'text-blue-600' : '' }}"
+                            wire:click.prevent="getPosts('{{ $tag->tag_slug }}')"
+                            class="flex items-center mb-5 block {{ $selectedTag === $tag->tag_slug ? 'text-blue-600' : '' }}"
                         >
                             <h3 class="text-sm md:text-md font-medium">{{ $tag->tag_name }}</h3>
                             <span class="rounded-full border border-gray-200 text-xs px-2 py-1 ml-auto">

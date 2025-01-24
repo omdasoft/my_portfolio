@@ -35,8 +35,8 @@ class CreatePostAction
             // Create tags
             if ($data['tags']) {
                 foreach ($data['tags'] as $tag) {
-                    $post->tags()->create([
-                        'tag_name' => $tag,
+                    $post->tags()->updateOrCreate([
+                        'tag_name' => strtolower($tag),
                     ]);
                 }
             }

@@ -32,15 +32,15 @@ class Index extends Component
      * @param  string  $tag_name
      * @return LengthAwarePaginator<Post>
      */
-    public function getPosts($tag_name = null): LengthAwarePaginator
+    public function getPosts($tag_slug = null): LengthAwarePaginator
     {
-        $this->selectedTag = $tag_name ?? $this->selectedTag;
+        $this->selectedTag = $tag_slug ?? $this->selectedTag;
 
         $query = Post::published()->with('tags')->latest();
 
         if ($this->selectedTag) {
             $query->whereHas('tags', function ($q) {
-                $q->where('tag_name', $this->selectedTag);
+                $q->where('tag_slug', $this->selectedTag);
             });
         }
 

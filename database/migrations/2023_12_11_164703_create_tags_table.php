@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->morphs('tagable');
             $table->string('tag_name');
+            $table->string('tag_slug');
             $table->timestamps();
         });
     }
