@@ -6,6 +6,7 @@
     @section('header')
         <livewire:frontend.includes.blog-nav />
     @endsection
+    
     <div class="max-w-4xl mx-auto my-8 p-6">
         <div class="lg:max-w-[52rem] mx-auto mb-20">
             <!-- Header Section -->

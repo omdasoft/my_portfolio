@@ -36,7 +36,6 @@ return new class extends Migration
             'tailwindcss',
             'docker',
             'deployment',
-            'ci/cd',
             'refactoring',
             'database optimization',
             'design patterns',

@@ -31,7 +31,7 @@
                 <a href="/" onclick="toggleMenu()"
                     class="font-montserrat leading-normal text-md text-slate-gray hover:underline hover:decoration-2 hover:underline-offset-8 hover:decoration-indigo-600 hover:text-gray-500">Home</a>
             </li>
-            @if(request()->route()->getName() === 'posts.show')                
+            @if(request()->routeIs('posts.show'))                
                 <li>
                     <a href="/posts" onclick="toggleMenu()"
                         class="font-montserrat leading-normal text-md text-slate-gray hover:underline hover:decoration-2 hover:underline-offset-8 hover:decoration-indigo-600 hover:text-gray-500">Blogs</a>
