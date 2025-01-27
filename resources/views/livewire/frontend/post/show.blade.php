@@ -1,4 +1,7 @@
 <div class="py-5">
+    @section('header')
+        <livewire:frontend.includes.blog-nav />
+    @endsection
     <div class="max-w-4xl mx-auto my-8 p-6">
         <div class="lg:max-w-[52rem] mx-auto mb-20">
             <!-- Header Section -->
@@ -28,7 +31,7 @@
                     @foreach ($post->tags as $tag)
                         <a href="{{ url('/posts/'.$tag->tag_name) }}"
                            class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition duration-200">
-                            #{{ $tag->tag_name }}
+                            #{{ $tag->tagList->name }}
                         </a>
                     @endforeach
                 </div>

@@ -20,7 +20,9 @@
 
     <header
         class="relative mb-16 md:mb-36 max-w-[52rem] mx-auto px-4 sm:px-6 md:px-8 xl:px-12 lg:max-w-7xl pt-6 md:w-auto">
-        <livewire:frontend.includes.nav />
+        @section('header')
+            <livewire:frontend.includes.nav />
+        @show
     </header>
     <!--//end header-->
 

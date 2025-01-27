@@ -1,4 +1,7 @@
 <div>
+    @section('header')
+        <livewire:frontend.includes.blog-nav />
+    @endsection
     <section class="md:flex" id="blog">
         <div class="w-full md:w-2/3 md:mr-20 mb-20">
             <h1

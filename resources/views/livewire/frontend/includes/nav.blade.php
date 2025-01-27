@@ -30,9 +30,9 @@
             @endauth
         </ul>
     <div class='hidden max-md:block z-20'>
-        <img src="assets/images/hamburger.svg" alt='Hamburger' width="25" height="25" id="toggleMenuBtn"
+        <img src="{{ asset('assets/images/hamburger.svg') }}" alt='Hamburger' width="25" height="25" id="toggleMenuBtn"
             class="hover:cursor-pointer" />
-        <img src="assets/images/close.png" class="hidden hover:cursor-pointer" width="25" height="25"
+        <img src="{{ asset('assets/images/close.png') }}" class="hidden hover:cursor-pointer" width="25" height="25"
             id="closeMenuBtn" />
     </div>
     

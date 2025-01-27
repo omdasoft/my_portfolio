@@ -25,22 +25,21 @@ class Index extends Component
         $posts = $this->getPosts();
         $tags = get_post_tags_with_count();
 
-        return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.blog');
+        return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.front');
     }
 
     /**
-     * @param  string  $tag_name
      * @return LengthAwarePaginator<Post>
      */
-    public function getPosts($tag_slug = null): LengthAwarePaginator
+    public function getPosts(string $tag_slug = null): LengthAwarePaginator
     {
         $this->selectedTag = $tag_slug ?? $this->selectedTag;
 
-        $query = Post::published()->with('tags.tagLists')->latest();
+        $query = Post::published()->with('tags.tagList')->latest();
 
         if ($this->selectedTag) {
             $query->whereHas('tags', function ($q) {
-                $q->whereHas('tagLists', function ($q) {
+                $q->whereHas('tagList', function ($q) {
                     $q->where('slug', $this->selectedTag);
                 });
             });

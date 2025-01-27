@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\TagList;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Tag extends Model
 {
@@ -23,7 +21,10 @@ class Tag extends Model
         return $this->morphTo();
     }
 
-    public function tagLists(): BelongsTo
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<TagList, Tag>
+     */
+    public function tagList(): BelongsTo
     {
         return $this->belongsTo(TagList::class, 'tag_list_id', 'id');
     }

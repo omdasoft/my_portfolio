@@ -18,7 +18,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         $tagListIds = TagList::pluck('id')->toArray();
-        
+
         return [
             'tag_list_id' => $this->faker->randomElement($tagListIds),
         ];

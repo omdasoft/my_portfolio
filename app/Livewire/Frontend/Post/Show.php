@@ -19,12 +19,12 @@ class Show extends Component
     {
         $post = $this->getPost();
 
-        return view('livewire.frontend.post.show', compact('post'))->layout('layouts.blog');
+        return view('livewire.frontend.post.show', compact('post'))->layout('layouts.front');
     }
 
     private function getPost(): Post
     {
-        $post = Post::with('tags')->where('slug', $this->slug)->first();
+        $post = Post::with('tags.tagList')->where('slug', $this->slug)->first();
 
         if (! $post) {
             abort(404);
