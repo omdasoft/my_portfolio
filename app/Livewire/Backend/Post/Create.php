@@ -4,8 +4,10 @@ namespace App\Livewire\Backend\Post;
 
 use App\Actions\Post\CreatePostAction;
 use App\Enums\PostStatus;
+use App\Models\TagList;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Create extends Component
@@ -33,10 +35,13 @@ class Create extends Component
      */
     public array $formData;
 
+    public array $tagLists;
+
     public function mount(): void
     {
         $this->formDataDefaultValues();
         $this->setPostStatus();
+        $this->setTagLists();
     }
 
     public function formDataDefaultValues(): void
@@ -50,13 +55,18 @@ class Create extends Component
         ];
     }
 
-    public function setPostStatus(): void
+    protected function setPostStatus(): void
     {
         $statuses = PostStatus::cases();
 
         foreach ($statuses as $status) {
             $this->statuses[$status->value] = $status->value;
         }
+    }
+
+    protected function setTagLists(): void
+    {
+        $this->tagLists = TagList::pluck('name', 'id')->toArray();
     }
 
     public function render(): View

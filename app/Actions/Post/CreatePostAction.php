@@ -2,6 +2,7 @@
 
 namespace App\Actions\Post;
 
+use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 
@@ -35,8 +36,10 @@ class CreatePostAction
             // Create tags
             if ($data['tags']) {
                 foreach ($data['tags'] as $tag) {
-                    $post->tags()->updateOrCreate([
-                        'tag_name' => strtolower($tag),
+                    Tag::updateOrCreate([
+                        'tag_list_id' => $tag,
+                        'tagable_id' => $post->id,
+                        'tagable_type' => Post::class
                     ]);
                 }
             }

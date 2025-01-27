@@ -11,7 +11,7 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tag_name'];
+    protected $fillable = ['tag_name', 'tag_list_id', 'tagable_type', 'tagable_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo<Model, Tag>

@@ -31,6 +31,35 @@
                             </div>
 
                             <div>
+                                <x-input-label for="tags" value="Tags" />
+                                <div class="felx space-x-2">
+                                    <x-select-input id="tags" name="tags" wire:model="tag" :options="$tagLists" class="w-2/3"/>
+                                    <button
+                                        wire:click.prevent="addTag"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                    >
+                                    Add
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap space-x-2 mt-2">
+                                    @foreach ($formData['tags'] as $index => $tag)
+                                        <span
+                                            class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
+                                        >
+                                            <span>{{ $tagLists[$tag] }}</span>
+                                            <button
+                                                wire:click.prevent="removeTag({{ $index }})"
+                                                class="text-red-500 font-bold"
+                                            >
+                                                &times;
+                                            </button>
+                                        </span>
+                                    @endforeach
+                                </div>
+                                <x-input-error class="mt-2" :messages="$errors->get('tag')" />
+                            </div>
+
+                            {{-- <div>
                                 <x-input-label for="tag" value="Tag" />
                                 <div class="flex space-x-2">
                                     <x-text-input wire:model="tag" id="tag" name="tag" type="text" class="mt-1 block w-full" autofocus autocomplete="tag" />
@@ -58,7 +87,7 @@
                                     @endforeach
                                 </div>
                                 <x-input-error class="mt-2" :messages="$errors->get('tag')" />
-                            </div>
+                            </div> --}}
 
                             <div>
                                 <x-input-label for="image" value="Image" />
