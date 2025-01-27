@@ -1,4 +1,8 @@
 <div class="py-5">
+    <x-slot:title>
+        Post Show
+    </x-slot:title>
+
     @section('header')
         <livewire:frontend.includes.blog-nav />
     @endsection

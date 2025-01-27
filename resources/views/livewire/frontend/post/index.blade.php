@@ -1,4 +1,8 @@
 <div>
+    <x-slot:title>
+        Posts List
+    </x-slot:title>
+    
     @section('header')
         <livewire:frontend.includes.blog-nav />
     @endsection
