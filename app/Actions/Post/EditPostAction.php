@@ -2,6 +2,7 @@
 
 namespace App\Actions\Post;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Traits\HasMediaUpload;
 use Illuminate\Support\Facades\DB;
@@ -46,11 +47,13 @@ class EditPostAction
                 ]);
             }
 
-            // Create tags
+             // Create tags
             if ($data['tags']) {
                 foreach ($data['tags'] as $tag) {
-                    $post->tags()->create([
-                        'tag_name' => $tag,
+                    Tag::updateOrCreate([
+                        'tag_list_id' => $tag,
+                        'tagable_id' => $post->id,
+                        'tagable_type' => Post::class
                     ]);
                 }
             }

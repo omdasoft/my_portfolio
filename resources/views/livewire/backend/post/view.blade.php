@@ -27,7 +27,7 @@
             <div class="mt-2 flex flex-wrap gap-2">
                 @foreach ($post->tags as $tag)
                     <span class="px-3 py-1 text-sm text-gray-600 bg-gray-200 rounded-full">
-                        {{ $tag->tag_name }}
+                        {{ $tag->tagList->name }}
                     </span>
                 @endforeach
             </div>

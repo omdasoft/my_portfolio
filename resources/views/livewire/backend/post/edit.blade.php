@@ -30,7 +30,8 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('formData.status')" />
                             </div>
 
-                            <div>
+                            {{-- 
+                                <div>
                                 <x-input-label for="tag" value="Tag" />
                                 <div class="flex space-x-2">
                                     <x-text-input wire:model="tag" id="tag" name="tag" type="text" class="mt-1 block w-full" autofocus autocomplete="tag" />
@@ -47,7 +48,7 @@
                                         <span
                                             class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
                                         >
-                                            <span>{{ $tag->tag_name }}</span>
+                                            <span>{{ $tag->tagList?->name }}</span>
                                             <button
                                                 wire:click.prevent="deleteTag({{ $tag->id }})"
                                                 class="text-red-500 font-bold"
@@ -76,6 +77,57 @@
                                         </span>
                                     @endforeach
                                 </div>
+                            </div>
+                                
+                                --}}
+
+                            <div class="mb-5">
+                                <x-input-label for="tags" value="Tags" />
+                                <div class="felx space-x-2">
+                                    <x-select-input id="tags" name="tags" wire:model="tag" :options="$tagLists" class="w-2/3"/>
+                                    <button
+                                        wire:click.prevent="addTag"
+                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                    >
+                                    Add
+                                    </button>
+                                </div>
+                                @if ($formData['tags'])
+                                    <div class="flex flex-wrap space-x-2 mt-2">
+                                        @foreach ($formData['tags'] as $index => $tag)
+                                            <span
+                                                class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
+                                            >
+                                                <span>{{ $tagLists[$tag] }}</span>
+                                                <button
+                                                    wire:click.prevent="removeTag({{ $index }})"
+                                                    class="text-red-500 font-bold"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                @if ($post->tags)
+                                    <div class="flex flex-wrap space-x-2 mt-2">
+                                        @foreach ($post->tags as $index => $tag)
+                                            <span
+                                                class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
+                                            >
+                                                <span>{{ $tag->tagList?->name }}</span>
+                                                <button
+                                                    wire:click.prevent="deleteTag({{ $tag->id }})"
+                                                    class="text-red-500 font-bold"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                @endif
+                                <x-input-error class="mt-2" :messages="$errors->get('tag')" />
                             </div>
 
                             @if ($post->image) 

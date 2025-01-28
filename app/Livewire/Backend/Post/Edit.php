@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Backend\Post;
 
-use App\Actions\Post\EditPostAction;
-use App\Enums\PostStatus;
-use App\Models\Image;
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Post;
+use App\Models\Image;
+use App\Models\TagList;
+use Livewire\Component;
+use App\Enums\PostStatus;
+use Livewire\Attributes\On;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
-use Livewire\Attributes\On;
-use Livewire\Component;
+use App\Actions\Post\EditPostAction;
 
 class Edit extends Component
 {
@@ -34,15 +35,18 @@ class Edit extends Component
      */
     public array $formData = [];
 
+    public array $tagLists;
+
     public function mount(int $id): void
     {
         $this->getPost($id);
         $this->setPostStatus();
+        $this->setTagLists();
     }
 
     public function getPost(int $id): void
     {
-        $this->post = Post::with('image', 'tags')->findOrFail($id);
+        $this->post = Post::with('image', 'tags.tagList')->findOrFail($id);
         $this->setFormData($this->post);
     }
 
@@ -64,6 +68,11 @@ class Edit extends Component
         foreach ($statuses as $status) {
             $this->statuses[$status->value] = $status->value;
         }
+    }
+
+    protected function setTagLists(): void
+    {
+        $this->tagLists = TagList::pluck('name', 'id')->toArray();
     }
 
     public function addTag(): void

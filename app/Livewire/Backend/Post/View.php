@@ -17,7 +17,7 @@ class View extends Component
 
     public function getPost(int $id): void
     {
-        $this->post = Post::findOrFail($id);
+        $this->post = Post::with('tags.tagList')->findOrFail($id);
     }
 
     public function render(): ViewView
