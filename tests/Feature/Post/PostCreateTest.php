@@ -4,6 +4,7 @@ namespace Tests\Feature\Post;
 
 use App\Enums\PostStatus;
 use App\Livewire\Backend\Post\Create;
+use App\Models\TagList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -39,9 +40,12 @@ class PostCreateTest extends TestCase
 
         $file = UploadedFile::fake()->image('photo1.jpg');
 
+        // Create a test tag in the database first
+        $tagList = TagList::create(['name' => 'Laravel']);
+
         Livewire::test(Create::class)
             ->set('formData.tags', [])
-            ->set('tag', 'Laravel')
+            ->set('tag', $tagList->id)
             ->call('addTag')
             ->set('formData.title', 'test title')
             ->set('formData.content', 'post content')
@@ -56,15 +60,22 @@ class PostCreateTest extends TestCase
             'status' => PostStatus::PUBLISHED->value,
         ]);
 
-        $this->assertDatabaseHas('tags', ['tag_name' => 'Laravel']);
+        $this->assertDatabaseHas('tags', ['tag_list_id' => $tagList->id]);
     }
 
+    /** @test */
     public function test_can_add_and_remove_tag()
     {
-        Livewire::test(Create::class)
-            ->set('tag', 'Laravel')
+        // Create a test tag in the database first
+        $tagList = TagList::create(['name' => 'Laravel']);
+
+        $component = Livewire::test(Create::class);
+
+        // Verify initial state
+        $component->assertSet('formData.tags', [])
+            ->set('tag', $tagList->id)
             ->call('addTag')
-            ->assertSet('formData.tags', ['Laravel'])
+            ->assertSet('formData.tags', [$tagList->id])
             ->call('removeTag', 0)
             ->assertSet('formData.tags', []);
     }

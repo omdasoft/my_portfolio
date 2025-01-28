@@ -4,6 +4,7 @@ namespace Tests\Feature\Post;
 
 use App\Livewire\Backend\Post\Edit;
 use App\Models\Post;
+use App\Models\TagList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -35,10 +36,13 @@ class PostEditTest extends TestCase
     {
         $post = Post::factory()->create();
 
+        // Create a test tag in the database first
+        $tagList = TagList::create(['name' => 'Laravel']);
+
         Livewire::test(Edit::class, ['id' => $post->id])
             ->set('formData.title', 'updated title')
             ->set('formData.content', 'updated content')
-            ->set('tag', 'NewTag')
+            ->set('tag', $tagList->id)
             ->call('addTag')
             ->call('update')
             ->assertDispatched('updated')
@@ -50,7 +54,7 @@ class PostEditTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('tags', [
-            'tag_name' => 'NewTag',
+            'tag_list_id' => $tagList->id,
             'tagable_id' => $post->id,
         ]);
     }
