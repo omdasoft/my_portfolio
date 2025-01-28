@@ -7,7 +7,6 @@ use App\Enums\PostStatus;
 use App\Models\TagList;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Create extends Component

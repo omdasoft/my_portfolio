@@ -2,8 +2,8 @@
 
 namespace App\Actions\Post;
 
-use App\Models\Tag;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 
 class CreatePostAction
@@ -39,7 +39,7 @@ class CreatePostAction
                     Tag::updateOrCreate([
                         'tag_list_id' => $tag,
                         'tagable_id' => $post->id,
-                        'tagable_type' => Post::class
+                        'tagable_type' => Post::class,
                     ]);
                 }
             }

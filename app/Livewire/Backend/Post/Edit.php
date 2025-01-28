@@ -2,16 +2,16 @@
 
 namespace App\Livewire\Backend\Post;
 
-use App\Models\Tag;
-use App\Models\Post;
-use App\Models\Image;
-use App\Models\TagList;
-use Livewire\Component;
+use App\Actions\Post\EditPostAction;
 use App\Enums\PostStatus;
-use Livewire\Attributes\On;
+use App\Models\Image;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Models\TagList;
 use App\Traits\HasMediaUpload;
 use Illuminate\Contracts\View\View;
-use App\Actions\Post\EditPostAction;
+use Livewire\Attributes\On;
+use Livewire\Component;
 
 class Edit extends Component
 {
