@@ -18,7 +18,9 @@ class Index extends Component
 
     public int $actionId = -1;
 
-    public function mount(): void {}
+    public function mount(): void
+    {
+    }
 
     public function render(): View
     {

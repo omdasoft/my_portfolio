@@ -30,7 +30,9 @@ class Create extends Component
 
     public int $maxFileSize = 1024 * 8;
 
-    public function mount(): void {}
+    public function mount(): void
+    {
+    }
 
     public function render(): View
     {

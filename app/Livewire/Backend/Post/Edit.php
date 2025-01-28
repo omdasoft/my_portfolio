@@ -35,6 +35,9 @@ class Edit extends Component
      */
     public array $formData = [];
 
+    /**
+     * @var array<int, string>
+     */
     public array $tagLists;
 
     public function mount(int $id): void
