@@ -31,7 +31,7 @@ class Index extends Component
     /**
      * @return LengthAwarePaginator<Post>
      */
-    public function getPosts(string $tag_slug = null): LengthAwarePaginator
+    public function getPosts(?string $tag_slug = null): LengthAwarePaginator
     {
         $this->selectedTag = $tag_slug ?? $this->selectedTag;
 
