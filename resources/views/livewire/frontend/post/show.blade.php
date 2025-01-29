@@ -7,8 +7,10 @@
         <livewire:frontend.includes.blog-nav />
     @endsection
     
-    <div class="max-w-4xl mx-auto my-8 p-6">
+    <div class="max-w-4xl mx-auto my-2 p-6">
         <div class="lg:max-w-[52rem] mx-auto mb-20">
+            <img src="{{ $post->image_path }}" alt="Post Image" class="w-full h-80 object-cover rounded-sm mb-6">
+
             <!-- Header Section -->
             <div class="mb-6">
                 <h1 class="font-extrabold text-3xl md:text-5xl md:leading-snug -mt-3">
