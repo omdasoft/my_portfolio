@@ -5,7 +5,7 @@ use App\Models\Tag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
-if (! function_exists('get_tags_with_count')) {
+if (! function_exists('get_post_tags_with_count')) {
 
     /**
      * @return Collection<int, Tag>

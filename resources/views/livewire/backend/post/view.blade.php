@@ -35,7 +35,7 @@
             <!-- Post Content -->
             <div class="mt-4 text-gray-700 leading-relaxed">
                 <p class="text-justify leading-10">
-                    {{ $post->content }}
+                    {!! $post->content !!}
                 </p>
             </div>
         </div>
