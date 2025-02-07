@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use App\Enums\PostStatus;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Query\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Support\Facades\Storage;
+use App\Enums\PostStatus;
 use Illuminate\Support\Str;
+use Mews\Purifier\Casts\CleanHtml;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'status'];
+
+    protected $casts = [
+        'content' => CleanHtml::class
+    ];
 
     /**
      * @return MorphOne<Image>

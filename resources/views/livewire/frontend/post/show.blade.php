@@ -45,8 +45,8 @@
             </div>
 
             <!-- Article Content -->
-            <article class="mx-auto md:mb-44 prose text-black md:prose-lg">
-                <p class="text-justify leading-10">{{ $post->content }}</p>
+            <article class="mx-auto md:mb-44 md:prose-lg text-gray-700 leading-relaxed text-justify">
+                {!! $post->content !!}
             </article>
         </div>
     </div>

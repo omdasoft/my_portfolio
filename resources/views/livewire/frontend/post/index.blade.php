@@ -20,7 +20,7 @@
                     <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
 
                     <p class="mt-4 md:leading-7 md:text-lg">
-                    {{ $post->short_content }}
+                    {!! $post->short_content !!}
                     </p>
 
                     <p class="mt-4 uppercase text-xs inline-flex space-x-2 font-medium text-gray-500">
