@@ -115,6 +115,11 @@
                     'removeformat | image',
                 height: 400,
                 
+                // Force TinyMCE to store absolute URLs
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+
                 // Enable automatic uploads
                 automatic_uploads: true,
                 
