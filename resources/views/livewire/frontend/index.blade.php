@@ -15,7 +15,7 @@
     <!--Latest post section-->
     @if ($latestPosts)
         <section class="md:flex" id="blog">
-            <div class="w-full md:w-2/3 md:mr-20 mb-20">
+            <div class="md:w-2/3 md:mr-20 mb-20">
                 <h1
                     class="mb-5 md:mb-10 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
                     Content
@@ -23,11 +23,11 @@
 
                 @foreach ($latestPosts as $post)
                     <a href="{{ route('posts.show', $post->slug) }}"
-                        class="mb-16 block">
+                        class="mb-16 block text-gray-700">
                         <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
 
-                        <p class="text-gray-700 mt-4 md:leading-relaxed">
-                        {!! $post->short_content !!}
+                        <p class="mt-4 md:leading-relaxed text-justify">
+                            {!! $post->short_content !!}
                         </p>
 
                         <p class="mt-4 uppercase text-xs inline-flex space-x-2 font-medium text-gray-500">
@@ -47,7 +47,7 @@
             </div>
             
             @if ($tags)
-                <div class="md:w-full">
+                <div class="md:w-1/3">
                     <h1
                         class="mb-5 md:mb-10 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
                         Topics
