@@ -10,6 +10,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use Mews\Purifier\Facades\Purifier;
 use Tests\TestCase;
 
 class PostCreateTest extends TestCase
@@ -56,7 +57,7 @@ class PostCreateTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'title' => 'test title',
-            'content' => 'post content',
+            'content' => Purifier::clean('post content'),
             'status' => PostStatus::PUBLISHED->value,
         ]);
 

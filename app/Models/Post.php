@@ -2,26 +2,22 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Enums\PostStatus;
-use Illuminate\Support\Str;
-use Mews\Purifier\Casts\CleanHtml;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Mews\Purifier\Facades\Purifier;
 
 class Post extends Model
 {
     use HasFactory;
 
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'status'];
-
-    protected $casts = [
-        'content' => CleanHtml::class
-    ];
 
     /**
      * @return MorphOne<Image>
@@ -76,8 +72,17 @@ class Post extends Model
         return Str::substr($this->attributes['content'], 0, 200);
     }
 
-    public function scopePublished(Builder $query): void
+    /**
+     * @param  Builder<Post>  $query
+     * @return Builder<Post>
+     */
+    public function scopePublished(Builder $query): Builder
     {
-        $query->where('status', PostStatus::PUBLISHED->value);
+        return $query->where('status', PostStatus::PUBLISHED->value);
+    }
+
+    public function getContentAttribute(string $value): string
+    {
+        return Purifier::clean($value);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Traits\HasMediaUpload;
 use Illuminate\Support\Facades\DB;
+use Mews\Purifier\Facades\Purifier;
 
 class EditPostAction
 {
@@ -26,7 +27,7 @@ class EditPostAction
         DB::transaction(function () use ($post, $data) {
             // Edit Post
             $post->title = $data['title'];
-            $post->content = $data['content'];
+            $post->content = Purifier::clean($data['content']);
             $post->status = $data['status'];
             $post->save();
 

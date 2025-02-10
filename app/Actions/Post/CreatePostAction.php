@@ -5,6 +5,7 @@ namespace App\Actions\Post;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
+use Mews\Purifier\Facades\Purifier;
 
 class CreatePostAction
 {
@@ -22,7 +23,7 @@ class CreatePostAction
         DB::transaction(function () use ($data) {
             $post = new Post;
             $post->title = $data['title'];
-            $post->content = $data['content'];
+            $post->content = Purifier::clean($data['content']);
             $post->status = $data['status'];
             $post->save();
 

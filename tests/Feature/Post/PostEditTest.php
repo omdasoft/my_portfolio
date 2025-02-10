@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\TagList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Mews\Purifier\Facades\Purifier;
 use Tests\TestCase;
 
 class PostEditTest extends TestCase
@@ -50,7 +51,7 @@ class PostEditTest extends TestCase
 
         $this->assertDatabaseHas('posts', [
             'title' => 'updated title',
-            'content' => 'updated content',
+            'content' => Purifier::clean('updated content'),
         ]);
 
         $this->assertDatabaseHas('tags', [

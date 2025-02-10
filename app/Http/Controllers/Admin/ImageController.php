@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ImageController extends Controller
 {
-    public function uploadTinyMCEImage(Request $request)
+    public function uploadTinyMCEImage(Request $request): JsonResponse
     {
         try {
             if ($request->hasFile('file')) {
