@@ -19,7 +19,7 @@
                     class="mb-16 block">
                     <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
 
-                    <p class="mt-4 md:leading-7 md:text-lg">
+                    <p class="text-gray-700 mt-4 md:leading-relaxed">
                     {!! $post->short_content !!}
                     </p>
 
@@ -36,7 +36,7 @@
         </div>
         
         @if ($tags)
-            <div class="w-full md:w-1/3">
+            <div class="md:w-full">
                 <h1 class="mb-5 md:mb-10 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
                     Topics
                 </h1>
