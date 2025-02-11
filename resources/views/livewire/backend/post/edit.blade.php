@@ -18,68 +18,18 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('formData.title')" />
                             </div>
 
-                            <div>
+                            <div wire:ignore>
                                 <x-input-label for="content" value="Content" />
-                                <x-text-area wire:model="formData.content" id="content" name="content" type="text" class="mt-1 block w-full" required autocomplete="content" rows="5"/>
+                                <textarea wire:model="formData.content" id="myeditor" name="content" class="mt-1 block w-full" rows="5">
+                                </textarea>
                                 <x-input-error class="mt-2" :messages="$errors->get('formData.content')" />
                             </div>
-                            
+                                    
                             <div>
                                 <x-input-label for="status" value="Status" />
                                 <x-select-input wire:model="formData.status" id="status" name="status" :options="$statuses" />
                                 <x-input-error class="mt-2" :messages="$errors->get('formData.status')" />
                             </div>
-
-                            {{-- 
-                                <div>
-                                <x-input-label for="tag" value="Tag" />
-                                <div class="flex space-x-2">
-                                    <x-text-input wire:model="tag" id="tag" name="tag" type="text" class="mt-1 block w-full" autofocus autocomplete="tag" />
-
-                                    <button
-                                        wire:click.prevent="addTag"
-                                        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
-                                    >
-                                    Add
-                                    </button>
-                                </div>
-                                <div class="flex flex-wrap space-x-2 mt-2">
-                                    @foreach ($post->tags as $index => $tag)
-                                        <span
-                                            class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
-                                        >
-                                            <span>{{ $tag->tagList?->name }}</span>
-                                            <button
-                                                wire:click.prevent="deleteTag({{ $tag->id }})"
-                                                class="text-red-500 font-bold"
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                    @endforeach
-                                </div>
-                                <x-input-error class="mt-2" :messages="$errors->get('tag')" />
-                            </div>
-
-                            <div>
-                                <div class="flex flex-wrap space-x-2 mt-2">
-                                    @foreach ($formData['tags'] as $index => $tag)
-                                        <span
-                                            class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full flex items-center space-x-1"
-                                        >
-                                            <span>{{ $tag }}</span>
-                                            <button
-                                                wire:click.prevent="removeTag({{ $index }})"
-                                                class="text-red-500 font-bold"
-                                            >
-                                                &times;
-                                            </button>
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </div>
-                                
-                                --}}
 
                             <div class="mb-5">
                                 <x-input-label for="tags" value="Tags" />
@@ -173,3 +123,103 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        function initTinyMCE() {
+            if (!document.getElementById('myeditor')) {
+                return;
+            }
+
+            tinymce.remove('#myeditor');
+            
+            tinymce.init({
+                selector: '#myeditor',
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'wordcount', 'paste'
+                ],
+                toolbar: 'undo redo | blocks | ' +
+                    'bold italic forecolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | image',
+                height: 400,
+                
+                // Force TinyMCE to store absolute URLs
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+
+                // Enable automatic uploads
+                automatic_uploads: true,
+                
+                // Image upload settings
+                images_upload_url: '{{ route("admin.tinymce.upload") }}',
+                images_upload_credentials: true,
+                images_reuse_filename: true,
+                
+                // Updated image upload handler
+                images_upload_handler: function (blobInfo, success, failure) {
+                    return new Promise((resolve, reject) => {
+                        let formData = new FormData();
+                        formData.append('file', blobInfo.blob(), blobInfo.filename());
+                        formData.append('_token', '{{ csrf_token() }}');
+
+                        fetch('/admin/upload-tinymce-image', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('HTTP Error: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(result => {
+                            if (result && result.location) {
+                                resolve(result.location);
+                            } else {
+                                throw new Error('Invalid JSON response');
+                            }
+                        })
+                        .catch(error => {
+                            console.log('Image upload failed: ' + error.message);
+                            reject(error);
+                        });
+                    });
+                },
+                
+                // File size validation
+                images_file_types: 'jpeg,jpg,png,gif',
+                max_file_size: 2097152, // 2MB in bytes
+                
+                setup: function(editor) {
+                    editor.on('change', function(e) {
+                        @this.set('formData.content', editor.getContent());
+                    });
+
+                    editor.on('init', function(e) {
+                        if (@this.get('formData.content')) {
+                            editor.setContent(@this.get('formData.content'));
+                        }
+                    });
+                }
+            });
+        }
+
+        // Initialize when Livewire loads
+        document.addEventListener('livewire:init', function() {
+            initTinyMCE();
+        });
+
+        // Handle Livewire navigation
+        document.addEventListener('livewire:navigated', function() {
+            initTinyMCE();
+        });
+
+        // Clean up when navigating away
+        document.addEventListener('livewire:navigating', () => {
+            tinymce.remove('#myeditor');
+        });
+    </script>
+@endpush
