@@ -15,22 +15,7 @@
             </h1>
 
             @foreach ($posts as $post)
-                <a href="{{ route('posts.show', $post->slug) }}"
-                    class="mb-16 block text-gray-700">
-                    <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
-
-                    <p class="mt-4 md:leading-relaxed text-justify">
-                    {!! $post->short_content !!}
-                    </p>
-
-                    <p class="mt-4 uppercase text-xs inline-flex space-x-2 font-medium text-gray-500">
-                        <span>{{ $post->created_at }}</span>
-                        <span
-                            class="before:mr-2 before:bg-gray-400 before:w-[2px] before:h-[2px] before:rounded-full flex items-center">
-                            {{ $post->reading_time }}
-                        </span>
-                    </p>
-                </a>
+                <x-post-summary :post="$post"/>
             @endforeach
             <x-pagination :collection="$posts"/>
         </div>
@@ -51,16 +36,7 @@
                     @endif
                     
                     @foreach ($tags as $tag)
-                        <a 
-                            href="#" 
-                            wire:click.prevent="getPosts('{{ $tag->tag_slug }}')"
-                            class="flex items-center mb-5 block {{ $selectedTag === $tag->tag_slug ? 'text-blue-600' : '' }}"
-                        >
-                            <h3 class="text-sm md:text-md font-medium">{{ $tag->tag_name }}</h3>
-                            <span class="rounded-full border border-gray-200 text-xs px-2 py-1 ml-auto">
-                                {{ $tag->tags_count }} posts
-                            </span>
-                        </a>
+                       <x-tag :tag="$tag"/>
                     @endforeach
                 </div>
             </div>
