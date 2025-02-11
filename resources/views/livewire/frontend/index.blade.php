@@ -7,7 +7,9 @@
     @if($portfolios)
         <div class="mb-16">
             <x-portfolio-list :portfolios="$portfolios" name="Latest Work"/>
-            <x-gray-button name="view all"/>
+            <x-nav-link href="{{ route('portfolios.index') }}">
+                view all
+            </x-nav-link>
         </div>
     @endif
 
