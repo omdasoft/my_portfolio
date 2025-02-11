@@ -40,13 +40,4 @@
             </div>
         </div>
     </div>
-    <!-- </div>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="max-w-4xl mx-auto my-8 p-6 bg-white shadow-lg rounded-lg">
-                  
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>
