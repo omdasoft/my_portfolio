@@ -45,7 +45,7 @@
             </div>
 
             <!-- Article Content -->
-            <article class="mx-auto md:mb-44 md:prose-lg text-gray-700 leading-relaxed text-justify">
+            <article class="mx-auto md:mb-44 md:prose-lg text-gray-700 leading-9 text-justify">
                 {!! $post->content !!}
             </article>
         </div>
