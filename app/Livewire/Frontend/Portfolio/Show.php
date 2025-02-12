@@ -8,16 +8,16 @@ use Livewire\Component;
 
 class Show extends Component
 {
-    public int $id;
+    public string $slug;
 
-    public function mount(int $id): void
+    public function mount(string $slug): void
     {
-        $this->id = $id;
+        $this->slug = $slug;
     }
 
     public function render(): View
     {
-        $portfolio = Portfolio::with(['images', 'tags'])->find($this->id);
+        $portfolio = Portfolio::with(['images', 'tags'])->where('slug', $this->slug)->first();
 
         return view('livewire.frontend.portfolio.show', compact('portfolio'))->layout('layouts.front');
     }

@@ -19,7 +19,15 @@ class Portfolio extends Model
         'url',
         'github_url',
         'completion_date',
+        'slug',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Portfolio $portfolio) {
+            $portfolio->slug = Str::slug($portfolio->title);
+        });
+    }
 
     /**
      * @return MorphMany<Image>

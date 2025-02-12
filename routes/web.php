@@ -27,7 +27,7 @@ Route::prefix('posts')->name('posts.')->group(function () {
 
 Route::prefix('portfolios')->name('portfolios.')->group(function () {
     Route::get('/', PortfolioIndex::class)->name('index');
-    Route::get('{id}', PortfolioShow::class)->name('show');
+    Route::get('{slug}', PortfolioShow::class)->name('show');
 });
 
 /*
