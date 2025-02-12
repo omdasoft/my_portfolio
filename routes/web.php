@@ -12,10 +12,10 @@ use App\Livewire\Backend\Post\Index as PostIndex;
 use App\Livewire\Backend\Post\View as PostView;
 use App\Livewire\Backend\Profile\Info;
 use App\Livewire\Frontend\Index as FrontendIndex;
-use App\Livewire\Frontend\Post\Index as FrontendPostIndex;
-use App\Livewire\Frontend\Post\Show as FrontendPostShow;
 use App\Livewire\Frontend\Portfolio\Index as PortfolioIndex;
 use App\Livewire\Frontend\Portfolio\Show as PortfolioShow;
+use App\Livewire\Frontend\Post\Index as FrontendPostIndex;
+use App\Livewire\Frontend\Post\Show as FrontendPostShow;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', FrontendIndex::class)->name('index');
@@ -25,7 +25,7 @@ Route::prefix('posts')->name('posts.')->group(function () {
     Route::get('/show/{slug}', FrontendPostShow::class)->name('show');
 });
 
-Route::prefix('portfolios')->name('portfolios.')->group(function() {
+Route::prefix('portfolios')->name('portfolios.')->group(function () {
     Route::get('/', PortfolioIndex::class)->name('index');
     Route::get('{id}', PortfolioShow::class)->name('show');
 });

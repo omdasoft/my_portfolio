@@ -20,7 +20,7 @@ class Edit extends Component
 
     public string $description;
 
-    public object $image;
+    public ?object $image = null;
 
     /**
      * @var string[]

@@ -24,7 +24,9 @@
                                 </div>
                             </div>
                             <div class="p-6">
-                                <h5 class="mb-4 text-lg font-bold">{{ $portfolio->title }}</h5>
+                                <a href="{{ route('portfolios.show', $portfolio->id) }}">
+                                    <h5 class="mb-4 text-lg font-bold">{{ $portfolio->title }}</h5>
+                                </a>
                                 <p class="mb-6 text-neutral-600">
                                     {{ $portfolio->short_description }}
                                 </p>
