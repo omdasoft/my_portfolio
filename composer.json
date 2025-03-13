@@ -57,7 +57,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "test:unit": "sail artisan test",
+        "test:unit": "php artisan test",
         "test:lint": "pint --test",
         "test:types": "phpstan analyse --ansi",
         "test": [
