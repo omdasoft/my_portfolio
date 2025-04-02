@@ -9,9 +9,13 @@ use Livewire\Component;
 class Nav extends Component
 {
     public bool $show = false;
+
     public string $name = '';
+
     public string $email = '';
+
     public string $description = '';
+
     public bool $isSent = false;
 
     public function render(): View
@@ -35,7 +39,7 @@ class Nav extends Component
 
     public function resetForm(): void
     {
-        $this->reset(['name','email','description','isSent']);
+        $this->reset(['name', 'email', 'description', 'isSent']);
         $this->resetErrorBag();
         $this->resetValidation();
     }
@@ -44,7 +48,7 @@ class Nav extends Component
     {
         $this->validate();
 
-        $contact = new Contact();
+        $contact = new Contact;
         $contact->name = $this->name;
         $contact->email = $this->email;
         $contact->description = $this->description;
@@ -54,7 +58,7 @@ class Nav extends Component
         $this->reset(['name', 'email', 'description']);
     }
 
-     /**
+    /**
      * @return array<string, string>
      */
     protected function rules(): array
@@ -62,7 +66,7 @@ class Nav extends Component
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email:rfc,dns|max:255',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ];
     }
 }
