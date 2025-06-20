@@ -12,7 +12,7 @@ class PortfolioIndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_portfolio_index()
+    public function test_can_render_portfolio_index(): void
     {
         Portfolio::factory()->count(5)->create();
 
@@ -20,17 +20,15 @@ class PortfolioIndexTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_can_list_portfolios()
+    public function test_can_list_portfolios(): void
     {
         Portfolio::factory()->count(5)->create();
 
         Livewire::test(Index::class)
-            ->assertViewHas('portfolios', function ($portfolios) {
-                return count($portfolios) == 5;
-            });
+            ->assertViewHas('portfolios', fn($portfolios): bool => count($portfolios) == 5);
     }
 
-    public function test_can_delete_portfolio()
+    public function test_can_delete_portfolio(): void
     {
         $portfolio = Portfolio::factory()->create();
 
@@ -42,7 +40,7 @@ class PortfolioIndexTest extends TestCase
         $this->assertDatabaseMissing('portfolios', ['id' => $portfolio->id]);
     }
 
-    public function test_can_redirect_to_edit_portfolio_component()
+    public function test_can_redirect_to_edit_portfolio_component(): void
     {
 
         $portfolio = Portfolio::factory()->create();
@@ -52,7 +50,7 @@ class PortfolioIndexTest extends TestCase
             ->assertRedirect(route('admin.portfolios.edit', $portfolio->id));
     }
 
-    public function test_can_redirect_to_view_portfolio_component()
+    public function test_can_redirect_to_view_portfolio_component(): void
     {
 
         $portfolio = Portfolio::factory()->create();

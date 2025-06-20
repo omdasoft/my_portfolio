@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', FrontendIndex::class)->name('index');
 
-Route::prefix('posts')->name('posts.')->group(function () {
+Route::prefix('posts')->name('posts.')->group(function (): void {
     Route::get('/{tag?}', FrontendPostIndex::class)->name('index');
     Route::get('/show/{slug}', FrontendPostShow::class)->name('show');
 });
 
-Route::prefix('portfolios')->name('portfolios.')->group(function () {
+Route::prefix('portfolios')->name('portfolios.')->group(function (): void {
     Route::get('/', PortfolioIndex::class)->name('index');
     Route::get('{slug}', PortfolioShow::class)->name('show');
 });
@@ -33,15 +33,15 @@ Route::prefix('portfolios')->name('portfolios.')->group(function () {
 /*
 * Admin Routes
 */
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (): void {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-    Route::prefix('profile')->name('profile.')->group(function () {
+    Route::prefix('profile')->name('profile.')->group(function (): void {
         Route::get('/', Info::class)->name('info');
     });
 
     // Portfolio Routes
-    Route::prefix('portfolios')->name('portfolios.')->group(function () {
+    Route::prefix('portfolios')->name('portfolios.')->group(function (): void {
         Route::get('/', Index::class)->name('index');
         Route::get('create', Create::class)->name('create');
         Route::get('edit/{id}', Edit::class)->name('edit');
@@ -49,7 +49,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     });
 
     // Post Routes
-    Route::prefix('posts')->name('posts.')->group(function () {
+    Route::prefix('posts')->name('posts.')->group(function (): void {
         Route::get('/', PostIndex::class)->name('index');
         Route::get('create', PostCreate::class)->name('create');
         Route::get('edit/{id}', PostEdit::class)->name('edit');

@@ -12,6 +12,6 @@ class Index extends Component
     {
         $portfolios = Portfolio::latest()->paginate(12);
 
-        return view('livewire.frontend.portfolio.index', compact('portfolios'))->layout('layouts.front');
+        return view('livewire.frontend.portfolio.index', ['portfolios' => $portfolios])->layout('layouts.front');
     }
 }

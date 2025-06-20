@@ -12,6 +12,6 @@ class Footer extends Component
     {
         $profile = Profile::first();
 
-        return view('livewire.frontend.includes.footer', compact('profile'));
+        return view('livewire.frontend.includes.footer', ['profile' => $profile]);
     }
 }

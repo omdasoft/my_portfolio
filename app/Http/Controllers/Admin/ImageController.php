@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class ImageController extends Controller
                 'error' => 'No file uploaded',
                 'location' => null,
             ], 400);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Log the full error
             Log::error('TinyMCE image upload error: '.$e->getMessage());
 

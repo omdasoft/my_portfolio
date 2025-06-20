@@ -12,7 +12,7 @@ class DeletePostAction
 
     public function handle(int $id): void
     {
-        DB::transaction(function () use ($id) {
+        DB::transaction(function () use ($id): void {
             $post = Post::with('image')->findOrFail($id);
 
             if ($post->image) {

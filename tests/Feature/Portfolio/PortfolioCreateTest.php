@@ -14,7 +14,7 @@ class PortfolioCreateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_portfolio_create_component()
+    public function test_can_render_portfolio_create_component(): void
     {
         Livewire::test(Create::class)
             ->assertSee('Title')
@@ -24,7 +24,7 @@ class PortfolioCreateTest extends TestCase
             ->assertSee('Image');
     }
 
-    public function test_can_validate_form()
+    public function test_can_validate_form(): void
     {
         Livewire::test(Create::class)
             ->set('title', '')
@@ -40,7 +40,7 @@ class PortfolioCreateTest extends TestCase
             ]);
     }
 
-    public function test_can_create_portfolio()
+    public function test_can_create_portfolio(): void
     {
         Livewire::test(Create::class)
             ->set('title', 'Test title')
@@ -58,7 +58,7 @@ class PortfolioCreateTest extends TestCase
         ]);
     }
 
-    public function test_can_upload_portfolio_images()
+    public function test_can_upload_portfolio_images(): void
     {
         Storage::fake('public');
 

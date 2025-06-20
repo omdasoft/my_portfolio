@@ -24,7 +24,7 @@ class EditPostAction
      */
     public function handle(Post $post, array $data): void
     {
-        DB::transaction(function () use ($post, $data) {
+        DB::transaction(function () use ($post, $data): void {
             // Edit Post
             $post->title = $data['title'];
             $post->content = Purifier::clean($data['content']);

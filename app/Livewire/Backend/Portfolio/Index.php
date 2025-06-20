@@ -24,7 +24,7 @@ class Index extends Component
     {
         $portfolios = Portfolio::with('images')->latest()->paginate(10);
 
-        return view('livewire.backend.portfolio.index', compact('portfolios'))->layout('layouts.admin');
+        return view('livewire.backend.portfolio.index', ['portfolios' => $portfolios])->layout('layouts.admin');
     }
 
     public function edit(int $id): Redirector|RedirectResponse
@@ -45,7 +45,7 @@ class Index extends Component
 
     public function deleteConfirmed(): void
     {
-        if ($this->actionId) {
+        if ($this->actionId !== 0) {
             $portfolio = Portfolio::with('images')->findOrFail($this->actionId);
 
             /** @phpstan-ignore-next-line */

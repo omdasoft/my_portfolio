@@ -13,7 +13,7 @@ class PostIndexTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_post_index_component_successfully()
+    public function test_can_render_post_index_component_successfully(): void
     {
         Post::factory()->count(5)->create();
 
@@ -21,7 +21,7 @@ class PostIndexTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_can_display_posts()
+    public function test_can_display_posts(): void
     {
         Post::factory()->count(5)->create();
 
@@ -29,18 +29,16 @@ class PostIndexTest extends TestCase
 
         Livewire::test(Index::class)
             ->assertSee($firstPost->title)
-            ->assertViewHas('posts', function ($posts) {
-                return count($posts) == 5;
-            });
+            ->assertViewHas('posts', fn($posts): bool => count($posts) == 5);
     }
 
-    public function test_only_auth_user_can_display_dashboard()
+    public function test_only_auth_user_can_display_dashboard(): void
     {
         $this->get('/admin/dashboard')
             ->assertStatus(302);
     }
 
-    public function test_auth_user_can_display_dashboard()
+    public function test_auth_user_can_display_dashboard(): void
     {
         $user = User::factory()->create();
 
@@ -49,7 +47,7 @@ class PostIndexTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_can_delete_post()
+    public function test_can_delete_post(): void
     {
         Post::factory()->count(5)->create();
 
@@ -63,7 +61,7 @@ class PostIndexTest extends TestCase
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
     }
 
-    public function test_can_redirect_to_edit_post_component()
+    public function test_can_redirect_to_edit_post_component(): void
     {
         Post::factory()->count(5)->create();
 
@@ -74,7 +72,7 @@ class PostIndexTest extends TestCase
             ->assertRedirect(route('admin.posts.edit', $post->id));
     }
 
-    public function test_can_redirect_to_view_post_component()
+    public function test_can_redirect_to_view_post_component(): void
     {
         Post::factory()->count(5)->create();
 

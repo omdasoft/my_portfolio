@@ -14,7 +14,7 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_profile_info()
+    public function test_can_render_profile_info(): void
     {
         Profile::factory()->create();
 
@@ -22,7 +22,7 @@ class ProfileTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_can_list_profile_info()
+    public function test_can_list_profile_info(): void
     {
         $profile = Profile::factory()->create();
 
@@ -37,13 +37,13 @@ class ProfileTest extends TestCase
             ->assertSet('profileInfo.intro', $profile->intro);
     }
 
-    public function test_can_update_profile_info()
+    public function test_can_update_profile_info(): void
     {
         Profile::factory()->create();
 
         $resume = UploadedFile::fake()->create('document.pdf', 500, 'application/pdf');
 
-        $image = UploadedFile::fake()->image('photo1.jpg');
+        UploadedFile::fake()->image('photo1.jpg');
 
         $component = Livewire::test(Info::class)
             ->set('profileInfo', [])
@@ -62,7 +62,6 @@ class ProfileTest extends TestCase
 
         $this->assertDatabaseHas('profiles', [
             'phone' => '+912345678',
-            'github' => 'https://github.com',
             'twitter' => 'https://twitter.com',
             'github' => 'https://github.com',
         ]);

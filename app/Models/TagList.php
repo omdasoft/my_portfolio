@@ -14,7 +14,7 @@ class TagList extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (TagList $tag) {
+        static::creating(function (TagList $tag): void {
             $tag->slug = Str::slug($tag->name);
         });
     }

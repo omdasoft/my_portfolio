@@ -24,7 +24,7 @@ class Portfolio extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Portfolio $portfolio) {
+        static::creating(function (Portfolio $portfolio): void {
             $portfolio->slug = Str::slug($portfolio->title);
         });
     }

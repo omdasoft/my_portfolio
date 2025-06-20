@@ -14,7 +14,7 @@ class Tag extends Model
     protected $fillable = ['tag_name', 'tag_list_id', 'tagable_type', 'tagable_id'];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo<Model, Tag>
+     * @return MorphTo<Model, Tag>
      */
     public function tagable(): MorphTo
     {
@@ -22,7 +22,7 @@ class Tag extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<TagList, Tag>
+     * @return BelongsTo<TagList, Tag>
      */
     public function tagList(): BelongsTo
     {

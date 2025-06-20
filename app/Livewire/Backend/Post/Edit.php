@@ -130,7 +130,7 @@ class Edit extends Component
     {
         $this->validate();
 
-        $this->formData['hasImage'] = $this->image ? true : false;
+        $this->formData['hasImage'] = (bool) $this->image;
 
         $editAction = new EditPostAction;
 

@@ -19,6 +19,6 @@ class Show extends Component
     {
         $portfolio = Portfolio::with(['images', 'tags'])->where('slug', $this->slug)->first();
 
-        return view('livewire.frontend.portfolio.show', compact('portfolio'))->layout('layouts.front');
+        return view('livewire.frontend.portfolio.show', ['portfolio' => $portfolio])->layout('layouts.front');
     }
 }

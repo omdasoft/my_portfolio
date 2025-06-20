@@ -20,7 +20,7 @@ class CreatePostAction
      */
     public static function handle(array $data): void
     {
-        DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data): void {
             $post = new Post;
             $post->title = $data['title'];
             $post->content = Purifier::clean($data['content']);

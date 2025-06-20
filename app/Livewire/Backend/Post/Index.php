@@ -24,7 +24,7 @@ class Index extends Component
     {
         $posts = Post::with('image')->latest()->paginate(10);
 
-        return view('livewire.backend.post.index', compact('posts'))->layout('layouts.admin');
+        return view('livewire.backend.post.index', ['posts' => $posts])->layout('layouts.admin');
     }
 
     public function showConfirmationModal(int $id): void
@@ -35,7 +35,7 @@ class Index extends Component
 
     public function deleteConfirmed(): void
     {
-        if ($this->actionId) {
+        if ($this->actionId !== 0) {
             $deletePostAction = new DeletePostAction;
             $deletePostAction->handle($this->actionId);
             $this->actionId = -1;

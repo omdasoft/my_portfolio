@@ -25,7 +25,7 @@ class Index extends Component
         $posts = $this->getPosts();
         $tags = get_post_tags_with_count();
 
-        return view('livewire.frontend.post.index', compact('posts', 'tags'))->layout('layouts.front');
+        return view('livewire.frontend.post.index', ['posts' => $posts, 'tags' => $tags])->layout('layouts.front');
     }
 
     /**
@@ -37,9 +37,9 @@ class Index extends Component
 
         $query = Post::published()->with('tags.tagList')->latest();
 
-        if ($this->selectedTag) {
-            $query->whereHas('tags', function ($q) {
-                $q->whereHas('tagList', function ($q) {
+        if ($this->selectedTag !== '' && $this->selectedTag !== '0') {
+            $query->whereHas('tags', function ($q): void {
+                $q->whereHas('tagList', function ($q): void {
                     $q->where('slug', $this->selectedTag);
                 });
             });

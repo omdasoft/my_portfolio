@@ -73,7 +73,7 @@ class Edit extends Component
 
     public function addImagePath(string $path): void
     {
-        array_push($this->imagePathes, $path);
+        $this->imagePathes[] = $path;
     }
 
     public function removeImage(int $index): void
@@ -96,12 +96,10 @@ class Edit extends Component
         $this->portfolio->save();
 
         // Create portfolio images
-        if ($this->imagePathes) {
-            foreach ($this->imagePathes as $path) {
-                $this->portfolio->images()->create([
-                    'image_path' => $path,
-                ]);
-            }
+        foreach ($this->imagePathes as $path) {
+            $this->portfolio->images()->create([
+                'image_path' => $path,
+            ]);
         }
 
         $this->imagePathes = [];

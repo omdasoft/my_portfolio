@@ -165,7 +165,7 @@ class Info extends Component
 
     public function removeImage(): void
     {
-        if ($this->imagePath) {
+        if ($this->imagePath !== '' && $this->imagePath !== '0') {
             $this->removeUploadedFile($this->imagePath);
             $this->imagePath = '';
             $this->image = null;
@@ -174,7 +174,7 @@ class Info extends Component
 
     public function removeResume(): void
     {
-        if ($this->resumePath) {
+        if ($this->resumePath !== '' && $this->resumePath !== '0') {
             $this->removeUploadedFile($this->resumePath);
             $this->resumePath = '';
             $this->resume = null;

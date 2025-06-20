@@ -19,7 +19,7 @@ class Show extends Component
     {
         $post = $this->getPost();
 
-        return view('livewire.frontend.post.show', compact('post'))->layout('layouts.front');
+        return view('livewire.frontend.post.show', ['post' => $post])->layout('layouts.front');
     }
 
     private function getPost(): Post

@@ -12,7 +12,7 @@ class PortfolioEditTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_portfolio_edit_component()
+    public function test_can_render_portfolio_edit_component(): void
     {
         $portfolio = Portfolio::factory()->create();
 
@@ -23,7 +23,7 @@ class PortfolioEditTest extends TestCase
             ->assertSet('description', $portfolio->description);
     }
 
-    public function test_can_validate_form()
+    public function test_can_validate_form(): void
     {
         $portfolio = Portfolio::factory()->create();
 
@@ -41,7 +41,7 @@ class PortfolioEditTest extends TestCase
             ]);
     }
 
-    public function test_can_update_portfolio()
+    public function test_can_update_portfolio(): void
     {
         $portfolio = Portfolio::factory()->create();
 

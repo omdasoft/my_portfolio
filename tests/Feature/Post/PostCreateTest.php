@@ -17,7 +17,7 @@ class PostCreateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_post_create_component()
+    public function test_can_render_post_create_component(): void
     {
         Livewire::test(Create::class)
             ->assertSee('Title')
@@ -26,7 +26,7 @@ class PostCreateTest extends TestCase
             ->assertSee('Image');
     }
 
-    public function test_can_validate_form()
+    public function test_can_validate_form(): void
     {
         Livewire::test(Create::class)
             ->set('formData.title', '')
@@ -35,7 +35,7 @@ class PostCreateTest extends TestCase
             ->assertHasErrors(['formData.title', 'formData.content']);
     }
 
-    public function test_can_create_post()
+    public function test_can_create_post(): void
     {
         Storage::fake('public');
 
@@ -65,7 +65,7 @@ class PostCreateTest extends TestCase
     }
 
     /** @test */
-    public function test_can_add_and_remove_tag()
+    public function test_can_add_and_remove_tag(): void
     {
         // Create a test tag in the database first
         $tagList = TagList::create(['name' => 'Laravel']);
@@ -81,7 +81,7 @@ class PostCreateTest extends TestCase
             ->assertSet('formData.tags', []);
     }
 
-    public function test_can_upload_image()
+    public function test_can_upload_image(): void
     {
         Storage::fake('public');
 

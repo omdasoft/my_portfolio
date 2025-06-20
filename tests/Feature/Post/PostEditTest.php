@@ -14,7 +14,7 @@ class PostEditTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_can_render_post_edit_component()
+    public function test_can_render_post_edit_component(): void
     {
         $post = Post::factory()->create();
         Livewire::test(Edit::class, ['id' => $post->id])
@@ -22,7 +22,7 @@ class PostEditTest extends TestCase
             ->assertSet('formData.content', $post->content);
     }
 
-    public function test_can_validate_form()
+    public function test_can_validate_form(): void
     {
         $post = Post::factory()->create();
 
@@ -33,7 +33,7 @@ class PostEditTest extends TestCase
             ->assertHasErrors(['formData.title', 'formData.content']);
     }
 
-    public function test_can_update_post()
+    public function test_can_update_post(): void
     {
         $post = Post::factory()->create();
 
