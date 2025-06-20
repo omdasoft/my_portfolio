@@ -25,7 +25,7 @@ class PortfolioIndexTest extends TestCase
         Portfolio::factory()->count(5)->create();
 
         Livewire::test(Index::class)
-            ->assertViewHas('portfolios', fn($portfolios): bool => count($portfolios) == 5);
+            ->assertViewHas('portfolios', fn ($portfolios): bool => count($portfolios) == 5);
     }
 
     public function test_can_delete_portfolio(): void

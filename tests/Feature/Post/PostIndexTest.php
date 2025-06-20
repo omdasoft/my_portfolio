@@ -29,7 +29,7 @@ class PostIndexTest extends TestCase
 
         Livewire::test(Index::class)
             ->assertSee($firstPost->title)
-            ->assertViewHas('posts', fn($posts): bool => count($posts) == 5);
+            ->assertViewHas('posts', fn ($posts): bool => count($posts) == 5);
     }
 
     public function test_only_auth_user_can_display_dashboard(): void

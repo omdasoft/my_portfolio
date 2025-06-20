@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Exception;
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
