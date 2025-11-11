@@ -11,6 +11,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    /**
+     * @use HasFactory<\Database\Factories\UserFactory>
+     */
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -35,7 +38,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return HasOne<Profile>
+     * @return HasOne<Profile, $this>
      */
     public function profile(): HasOne
     {

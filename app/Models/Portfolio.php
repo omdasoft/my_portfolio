@@ -11,6 +11,9 @@ use Illuminate\Support\Str;
 
 class Portfolio extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\PortfolioFactory>
+     */
     use HasFactory;
 
     protected $fillable = [
@@ -30,7 +33,7 @@ class Portfolio extends Model
     }
 
     /**
-     * @return MorphMany<Image>
+     * @return MorphMany<Image, $this>
      */
     public function images(): MorphMany
     {
@@ -38,7 +41,7 @@ class Portfolio extends Model
     }
 
     /**
-     * @return MorphMany<Tag>
+     * @return MorphMany<Tag, $this>
      */
     public function tags(): MorphMany
     {

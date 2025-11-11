@@ -10,12 +10,15 @@ use Illuminate\Support\Str;
 
 class Profile extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\ProfileFactory>
+     */
     use HasFactory;
 
     protected $fillable = ['designation', 'intro', 'phone', 'github', 'twitter', 'linkedin', 'resume_path'];
 
     /**
-     * @return MorphOne<Image>
+     * @return MorphOne<Image, $this>
      */
     public function image(): MorphOne
     {

@@ -15,12 +15,15 @@ use Mews\Purifier\Facades\Purifier;
 
 class Post extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\PostFactory>
+     */
     use HasFactory;
 
     protected $fillable = ['title', 'slug', 'content', 'category_id', 'status'];
 
     /**
-     * @return MorphOne<Image>
+     * @return MorphOne<Image, $this>
      */
     public function image(): MorphOne
     {
@@ -28,7 +31,7 @@ class Post extends Model
     }
 
     /**
-     * @return MorphMany<Tag>
+     * @return MorphMany<Tag, $this>
      */
     public function tags(): MorphMany
     {

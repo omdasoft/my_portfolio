@@ -9,12 +9,15 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Tag extends Model
 {
+    /**
+     * @use HasFactory<\Database\Factories\TagFactory>
+     */
     use HasFactory;
 
     protected $fillable = ['tag_name', 'tag_list_id', 'tagable_type', 'tagable_id'];
 
     /**
-     * @return MorphTo<Model, Tag>
+     * @return MorphTo<Model, $this>
      */
     public function tagable(): MorphTo
     {
@@ -22,7 +25,7 @@ class Tag extends Model
     }
 
     /**
-     * @return BelongsTo<TagList, Tag>
+     * @return BelongsTo<TagList, $this>
      */
     public function tagList(): BelongsTo
     {
