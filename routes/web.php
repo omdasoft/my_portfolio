@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ImageController;
+use App\Livewire\Backend\Contact\Index as ContactIndex;
 use App\Livewire\Backend\Dashboard;
 use App\Livewire\Backend\Portfolio\Create;
 use App\Livewire\Backend\Portfolio\Edit;
@@ -54,6 +55,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (): v
         Route::get('create', PostCreate::class)->name('create');
         Route::get('edit/{id}', PostEdit::class)->name('edit');
         Route::get('view/{id}', PostView::class)->name('view');
+    });
+
+    // Contact routes
+    Route::prefix('contacts')->name('contacts.')->group(function () {
+        Route::get('/', ContactIndex::class)->name('index');
     });
 
     Route::post('/upload-tinymce-image', [ImageController::class, 'uploadTinyMCEImage'])->name('tinymce.upload');
