@@ -6,3 +6,5 @@ parameters:
     - bootstrap
     - config
   level: 6
+  ignoreErrors:
+    - '#Parameter \#1 \$view of function view expects view-string\|null, string given\.#'

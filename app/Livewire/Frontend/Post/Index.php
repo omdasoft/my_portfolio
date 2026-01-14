@@ -29,7 +29,7 @@ class Index extends Component
     }
 
     /**
-     * @return LengthAwarePaginator<Post>
+     * @return LengthAwarePaginator<int, Post>
      */
     public function getPosts(?string $tag_slug = null): LengthAwarePaginator
     {

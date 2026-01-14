@@ -165,7 +165,7 @@ class Edit extends Component
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string|array<int, string>>
      */
     protected function rules(): array
     {

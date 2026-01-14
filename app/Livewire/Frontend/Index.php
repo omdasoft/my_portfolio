@@ -28,7 +28,7 @@ class Index extends Component
     }
 
     /**
-     * @return LengthAwarePaginator<Portfolio>
+     * @return LengthAwarePaginator<int, Portfolio>
      */
     private function getPortfolios(): LengthAwarePaginator
     {
