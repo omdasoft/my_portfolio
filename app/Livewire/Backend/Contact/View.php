@@ -3,6 +3,7 @@
 namespace App\Livewire\Backend\Contact;
 
 use App\Models\Contact;
+use Illuminate\Contracts\View\View as ViewView;
 use Livewire\Component;
 
 class View extends Component
@@ -19,7 +20,7 @@ class View extends Component
         $this->contact = Contact::findOrFail($id);
     }
 
-    public function render(): View
+    public function render(): ViewView
     {
         return view('livewire.backend.contact.view')->layout('layouts.admin');
     }

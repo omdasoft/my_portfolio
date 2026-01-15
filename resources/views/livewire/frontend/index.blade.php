@@ -4,7 +4,7 @@
     <x-about :profile="$profile"/>
 
     <!--Portfolios section-->
-    @if($portfolios)
+    @if(count($portfolios))
         <div class="mb-16">
             <x-portfolio-list :portfolios="$portfolios" name="Latest Work"/>
             <x-nav-link href="{{ route('portfolios.index') }}">
@@ -15,7 +15,7 @@
 
 
     <!--Latest post section-->
-    @if ($latestPosts)
+    @if (count($latestPosts))
         <section class="md:flex" id="blog">
             <div class="md:w-2/3 md:mr-20 mb-20">
                 <h1
