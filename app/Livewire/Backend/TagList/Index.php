@@ -67,4 +67,29 @@ class Index extends Component
         $this->dispatch('action-success');
         $this->closeModal('createModal');
     }
+
+    public function showEditModal(int $id): void
+    {
+        $this->reset('name');
+        $this->actionId = $id;
+        $tag = TagList::findOrFail($id);
+        $this->name = $tag->name;
+        $this->dispatch('open-modal', 'updateModal');
+    }
+
+    public function updateTag(): void
+    {
+        $this->validate([
+            'name' => 'required|max:255|unique:tag_lists,name,' . $this->actionId,
+        ]);
+
+        $tag = TagList::findOrFail($this->actionId);
+        $tag->update([
+            'name' => $this->name,
+        ]);
+
+        $this->message = 'Tag Updated Successfully!';
+        $this->dispatch('action-success');
+        $this->closeModal('updateModal');
+    }
 }

@@ -43,6 +43,9 @@
                                         <td class="px-6 py-4">{{ $tag->name }}</td>
                                         <td class="px-6 py-4">{{ $tag->slug }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
+                                            <x-secondary-button wire:click.prevent="showEditModal({{ $tag->id }})">
+                                                Edit
+                                            </x-secondary-button>
                                             <x-danger-button wire:click.prevent="showConfirmationModal({{ $tag->id }})">
                                                 Delete
                                             </x-danger-button>
@@ -95,6 +98,31 @@
 
                 <x-primary-button class="ml-3" wire:click="storeTag">
                     {{ __('Save') }}
+                </x-primary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <!-- Update Tag Modal -->
+    <x-modal name="updateModal" maxWidth="md">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Update Tag') }}
+            </h2>
+
+            <div class="mt-6">
+                <x-input-label for="updateName" value="{{ __('Name') }}" />
+                <x-text-input id="updateName" name="name" type="text" class="mt-1 block w-full" wire:model="name" placeholder="{{ __('Tag Name') }}" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click="closeModal('updateModal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ml-3" wire:click="updateTag">
+                    {{ __('Update') }}
                 </x-primary-button>
             </div>
         </div>
