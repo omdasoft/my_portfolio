@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Portfolio List') }}
+            {{ __('Tag List') }}
         </h2>
     </x-slot>
 
@@ -20,37 +20,30 @@
                             </div>
                         </div>
                     </x-action-message>
+    
+                    <div class="mb-4 flex justify-between items-center gap-4">
+                        <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search tags..." class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full md:w-1/3">
+                        <x-link-button href="#">
+                            Create
+                        </x-link-button>
+                    </div>
 
-                    <x-link-button class="mb-4" :href="route('admin.portfolios.create')" wire:navigate>
-                        Create
-                    </x-link-button>
-                    
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3">Image</th>
-                                    <th scope="col" class="px-6 py-3">Title</th>
-                                    <th scope="col" class="px-6 py-3">URL</th>
-                                    <th scope="col" class="px-6 py-3">GitHub URL</th>
-                                    <th scope="col" class="px-6 py-3">Completed At</th>
+                                    <th scope="col" class="px-6 py-3">Name</th>
+                                    <th scope="col" class="px-6 py-3">Slug</th>
                                     <th scope="col" class="px-6 py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($portfolios as $portfolio)
+                                @forelse ($list as $tag)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td class="px-6 py-4">
-                                            <img src="{{ $portfolio->image }}" alt="Portfolio Image" width="200" height="200">
-                                        </td>
-                                        <td class="px-6 py-4">{{ $portfolio->title }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->url }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->github_url }}</td>
-                                        <td class="px-6 py-4">{{ $portfolio->created_at }}</td>
+                                        <td class="px-6 py-4">{{ $tag->name }}</td>
+                                        <td class="px-6 py-4">{{ $tag->slug }}</td>
                                         <td class="px-6 py-4 flex flex-row gap-1">
-                                            <x-secondary-button wire:click="edit({{ $portfolio->id }})">Edit</x-secondary-button>
-                                            <x-secondary-button wire:click="view({{ $portfolio->id }})">View</x-secondary-button>
-                                            <x-danger-button wire:click.prevent="showConfirmationModal({{ $portfolio->id }})">
+                                            <x-danger-button wire:click.prevent="showConfirmationModal({{ $tag->id }})">
                                                 Delete
                                             </x-danger-button>
                                         </td>
@@ -62,7 +55,8 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <x-pagination :collection="$portfolios"/>
+
+                        <x-pagination :collection="$list"/>
                     </div>
                 </div>
             </div>
@@ -73,7 +67,7 @@
     <x-modal name="confirmationModal" maxWidth="md">
         <div>
             <h2 class="text-center text-gray-500 py-2">Delete Confirmation</h2>
-            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this portfolio item?</p>
+            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this tag?</p>
             <div class="mt-4 flex gap-4 justify-center mb-3">
                 <x-danger-button wire:click="deleteConfirmed">Yes, Delete</x-danger-button>
                 <x-secondary-button wire:click="closeModal('confirmationModal')">Cancel</x-secondary-button>

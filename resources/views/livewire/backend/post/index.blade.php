@@ -21,9 +21,9 @@
                         </div>
                     </x-action-message>
 
-                    <x-nav-link :href="route('admin.posts.create')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 transition ease-in-out duration-150" wire:navigate>
-                        Add Post
-                    </x-nav-link>
+                    <x-link-button class="mb-4" :href="route('admin.posts.create')" wire:navigate>
+                        Create
+                    </x-link-button>
                     
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ImageController;
 use App\Livewire\Backend\Contact\Index as ContactIndex;
+// ####################### Backend ###########################
 use App\Livewire\Backend\Contact\View as ContactView;
 use App\Livewire\Backend\Dashboard;
 use App\Livewire\Backend\Portfolio\Create;
@@ -13,7 +14,9 @@ use App\Livewire\Backend\Post\Edit as PostEdit;
 use App\Livewire\Backend\Post\Index as PostIndex;
 use App\Livewire\Backend\Post\View as PostView;
 use App\Livewire\Backend\Profile\Info;
+use App\Livewire\Backend\TagList\Index as TagListIndex;
 use App\Livewire\Frontend\Index as FrontendIndex;
+// ##################### Fron End ###########################
 use App\Livewire\Frontend\Portfolio\Index as PortfolioIndex;
 use App\Livewire\Frontend\Portfolio\Show as PortfolioShow;
 use App\Livewire\Frontend\Post\Index as FrontendPostIndex;
@@ -62,6 +65,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function (): v
     Route::prefix('contacts')->name('contacts.')->group(function () {
         Route::get('/', ContactIndex::class)->name('index');
         Route::get('view/{id}', ContactView::class)->name('view');
+    });
+
+    // Tag List Routes
+    Route::prefix('tag-list')->name('tag-list.')->group(function () {
+        Route::get('/', TagListIndex::class)->name('index');
     });
 
     Route::post('/upload-tinymce-image', [ImageController::class, 'uploadTinyMCEImage'])->name('tinymce.upload');

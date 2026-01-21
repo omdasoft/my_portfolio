@@ -65,7 +65,7 @@
     <x-modal name="confirmationModal" maxWidth="md">
         <div>
             <h2 class="text-center text-gray-500 py-2">Delete Confirmation</h2>
-            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this post?</p>
+            <p class="text-center text-gray-800 py-3 text-lg">Are you sure you want to delete this message?</p>
             <div class="mt-4 flex gap-4 justify-center mb-3">
                 <x-danger-button wire:click="deleteConfirmed">Yes, Delete</x-danger-button>
                 <x-secondary-button wire:click="closeModal('confirmationModal')">Cancel</x-secondary-button>
