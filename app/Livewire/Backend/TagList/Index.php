@@ -80,7 +80,7 @@ class Index extends Component
     public function updateTag(): void
     {
         $this->validate([
-            'name' => 'required|max:255|unique:tag_lists,name,' . $this->actionId,
+            'name' => 'required|max:255|unique:tag_lists,name,'.$this->actionId,
         ]);
 
         $tag = TagList::findOrFail($this->actionId);
