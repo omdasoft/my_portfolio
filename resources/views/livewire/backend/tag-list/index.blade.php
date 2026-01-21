@@ -23,7 +23,7 @@
     
                     <div class="mb-4 flex justify-between items-center gap-4">
                         <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search tags..." class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-full md:w-1/3">
-                        <x-link-button href="#">
+                    <x-link-button href="#" wire:click.prevent="showCreateModal">
                             Create
                         </x-link-button>
                     </div>
@@ -71,6 +71,31 @@
             <div class="mt-4 flex gap-4 justify-center mb-3">
                 <x-danger-button wire:click="deleteConfirmed">Yes, Delete</x-danger-button>
                 <x-secondary-button wire:click="closeModal('confirmationModal')">Cancel</x-secondary-button>
+            </div>
+        </div>
+    </x-modal>
+
+    <!-- Create Tag Modal -->
+    <x-modal name="createModal" maxWidth="md">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                {{ __('Create New Tag') }}
+            </h2>
+
+            <div class="mt-6">
+                <x-input-label for="name" value="{{ __('Name') }}" />
+                <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" wire:model="name" placeholder="{{ __('Tag Name') }}" />
+                <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <x-secondary-button wire:click="closeModal('createModal')">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+
+                <x-primary-button class="ml-3" wire:click="storeTag">
+                    {{ __('Save') }}
+                </x-primary-button>
             </div>
         </div>
     </x-modal>

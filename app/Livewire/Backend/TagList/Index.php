@@ -14,9 +14,11 @@ class Index extends Component
 
     public string $search = '';
 
+    public string $name = '';
+
     public function render(): View
     {
-        $list = TagList::where('name', 'like', '%'.$this->search.'%')->paginate(10);
+        $list = TagList::where('name', 'like', '%'.$this->search.'%')->orderBy('name', 'asc')->paginate(10);
 
         return view('livewire.backend.tag-list.index', ['list' => $list])->layout('layouts.admin');
     }
@@ -41,6 +43,28 @@ class Index extends Component
 
     public function closeModal(string $modalName): void
     {
+        $this->resetErrorBag();
         $this->dispatch('close-modal', $modalName);
+    }
+
+    public function showCreateModal(): void
+    {
+        $this->reset('name');
+        $this->dispatch('open-modal', 'createModal');
+    }
+
+    public function storeTag(): void
+    {
+        $this->validate([
+            'name' => 'required|max:255|unique:tag_lists,name',
+        ]);
+
+        TagList::create([
+            'name' => $this->name,
+        ]);
+
+        $this->message = 'Tag Created Successfully!';
+        $this->dispatch('action-success');
+        $this->closeModal('createModal');
     }
 }
