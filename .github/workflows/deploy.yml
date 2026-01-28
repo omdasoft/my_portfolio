@@ -12,16 +12,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
           coverage: none
-
+      
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
-
+      
       - name: Run Pint (check only)
         run: ./vendor/bin/pint --test
 
@@ -31,31 +31,39 @@ jobs:
     needs: lint
     steps:
       - uses: actions/checkout@v4
-
+      
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.4
           coverage: none
-
+      
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
-
+      
       - name: Prepare application
         run: |
           cp .env.example .env
           php artisan key:generate
-          mkdir -p public/build
+          mkdir -p public/build/assets
+          
+          # Create proper Vite manifest with src keys
           cat <<EOF > public/build/manifest.json
           {
             "resources/css/app.css": {
-              "file": "assets/app.css"
+              "src": "resources/css/app.css",
+              "file": "assets/app-abc123.css"
             },
             "resources/js/app.js": {
-              "file": "assets/app.js"
+              "src": "resources/js/app.js",
+              "file": "assets/app-xyz789.js"
             }
           }
           EOF
-
+          
+          # Create dummy asset files
+          touch public/build/assets/app-abc123.css
+          touch public/build/assets/app-xyz789.js
+      
       - name: Run tests
         run: php artisan test
 
@@ -75,4 +83,6 @@ jobs:
             git pull origin main
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
-            php artisan optimize
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
