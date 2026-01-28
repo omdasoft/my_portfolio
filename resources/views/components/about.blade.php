@@ -4,7 +4,7 @@
         <h1 class="text-4xl md:text-6xl font-extrabold text-indigo-600">
             {{ $profile->designation }}
         </h1>
-        <p class="mt-5 text-neutral-600 md:leading-9 md:text-justify leading-7 text-justify">
+        <p class="mt-5 text-neutral-600 md:leading-9 leading-7 text-justify">
             {{ $profile->intro }}
         </p>
         <div class="mt-10 flex gap-2">
