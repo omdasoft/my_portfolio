@@ -10,7 +10,7 @@
     <div class="max-w-4xl mx-auto my-2 p-6">
         <div class="lg:max-w-[52rem] mx-auto mb-20">
             <img src="{{ $post->image_path }}" alt="Post Image"
-                class="w-full aspect-[16/9] max-h-[24rem] md:max-h-[30rem] object-cover rounded-smmb-6">
+                class="w-full aspect-[16/9] max-h-[24rem] md:max-h-[30rem] object-cover rounded-smmb-6 mb-10">
 
             <!-- Header Section -->
             <div class="mb-6">
