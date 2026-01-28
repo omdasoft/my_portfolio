@@ -13,7 +13,7 @@ My personal website.
 
 ## Technologies Used
 The project is built with the following technologies:
-- **Laravel 11**
+- **Laravel 12**
 - **Livewire 3**
 - **Tailwind CSS**
 - **MySql Database**
