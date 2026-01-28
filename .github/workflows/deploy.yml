@@ -59,6 +59,7 @@ jobs:
 
       - name: Run tests
         run: php artisan test
+        
   deploy:
     name: Deploy to DigitalOcean
     runs-on: ubuntu-latest
