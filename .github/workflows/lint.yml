@@ -21,4 +21,4 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Run Pint (check only)
-        run: php artisan pint --test
+        run: ./vendor/bin/pint --test
