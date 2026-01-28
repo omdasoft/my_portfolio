@@ -1,7 +1,7 @@
 @props(['post'])
-<a href="{{ route('posts.show', $post->slug) }}" class="mb-16 block text-gray-700">
+<a href="{{ route('posts.show', $post->slug) }}" class="mb-10 block text-gray-700">
     <h2 class="font-bold text-xl md:text-3xl">{{ $post->title }}</h2>
-    <p class="mt-4 md:leading-relaxed text-justify">
+    <p class="mt-4 md:leading-relaxed md:text-justify text-left leading-7">
         {!! $post->short_content !!}
     </p>
     <p class="mt-4 uppercase text-xs inline-flex space-x-2 font-medium text-gray-500">

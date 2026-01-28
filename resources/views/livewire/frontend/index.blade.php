@@ -17,7 +17,7 @@
     <!--Latest post section-->
     @if (count($latestPosts))
         <section class="md:flex" id="blog">
-            <div class="md:w-2/3 md:mr-20 mb-20">
+            <div class="md:w-2/3 md:mr-20 mb-10">
                 <h1
                     class="mb-5 md:mb-10 flex items-center after:ml-4 after:bg-gray-300 after:h-px after:w-1/2 after:grow uppercase text-xs font-medium">
                     Content
