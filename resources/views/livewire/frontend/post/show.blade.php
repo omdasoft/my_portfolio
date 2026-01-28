@@ -7,7 +7,7 @@
         <livewire:frontend.includes.blog-nav />
     @endsection
 
-    <div class="max-w-4xl mx-auto my-2 p-6">
+    <div class="max-w-4xl mx-auto my-2 px-4 sm:px-6 lg:px-0">
         <div class="lg:max-w-[52rem] mx-auto mb-20">
             <img src="{{ $post->image_path }}" alt="Post Image"
                 class="w-full aspect-[16/9] max-h-[24rem] md:max-h-[30rem] object-cover rounded-smmb-6 mb-10">
@@ -48,7 +48,7 @@
 
             <!-- Article Content -->
             <article
-                class="mx-auto md:mb-44 md:prose-lg md:leading-9 md:text-justify text-gray-700 leading-7 text-left  prose-img:max-w-full
+                class="md:mx-auto md:mb-44 md:prose-lg md:leading-9 md:text-justify text-gray-700 leading-7 text-left  prose-img:max-w-full
                 prose-img:h-auto">
                 {!! $post->content !!}
             </article>
