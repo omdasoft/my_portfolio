@@ -10,6 +10,10 @@
     <meta name="author" content="Emad Aldin Ali">
     <link rel="canonical" href="{{ $url ?? url()->current() }}">
 
+    @section('meta')
+        <!-- Dynamic meta tags will be inserted here -->
+    @show
+
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ $url ?? url()->current() }}">
     <meta property="og:title" content="{{ $title ?? 'Emad Aldin Ali' }}">

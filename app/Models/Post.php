@@ -88,4 +88,30 @@ class Post extends Model
     {
         return Purifier::clean($value);
     }
+
+    public function getMetaDescriptionAttribute(): string
+    {
+        $content = strip_tags($this->content);
+        $content = preg_replace('/\s+/', ' ', $content);
+
+        return Str::limit($content, 160, '');
+    }
+
+    public function getMetaKeywordsAttribute(): string
+    {
+        $keywords = [];
+
+        // Extract words from title
+        $titleWords = explode(' ', strtolower($this->title));
+        $keywords = array_merge($keywords, array_filter($titleWords, function ($word) {
+            return strlen($word) > 3;
+        }));
+
+        // Extract tag names
+        foreach ($this->tags as $tag) {
+            $keywords[] = strtolower($tag->tagList->name);
+        }
+
+        return implode(', ', array_unique($keywords));
+    }
 }

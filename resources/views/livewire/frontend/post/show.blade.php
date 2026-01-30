@@ -1,7 +1,32 @@
 <div class="py-5">
     <x-slot:title>
-        Post Show
-    </x-slot:title>
+        {{ $post->title }} - Emad Aldin Ali
+    </x-slot>
+
+    @section('meta')
+        <meta name="description" content="{{ $post->meta_description }}">
+        <meta name="keywords" content="{{ $post->meta_keywords }}">
+        <meta name="author" content="Emad Aldin Ali">
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        <!-- Open Graph meta tags -->
+        <meta property="og:type" content="article">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="{{ $post->title }}">
+        <meta property="og:description" content="{{ $post->meta_description }}">
+        <meta property="og:image" content="{{ $post->image_path }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="article:published_time" content="{{ $post->created_at }}">
+        <meta property="article:author" content="Emad Aldin Ali">
+        
+        <!-- Twitter Card meta tags -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="{{ url()->current() }}">
+        <meta property="twitter:title" content="{{ $post->title }}">
+        <meta property="twitter:description" content="{{ $post->meta_description }}">
+        <meta property="twitter:image" content="{{ $post->image_path }}">
+    @endsection
 
     @section('header')
         <livewire:frontend.includes.blog-nav />
