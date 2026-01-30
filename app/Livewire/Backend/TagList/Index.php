@@ -5,9 +5,12 @@ namespace App\Livewire\Backend\TagList;
 use App\Models\TagList;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+
     public string $message = '';
 
     public int $actionId;
