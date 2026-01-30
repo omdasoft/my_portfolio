@@ -12,7 +12,7 @@ class TagList extends Model
     protected static function booted(): void
     {
         static::creating(function (TagList $tag): void {
-            $tag->slug = Str::slug($tag->name);
+            $tag->slug = Str::slug(Str::kebab($tag->name));
         });
     }
 }

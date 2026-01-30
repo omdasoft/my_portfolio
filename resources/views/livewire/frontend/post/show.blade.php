@@ -63,7 +63,7 @@
                 <!-- Tags -->
                 <div class="mt-4 flex flex-wrap gap-2">
                     @foreach ($post->tags as $tag)
-                        <a href="{{ url('/posts/' . $tag->tagList->name) }}"
+                        <a href="{{ url('/posts/' . $tag->tagList->slug) }}"
                             class="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition duration-200">
                             #{{ $tag->tagList->name }}
                         </a>
