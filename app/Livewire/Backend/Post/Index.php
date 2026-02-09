@@ -9,11 +9,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
 use Livewire\Features\SupportRedirects\Redirector;
-use Livewire\WithPagination;
 
 class Index extends Component
 {
-    use HasMediaUpload, WithPagination;
+    use HasMediaUpload;
 
     public string $message = '';
 

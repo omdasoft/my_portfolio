@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\ImageController;
-use App\Livewire\Backend\Contact\Index as ContactIndex;
 // ####################### Backend ###########################
+use App\Livewire\Backend\Contact\Index as ContactIndex;
 use App\Livewire\Backend\Contact\View as ContactView;
 use App\Livewire\Backend\Dashboard;
 use App\Livewire\Backend\Portfolio\Create;
@@ -15,8 +15,9 @@ use App\Livewire\Backend\Post\Index as PostIndex;
 use App\Livewire\Backend\Post\View as PostView;
 use App\Livewire\Backend\Profile\Info;
 use App\Livewire\Backend\TagList\Index as TagListIndex;
-use App\Livewire\Frontend\Index as FrontendIndex;
 // ##################### Fron End ###########################
+use App\Livewire\Frontend\Index as FrontendIndex;
+use App\Livewire\Frontend\NotFound;
 use App\Livewire\Frontend\Portfolio\Index as PortfolioIndex;
 use App\Livewire\Frontend\Portfolio\Show as PortfolioShow;
 use App\Livewire\Frontend\Post\Index as FrontendPostIndex;
@@ -80,3 +81,6 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 require __DIR__.'/auth.php';
+
+// Fallback for 404
+Route::fallback(NotFound::class);
