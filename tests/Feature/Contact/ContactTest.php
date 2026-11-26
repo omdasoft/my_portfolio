@@ -6,6 +6,7 @@ use App\Livewire\Backend\Contact\Index;
 use App\Livewire\Backend\Contact\View;
 use App\Livewire\Frontend\Index as FrontendIndex;
 use App\Models\Contact;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -17,7 +18,7 @@ class ContactTest extends TestCase
 
     public function test_guest_can_send_contact_message(): void
     {
-        \App\Models\Profile::factory()->create();
+        Profile::factory()->create();
 
         Livewire::test(FrontendIndex::class)
             ->set('name', 'John Doe')
@@ -36,7 +37,7 @@ class ContactTest extends TestCase
 
     public function test_contact_form_validation(): void
     {
-        \App\Models\Profile::factory()->create();
+        Profile::factory()->create();
 
         Livewire::test(FrontendIndex::class)
             ->set('name', '')

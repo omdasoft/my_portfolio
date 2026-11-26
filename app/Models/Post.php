@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PostStatus;
 use Carbon\Carbon;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ use Mews\Purifier\Facades\Purifier;
 class Post extends Model
 {
     /**
-     * @use HasFactory<\Database\Factories\PostFactory>
+     * @use HasFactory<PostFactory>
      */
     use HasFactory;
 
